@@ -107,9 +107,9 @@ object MsgHook : IDatabaseHook {
 
             if (splitIndex in 1..(endIndex - 1)) {
                 val realKey = it.substring(0, splitIndex)
+                //取最后一个
                 if (realKey == key) {
                     result = it.substring(splitIndex + 1, endIndex)
-//                    return result
                 }
             }
 
