@@ -10,6 +10,7 @@
 
 package io.merculet.wxbot.util
 
+import android.util.Log
 import com.google.gson.Gson
 import io.merculet.wxbot.domain.ReplyReq
 import io.merculet.wxbot.domain.ReplyRes
@@ -45,8 +46,14 @@ class OkHttpUtils private constructor() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val replyRes: ReplyRes = Gson().fromJson(response.body().toString(), ReplyRes::class.java)
-                onSuccess(replyRes)
+
+                val responseStr = response.body()?.string()
+//                Log.e("aaron1", "response$response, response body: $responseStr")
+                if (response.code() == 200) {
+                    val replyRes: ReplyRes = Gson().fromJson(responseStr, ReplyRes::class.java)
+                    onSuccess(replyRes)
+                }
+
             }
 
         })

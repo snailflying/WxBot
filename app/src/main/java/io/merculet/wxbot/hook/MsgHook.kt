@@ -3,6 +3,7 @@ package io.merculet.wxbot.hook
 import android.content.ContentValues
 import com.gh0u1l5.wechatmagician.spellbook.base.Operation
 import com.gh0u1l5.wechatmagician.spellbook.interfaces.IDatabaseHook
+import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryVerbosely
 import de.robv.android.xposed.XposedBridge
 import io.merculet.wxbot.domain.ReplyReq
 import io.merculet.wxbot.hook.SendMsgHooker.wxMsgSplitStr
@@ -20,8 +21,10 @@ object MsgHook : IDatabaseHook {
         if (table == "message") {
             XposedBridge.log("aaron1 MsgHook onDatabaseInserting initialValues: $initialValues")
 
+//            tryVerbosely {
+//
+//            }
             val initialValuesStr = initialValues.toString()
-
             reply(initialValuesStr)
 
         }
