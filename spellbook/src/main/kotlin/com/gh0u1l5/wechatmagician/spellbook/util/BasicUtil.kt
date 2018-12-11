@@ -44,7 +44,7 @@ object BasicUtil {
     inline fun tryAsynchronously(crossinline func: () -> Unit): Thread {
         return thread(start = true) { func() }.apply {
             setUncaughtExceptionHandler { _, t ->
-                Log.e("Xposed", Log.getStackTraceString(t))
+                Log.e("Xposed aaron1", Log.getStackTraceString(t))
             }
         }
     }

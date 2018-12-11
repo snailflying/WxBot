@@ -1,5 +1,6 @@
 package com.gh0u1l5.wechatmagician.spellbook.parser
 
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import com.gh0u1l5.wechatmagician.spellbook.util.ParallelUtil.parallelForEach
 
 import java.io.Closeable
@@ -50,6 +51,7 @@ class ApkFile(apkFile: File) : Closeable {
 
     val classTypes: ClassTrie by lazy {
         var end = 2
+        LogUtil.log("ApkFile")
         while (isDexFileExist(end)) end++
 
         val ret = ClassTrie()
@@ -59,6 +61,8 @@ class ApkFile(apkFile: File) : Closeable {
             val parser = DexParser(buffer)
             ret += parser.parseClassTypes()
         }
+        LogUtil.log("ApkFile ClassTrie ret:$ret")
+
         return@lazy ret.apply { mutable = false }
     }
 }

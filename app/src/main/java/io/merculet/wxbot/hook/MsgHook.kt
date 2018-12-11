@@ -21,20 +21,37 @@ object MsgHook : IDatabaseHook {
         if (table == "message") {
             XposedBridge.log("aaron1 MsgHook onDatabaseInserting initialValues: $initialValues")
 
-//            tryVerbosely {
-//
-//            }
-            val initialValuesStr = initialValues.toString()
-            reply(initialValuesStr)
+            tryVerbosely {
+                val initialValuesStr = initialValues.toString()
+                reply(initialValuesStr)
+            }
+
 
         }
         return super.onDatabaseInserting(thisObject, table, nullColumnHack, initialValues, conflictAlgorithm)
     }
 
+//    override fun onDatabaseInserted(thisObject: Any, table: String, nullColumnHack: String?, initialValues: ContentValues?, conflictAlgorithm: Int, result: Long?): Operation<Long> {
+//        if (table == "message") {
+//            XposedBridge.log("aaron1 MsgHook onDatabaseInserting initialValues: $initialValues")
+//
+//            tryVerbosely {
+//                val initialValuesStr = initialValues.toString()
+//                reply(initialValuesStr)
+//            }
+//
+//
+//        }
+//        return super.onDatabaseInserted(thisObject, table, nullColumnHack, initialValues, conflictAlgorithm, result)
+//    }
+
     private fun reply(initialValuesStr: String) {
 
-        val isSend = " isSend=(\\d+) type=".toRegex().find(initialValuesStr)?.groups?.get(1)?.value
-        val type = " type=(\\d+) bizChatId=".toRegex().find(initialValuesStr)?.groups?.get(1)?.value
+//        val isSend = " isSend=(\\d+) type=".toRegex().find(initialValuesStr)?.groups?.get(1)?.value
+//        val type = " type=(\\d+) bizChatId=".toRegex().find(initialValuesStr)?.groups?.get(1)?.value
+
+        val isSend = getStringValueByKey(initialValuesStr, "isSend")
+        val type = getStringValueByKey(initialValuesStr, "type")
         XposedBridge.log("aaron1 MsgHook onDatabaseInserting isSend:$isSend, type:$type")
 
         if (isSend != "1") {//1 代表自己发出的，不处理
@@ -54,7 +71,6 @@ object MsgHook : IDatabaseHook {
                     if (response.data?.detail?.content != null) {
                         Objects.ChattingFooterEventImpl?.apply {
                             // 将 wx_id 和 回复的内容用分隔符分开
-//                        val talker = getStringValueByKey(initialValuesStr, "talker")
                             val content = "$talker$wxMsgSplitStr${response.data?.detail?.content}"
                             XposedBridge.log("aaron1 MsgHook onDatabaseInserting Methods1 = ${Methods.ChattingFooterEventImpl_SendMsg}")
 
@@ -93,7 +109,7 @@ object MsgHook : IDatabaseHook {
                 val realKey = it.substring(0, splitIndex)
                 if (realKey == key) {
                     result = it.substring(splitIndex + 1, endIndex)
-                    return result
+//                    return result
                 }
             }
 

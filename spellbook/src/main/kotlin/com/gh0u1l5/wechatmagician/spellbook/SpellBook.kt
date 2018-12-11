@@ -119,11 +119,13 @@ object SpellBook {
      *
      * Refer: https://github.com/Gh0u1L5/WechatSpellbook/wiki/事件机制
      */
+    @ExperimentalUnsignedTypes
     fun startup(lpparam: XC_LoadPackage.LoadPackageParam, plugins: List<Any>?) {
         log("aaron1 SpellBook: ${plugins?.size ?: 0} plugins:${plugins?.get(0)}")
-        WechatGlobal.init(lpparam)
-        registerPlugins(plugins)
-        registerHookers(plugins)
+        WechatGlobal.init(lpparam){
+            registerPlugins(plugins)
+            registerHookers(plugins)
+        }
     }
 
     /**

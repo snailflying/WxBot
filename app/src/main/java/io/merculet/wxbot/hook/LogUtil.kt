@@ -1,5 +1,6 @@
 package io.merculet.wxbot.hook
 
+import android.util.Log
 import de.robv.android.xposed.XposedBridge
 
 /**
@@ -8,10 +9,12 @@ import de.robv.android.xposed.XposedBridge
 
 object LogUtil {
     fun log(msg: String) {
+        Log.e("aaron1","msg:$msg")
         XposedBridge.log("Bot:\t" + msg + "\tts=" + System.currentTimeMillis())
     }
 
     fun log(e: Throwable) {
+        Log.e("aaron1","msg:$e")
         XposedBridge.log(e)
     }
 

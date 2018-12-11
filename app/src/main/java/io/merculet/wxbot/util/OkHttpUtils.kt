@@ -30,10 +30,12 @@ class OkHttpUtils private constructor() {
                 .build()
     }
 
-    fun getByCommandKey(body: ReplyReq, onSuccess: (response: ReplyRes) -> Unit) {
+    fun getByCommandKey(replyReq: ReplyReq, onSuccess: (response: ReplyRes) -> Unit) {
         val path = "v1/score/community/robot/command/getByCommandKey"
 
-        val requestBody = RequestBody.create(JSON_TYPE, Gson().toJson(body))
+        Log.e("aaron1", "chatRoomId:${replyReq.chatRoomId}, commandKey:${replyReq.commandKey}")
+
+        val requestBody = RequestBody.create(JSON_TYPE, Gson().toJson(replyReq))
 
         val request = Request.Builder()
                 .url(HOST + path)
@@ -48,10 +50,11 @@ class OkHttpUtils private constructor() {
             override fun onResponse(call: Call, response: Response) {
 
                 val responseStr = response.body()?.string()
-//                Log.e("aaron1", "response$response, response body: $responseStr")
+                Log.e("aaron1", "response.code(): ${response.code()}, response body: $responseStr")
                 if (response.code() == 200) {
-                    val replyRes: ReplyRes = Gson().fromJson(responseStr, ReplyRes::class.java)
-                    onSuccess(replyRes)
+                    Gson().fromJson(responseStr, ReplyRes::class.java)?.apply {
+                        onSuccess(this)
+                    }
                 }
 
             }

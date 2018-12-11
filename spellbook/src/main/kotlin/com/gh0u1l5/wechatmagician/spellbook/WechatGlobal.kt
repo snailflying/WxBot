@@ -8,6 +8,7 @@ import com.gh0u1l5.wechatmagician.spellbook.base.WaitChannel
 import com.gh0u1l5.wechatmagician.spellbook.parser.ApkFile
 import com.gh0u1l5.wechatmagician.spellbook.parser.ClassTrie
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryAsynchronously
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import java.lang.ref.WeakReference
@@ -28,14 +29,15 @@ object WechatGlobal {
     /**
      * 用于防止其他线程在初始化完成之前访问 WechatGlobal的变量
      */
-     val initChannel = WaitChannel()
+    val initChannel = WaitChannel()
 
     /**
      * 微信版本
      *
      * 如果初始化还未完成的话, 访问该对象的线程会自动阻塞 [INIT_TIMEOUT] ms
      */
-    @Volatile var wxVersion: Version? = null
+    @Volatile
+    var wxVersion: Version? = null
         get() {
             if (!wxUnitTestMode) {
                 initChannel.wait(INIT_TIMEOUT)
@@ -49,7 +51,8 @@ object WechatGlobal {
      *
      * 如果初始化还未完成的话, 访问该对象的线程会自动阻塞 [INIT_TIMEOUT] ms
      */
-    @Volatile var wxPackageName: String = ""
+    @Volatile
+    var wxPackageName: String = ""
         get() {
             if (!wxUnitTestMode) {
                 initChannel.wait(INIT_TIMEOUT)
@@ -63,7 +66,8 @@ object WechatGlobal {
      *
      * 如果初始化还未完成的话, 访问该对象的线程会自动阻塞 [INIT_TIMEOUT] ms
      */
-    @Volatile var wxLoader: ClassLoader? = null
+    @Volatile
+    var wxLoader: ClassLoader? = null
         get() {
             if (!wxUnitTestMode) {
                 initChannel.wait(INIT_TIMEOUT)
@@ -77,7 +81,8 @@ object WechatGlobal {
      *
      * 如果初始化还未完成的话, 访问该对象的线程会自动阻塞 [INIT_TIMEOUT] ms
      */
-    @Volatile var wxClasses: ClassTrie? = null
+    @Volatile
+    var wxClasses: ClassTrie? = null
         get() {
             if (!wxUnitTestMode) {
                 initChannel.wait(INIT_TIMEOUT)
@@ -89,16 +94,24 @@ object WechatGlobal {
     /**
      * 单元测试模式的开关, 只应该在单元测试中打开
      */
-    @Volatile var wxUnitTestMode: Boolean = false
+    @Volatile
+    var wxUnitTestMode: Boolean = false
 
     // 缓存一些重要的微信全局对象
-    @Volatile var AddressAdapterObject: WeakReference<BaseAdapter?> = WeakReference(null)
-    @Volatile var ConversationAdapterObject: WeakReference<BaseAdapter?> = WeakReference(null)
-    @Volatile var SnsUserUIAdapterObject: WeakReference<Adapter?> = WeakReference(null)
-    @Volatile var MsgStorageObject: Any? = null
-    @Volatile var ImgStorageObject: Any? = null
-    @Volatile var MainDatabaseObject: Any? = null
-    @Volatile var SnsDatabaseObject: Any? = null
+    @Volatile
+    var AddressAdapterObject: WeakReference<BaseAdapter?> = WeakReference(null)
+    @Volatile
+    var ConversationAdapterObject: WeakReference<BaseAdapter?> = WeakReference(null)
+    @Volatile
+    var SnsUserUIAdapterObject: WeakReference<Adapter?> = WeakReference(null)
+    @Volatile
+    var MsgStorageObject: Any? = null
+    @Volatile
+    var ImgStorageObject: Any? = null
+    @Volatile
+    var MainDatabaseObject: Any? = null
+    @Volatile
+    var SnsDatabaseObject: Any? = null
 
     /**
      * 创建一个惰性求值对象, 只有被用到的时候才会自动求值
@@ -115,13 +128,13 @@ object WechatGlobal {
             }
         } else {
             lazy(LazyThreadSafetyMode.PUBLICATION) {
-//                initChannel.wait(INIT_TIMEOUT)
+                //                initChannel.wait(INIT_TIMEOUT)
 
                 when (null) {
-                    wxVersion     -> throw Error("Invalid wxVersion")
+                    wxVersion -> throw Error("Invalid wxVersion")
                     wxPackageName -> throw Error("Invalid wxPackageName")
-                    wxLoader      -> throw Error("Invalid wxLoader")
-                    wxClasses     -> throw Error("Invalid wxClasses")
+                    wxLoader -> throw Error("Invalid wxLoader")
+                    wxClasses -> throw Error("Invalid wxClasses")
                 }
                 initializer() ?: throw Error("Failed to evaluate2 $name")
             }
@@ -131,8 +144,9 @@ object WechatGlobal {
     /**
      * 用来帮助单元测试的一个 Lazy Implementation, 允许开发者多次初始化一个惰性求值对象
      */
-    class UnitTestLazyImpl<out T>(private val initializer: () -> T): Lazy<T>, java.io.Serializable {
-        @Volatile private var lazyValue: Lazy<T> = lazy(initializer)
+    class UnitTestLazyImpl<out T>(private val initializer: () -> T) : Lazy<T>, java.io.Serializable {
+        @Volatile
+        private var lazyValue: Lazy<T> = lazy(initializer)
 
         fun refresh() {
             lazyValue = lazy(initializer)
@@ -149,11 +163,19 @@ object WechatGlobal {
     /**
      * 初始化当前的 [WechatGlobal]
      *
+     * 初始化完成后再调用[SpellBook.registerPlugins]等回调函数
+     *
      * @param lpparam 通过重载 [IXposedHookLoadPackage.handleLoadPackage] 方法拿到的
      * [XC_LoadPackage.LoadPackageParam] 对象
      */
-    @JvmStatic fun init(lpparam: XC_LoadPackage.LoadPackageParam) {
+    @ExperimentalUnsignedTypes
+    @JvmStatic
+    fun init(lpparam: XC_LoadPackage.LoadPackageParam, callback: () -> Unit) {
+        LogUtil.log("WechatGlobal init")
+
         tryAsynchronously {
+            LogUtil.log("WechatGlobal init:${initChannel.isDone()}")
+
             if (initChannel.isDone()) {
                 return@tryAsynchronously
             }
@@ -163,9 +185,16 @@ object WechatGlobal {
                 wxPackageName = lpparam.packageName
                 wxLoader = lpparam.classLoader
 
+                LogUtil.log("WechatGlobal wxPackageName:${wxPackageName}")
+
                 ApkFile(lpparam.appInfo.sourceDir).use {
+                    LogUtil.log("WechatGlobal wxClasses:${it.classTypes}")
+
                     wxClasses = it.classTypes
+                    callback()
                 }
+            } catch (e: Exception) {
+                LogUtil.log("WechatGlobal e:${e}")
             } finally {
                 initChannel.done()
             }
