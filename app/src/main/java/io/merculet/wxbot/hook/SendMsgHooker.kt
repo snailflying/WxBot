@@ -2,6 +2,7 @@ package io.merculet.wxbot.hook
 
 import com.gh0u1l5.wechatmagician.spellbook.base.Hooker
 import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 
@@ -15,14 +16,14 @@ object SendMsgHooker : HookerProvider {
 
 
     private fun netSceneSendMsgHook(): Hooker {
-        XposedBridge.log("aaron1 SendMsgHooker netSceneSendMsgHook ${Classes.NetSceneSendMsg}")
+        LogUtil.log("SendMsgHooker netSceneSendMsgHook ${Classes.NetSceneSendMsg}")
 
         return Hooker {
             XposedBridge.hookAllConstructors(Classes.NetSceneSendMsg, object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam?) {
                     param?.args?.apply {
                         val content = this[1] as String
-                        XposedBridge.log("aaron1 SendMsgHooker netSceneSendMsgHook content = $content")
+                        LogUtil.log("SendMsgHooker netSceneSendMsgHook content = $content")
 
                         val splitIndex = content.indexOf(wxMsgSplitStr)
                         if (splitIndex > 0) {//如果存在这个分隔符，代表是我们 hook 的
@@ -30,7 +31,7 @@ object SendMsgHooker : HookerProvider {
                             val wxId = content.substring(0, splitIndex)
                             val contentReal = content.substring(splitIndex + wxMsgSplitStr.length, content.length)
                             // 设置到 args 里
-                            XposedBridge.log("aaron1 SendMsgHooker netSceneSendMsgHook wxId = $wxId,content:$contentReal")
+                            LogUtil.log("SendMsgHooker netSceneSendMsgHook wxId = $wxId,content:$contentReal")
 
                             this[0] = wxId
                             this[1] = contentReal
@@ -51,11 +52,11 @@ object SendMsgHooker : HookerProvider {
 
     // 这个类可以发送消息，要获取到它的实例，hook 构造方法，将它的实例保存到 Objects.ChattingFooterEventImpl
     private fun chattingFooterEventImplHook(): Hooker {
-        XposedBridge.log("aaron1 SendMsgHooker chattingFooterEventImplHook ${Classes.ChattingFooterEventImpl}")
+        LogUtil.log("SendMsgHooker chattingFooterEventImplHook ${Classes.ChattingFooterEventImpl}")
         return Hooker {
             XposedBridge.hookAllConstructors(Classes.ChattingFooterEventImpl, object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam?) {
-                    XposedBridge.log("aaron1 SendMsgHooker ChattingFooterEventImpl = ${param?.thisObject}")
+                    LogUtil.log("SendMsgHooker ChattingFooterEventImpl = ${param?.thisObject}")
                     Objects.ChattingFooterEventImpl = param?.thisObject
                 }
             })
@@ -68,7 +69,7 @@ object SendMsgHooker : HookerProvider {
 //            override fun beforeHookedMethod(param: MethodHookParam?) {
 //                param?.args?.apply {
 //                    val content = this[1] as String
-//                    XposedBridge.log("aaron1 SendMsgHooker content = $content")
+//                    LogUtil.log("SendMsgHooker content = $content")
 //
 //                    val splitIndex = content.indexOf(wxMsgSplitStr)
 //                    if (splitIndex > 0) {//如果存在这个分隔符，代表是我们 hook 的
@@ -76,7 +77,7 @@ object SendMsgHooker : HookerProvider {
 //                        val wxId = content.substring(0, splitIndex)
 //                        val contentReal = content.substring(splitIndex + wxMsgSplitStr.length, content.length)
 //                        // 设置到 args 里
-//                        XposedBridge.log("aaron1 SendMsgHooker wxId = $wxId,content:$contentReal")
+//                        LogUtil.log("SendMsgHooker wxId = $wxId,content:$contentReal")
 //
 //                        this[0] = wxId
 //                        this[1] = contentReal
@@ -90,7 +91,7 @@ object SendMsgHooker : HookerProvider {
 //    private val chattingFooterEventImplHook = Hooker {
 //        XposedBridge.hookAllConstructors(Classes.ChattingFooterEventImpl, object : XC_MethodHook() {
 //            override fun afterHookedMethod(param: MethodHookParam?) {
-//                XposedBridge.log("aaron1 SendMsgHooker ChattingFooterEventImpl = ${param?.thisObject}")
+//                LogUtil.log("SendMsgHooker ChattingFooterEventImpl = ${param?.thisObject}")
 //                Objects.ChattingFooterEventImpl = param?.thisObject
 //            }
 //        })

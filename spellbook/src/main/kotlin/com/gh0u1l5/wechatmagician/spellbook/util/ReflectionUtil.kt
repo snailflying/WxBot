@@ -5,7 +5,6 @@ import com.gh0u1l5.wechatmagician.spellbook.base.Classes
 import com.gh0u1l5.wechatmagician.spellbook.parser.ApkFile
 import com.gh0u1l5.wechatmagician.spellbook.parser.ClassTrie
 import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedBridge.hookMethod
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -56,11 +55,11 @@ object ReflectionUtil {
     @JvmStatic
     fun findClassIfExists(className: String, classLoader: ClassLoader): Class<*>? {
         try {
-//            XposedBridge.log("aaron1 ReflectionUtil className:$className,classLoader$classLoader")
+//            LogUtil.log("ReflectionUtil className:$className,classLoader$classLoader")
 
             return Class.forName(className, false, classLoader)
         } catch (throwable: Throwable) {
-            XposedBridge.log("aaron1 ReflectionUtil throwable:$throwable")
+            LogUtil.log("ReflectionUtil throwable:$throwable")
 
             if (WechatGlobal.wxUnitTestMode) {
                 throw throwable
@@ -85,13 +84,13 @@ object ReflectionUtil {
     fun findClassesFromPackage(loader: ClassLoader, trie: ClassTrie, packageName: String, depth: Int = 0): Classes {
         val key = "$depth-$packageName"
         val cached = classCache[key]
-        XposedBridge.log("aaron1 ReflectionUtil key=$key, cached:$cached")
+        LogUtil.log("ReflectionUtil key=$key, cached:$cached")
 
         if (cached != null) {
             return cached
         }
         val classes = Classes(trie.search(packageName, depth).mapNotNull { name ->
-//            XposedBridge.log("aaron1 ReflectionUtil name:$name, findClassIfExists:${findClassIfExists(name, loader)},, class name:${findClassIfExists(name, loader)?.name}")
+            //            LogUtil.log("ReflectionUtil name:$name, findClassIfExists:${findClassIfExists(name, loader)},, class name:${findClassIfExists(name, loader)?.name}")
 
             findClassIfExists(name, loader)
         })

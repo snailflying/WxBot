@@ -1,7 +1,5 @@
 package com.gh0u1l5.wechatmagician.spellbook.parser
 
-import android.util.Log
-import de.robv.android.xposed.XposedBridge
 import java.util.concurrent.ConcurrentHashMap
 
 /**

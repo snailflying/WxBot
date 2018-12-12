@@ -4,7 +4,7 @@ import android.content.ContentValues
 import com.gh0u1l5.wechatmagician.spellbook.base.Operation
 import com.gh0u1l5.wechatmagician.spellbook.interfaces.IDatabaseHook
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryVerbosely
-import de.robv.android.xposed.XposedBridge
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import io.merculet.wxbot.domain.ReplyReq
 import io.merculet.wxbot.handler.AbsHandler
 import io.merculet.wxbot.handler.TextHandler
@@ -37,7 +37,7 @@ object MsgHook : IDatabaseHook {
 
 //    override fun onDatabaseInserted(thisObject: Any, table: String, nullColumnHack: String?, initialValues: ContentValues?, conflictAlgorithm: Int, result: Long?): Operation<Long> {
 //        if (table == "message") {
-//            XposedBridge.log("aaron1 MsgHook onDatabaseInserting initialValues: $initialValues")
+//            LogUtil.log("MsgHook onDatabaseInserting initialValues: $initialValues")
 //
 //            tryVerbosely {
 //                val initialValuesStr = initialValues.toString()
@@ -63,14 +63,14 @@ object MsgHook : IDatabaseHook {
 
         val isSend = contentValues.getAsInteger("isSend");
         val type = contentValues.getAsInteger("type")
-        XposedBridge.log("aaron1 MsgHook reply isSend:$isSend, type:$type，contentValues:$contentValues")
+        LogUtil.log("MsgHook reply isSend:$isSend, type:$type，contentValues:$contentValues")
 
         if (isSend != 1) {//1 代表自己发出的，不处理
             if (type == 1) { //文本消息
                 // field_content 就是消息内容，可以接入图灵机器人回复
                 val contentStr = contentValues.getAsString("content")
                 val talker = contentValues.getAsString("talker")
-                XposedBridge.log("aaron1 MsgHook reply replyContent: $contentStr")
+                LogUtil.log("MsgHook reply replyContent: $contentStr")
 
                 val request = ReplyReq().apply {
                     commandKey = contentStr

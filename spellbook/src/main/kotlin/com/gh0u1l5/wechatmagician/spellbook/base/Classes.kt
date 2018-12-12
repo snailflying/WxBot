@@ -1,11 +1,11 @@
 package com.gh0u1l5.wechatmagician.spellbook.base
 
 import android.util.Log
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import com.gh0u1l5.wechatmagician.spellbook.util.ReflectionUtil.findFieldIfExists
 import com.gh0u1l5.wechatmagician.spellbook.util.ReflectionUtil.findFieldsWithType
 import com.gh0u1l5.wechatmagician.spellbook.util.ReflectionUtil.findMethodExactIfExists
 import com.gh0u1l5.wechatmagician.spellbook.util.ReflectionUtil.findMethodsByExactParameters
-import de.robv.android.xposed.XposedBridge
 
 /**
  * 一组 Class 对象的集合, 可以通过调用不同的 filter 函数筛选得到想要的结果
@@ -79,12 +79,8 @@ class Classes(private val classes: List<Class<*>>) {
     fun firstOrNull(): Class<*>? {
         if (classes.size > 1) {
             val names = classes.map { it.canonicalName }
-            Log.w("Xposed", "found a signature that matches more than one class: $names")
-            XposedBridge.log("aaron1 Classes firstOrNull name:$names")
-
+            LogUtil.log("Classes firstOrNull found a signature that matches more than one class: $names")
         }
-        XposedBridge.log("aaron1 Classes firstOrNull class0:${classes.firstOrNull()}, classes.size:${classes.size}")
-
         return classes.firstOrNull()
     }
 }

@@ -8,20 +8,26 @@ import de.robv.android.xposed.XposedBridge
  */
 
 object LogUtil {
+
+    private val MIN_STACK_OFFSET = 3
+    private val SINGLE_DIVIDER = "- - - - - - - - - - - - - - - - - -"
+    private val BR = System.getProperty("line.separator")
+    private const val TAG = "LogUtil"
+    // 打印信息 by aaron 2018/12/12
     fun log(msg: String) {
-        Log.e("aaron1","msg:$msg")
-        XposedBridge.log("Bot:\t" + msg + "\tts=" + System.currentTimeMillis())
+        XposedBridge.log(getMethodName() + TAG + "\t" + msg + SINGLE_DIVIDER)
     }
 
+    // 打印Exception by aaron 2018/12/12
     fun log(e: Throwable) {
-        Log.e("aaron1","msg:$e")
-        XposedBridge.log(e)
+        Log.e(TAG, "msg:$e")
     }
 
+    // 打印堆栈 by aaron 2018/12/12
     fun logStackTraces(methodCount: Int = 15, methodOffset: Int = 3) {
         val trace = Thread.currentThread().stackTrace
         var level = ""
-        log("---------logStackTraces start----------")
+        XposedBridge.log("---------logStackTraces start----------")
         for (i in methodCount downTo 1) {
             val stackIndex = i + methodOffset
             if (stackIndex >= trace.size) {
@@ -41,12 +47,13 @@ object LogUtil {
                     .append(trace[stackIndex].lineNumber)
                     .append(")")
             level += "   "
-            log(builder.toString())
+            XposedBridge.log(builder.toString())
         }
-        log("---------logStackTraces end----------")
+        XposedBridge.log("---------logStackTraces end----------")
     }
 
-    fun printMsgObj(msg: Any) {
+    // 打印Class内的Fields by aaron 2018/12/12
+    fun printObjectFields(msg: Any) {
         val fieldNames = msg::class.java.fields
         fieldNames.forEach {
             val field = it.get(msg)
@@ -55,10 +62,48 @@ object LogUtil {
                 field.forEach {
                     s.append(it.toString() + " , ")
                 }
-                log("aaron1 printMsgObj $it = $s")
+                XposedBridge.log("printObjectFields Array $it = $s, type:${it.type}")
             } else {
-                log("aaron1 printMsgObj $it = $field ,${it.type}")
+                XposedBridge.log("printObjectFields $it = $field ,type:${it.type}")
             }
         }
     }
+
+    private fun getStackOffset(trace: Array<StackTraceElement>): Int {
+        var i = MIN_STACK_OFFSET
+        while (i < trace.size) {
+            val e = trace[i]
+            val name = e.className
+            if (name != LogUtil::class.java.name) {
+                return i
+            }
+            i++
+        }
+        return -1
+    }
+
+    private fun getMethodName(): String {
+        val trace = Thread.currentThread().stackTrace
+        val level = ""
+        val stackIndex = getStackOffset(trace)
+
+        val builder = StringBuilder()
+        return builder.append("|")
+                .append(' ')
+                .append(level)
+                .append(trace[stackIndex].className)
+                .append(".")
+                .append(trace[stackIndex].methodName)
+                .append(" ")
+                .append(" (")
+                .append(trace[stackIndex].fileName)
+                .append(":")
+                .append(trace[stackIndex].lineNumber)
+                .append(")")
+                .append(BR)
+                .toString()
+    }
+
+
 }
+

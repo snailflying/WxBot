@@ -1,7 +1,6 @@
 package com.gh0u1l5.wechatmagician.spellbook.util
 
 import android.util.Log
-import de.robv.android.xposed.XposedBridge
 import kotlin.concurrent.thread
 
 /**
@@ -28,8 +27,7 @@ object BasicUtil {
         return try {
             func()
         } catch (t: Throwable) {
-            Log.e("Xposed", "aaron1 BasicUtil error:" + Log.getStackTraceString(t))
-            XposedBridge.log("aaron1 BasicUtil Throwable: ${t}")
+            LogUtil.log("BasicUtil tryVerbosely Throwable: ${Log.getStackTraceString(t)}")
             null
 
         }
@@ -44,7 +42,7 @@ object BasicUtil {
     inline fun tryAsynchronously(crossinline func: () -> Unit): Thread {
         return thread(start = true) { func() }.apply {
             setUncaughtExceptionHandler { _, t ->
-                Log.e("Xposed aaron1", Log.getStackTraceString(t))
+                LogUtil.log("BasicUtil tryAsynchronously Throwable: ${Log.getStackTraceString(t)}")
             }
         }
     }

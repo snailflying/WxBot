@@ -8,8 +8,8 @@ import com.gh0u1l5.wechatmagician.spellbook.mirror.com.tencent.mm.Classes.ImgInf
 import com.gh0u1l5.wechatmagician.spellbook.mirror.com.tencent.mm.Methods.ImgInfoStorage_load
 import com.gh0u1l5.wechatmagician.spellbook.mirror.com.tencent.mm.storage.Classes.MsgInfoStorage
 import com.gh0u1l5.wechatmagician.spellbook.mirror.com.tencent.mm.storage.Methods.MsgInfoStorage_insert
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedBridge.hookAllConstructors
 import de.robv.android.xposed.XposedBridge.hookMethod
 import de.robv.android.xposed.XposedHelpers.getLongField
@@ -20,7 +20,7 @@ object Storage : EventCenter() {
         get() = listOf(IMessageStorageHook::class.java, IImageStorageHook::class.java)
 
     override fun provideEventHooker(event: String): Hooker? {
-        XposedBridge.log("aaron1 Storage event:$event")
+        LogUtil.log("aaron1 Storage event:$event")
 
         return when (event) {
             "onMessageStorageCreated" -> onMessageStorageCreateHooker()
@@ -31,13 +31,13 @@ object Storage : EventCenter() {
         }
     }
 
-    private fun onMessageStorageCreateHooker():Hooker {
-        XposedBridge.log("aaron1 Storage onMessageStorageCreateHooker")
+    private fun onMessageStorageCreateHooker(): Hooker {
+        LogUtil.log("aaron1 Storage onMessageStorageCreateHooker")
 
-//        XposedBridge.log("aaron1 MsgInfoStorage2:$MsgInfoStorage")
+//        LogUtil.log("aaron1 MsgInfoStorage2:$MsgInfoStorage")
 
         return Hooker {
-            XposedBridge.log("aaron1 Storage onMessageStorageCreateHooker MsgInfoStorage:$MsgInfoStorage")
+            LogUtil.log("aaron1 Storage onMessageStorageCreateHooker MsgInfoStorage:$MsgInfoStorage")
             hookAllConstructors(MsgInfoStorage, object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     notify("onMessageStorageCreated") { plugin ->
@@ -49,20 +49,21 @@ object Storage : EventCenter() {
     }
 
     private val onMessageStorageInsertHooker = Hooker {
-        XposedBridge.log("aaron1 MsgInfoStorage_insert:$MsgInfoStorage_insert")
+        LogUtil.log("aaron1 MsgInfoStorage_insert:$MsgInfoStorage_insert")
         hookMethod(MsgInfoStorage_insert, object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
                 val msgObject = param.args[0]
                 val msgId = getLongField(msgObject, "field_msgId")
-                XposedBridge.log("aaron1 msgId:$msgId")
+                LogUtil.log("aaron1 msgId:$msgId")
                 notifyForBypassFlags("onMessageStorageInserting", param) { plugin ->
                     (plugin as IMessageStorageHook).onMessageStorageInserting(msgId, msgObject)
                 }
             }
+
             override fun afterHookedMethod(param: MethodHookParam) {
                 val msgObject = param.args[0]
                 val msgId = getLongField(msgObject, "field_msgId")
-                XposedBridge.log("aaron1 msgId1:$msgId")
+                LogUtil.log("aaron1 msgId1:$msgId")
 
                 notify("onMessageStorageInserted") { plugin ->
                     (plugin as IMessageStorageHook).onMessageStorageInserted(msgId, msgObject)
@@ -91,6 +92,7 @@ object Storage : EventCenter() {
                     (plugin as IImageStorageHook).onImageStorageLoading(imageId, prefix, suffix)
                 }
             }
+
             override fun afterHookedMethod(param: MethodHookParam) {
                 val imageId = param.args[0] as String?
                 val prefix = param.args[1] as String?

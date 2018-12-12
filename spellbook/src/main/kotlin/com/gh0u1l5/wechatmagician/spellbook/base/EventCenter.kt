@@ -1,10 +1,10 @@
 package com.gh0u1l5.wechatmagician.spellbook.base
 
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryVerbosely
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import com.gh0u1l5.wechatmagician.spellbook.util.ParallelUtil.parallelForEach
 import com.gh0u1l5.wechatmagician.spellbook.util.XposedUtil
 import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -37,15 +37,15 @@ abstract class EventCenter : HookerProvider {
      * @param observer 观察者本人
      */
     private fun register(event: String, observer: Any) {
-//        XposedBridge.log("aaron1 EventCenter register event11:${event},observer:$observer")
+//        LogUtil.log("EventCenter register event11:${event},observer:$observer")
 
         if (observer.hasEvent(event)) {
-//            XposedBridge.log("aaron1 EventCenter register event22:${event},observer:$observer")
+//            LogUtil.log("EventCenter register event22:${event},observer:$observer")
             val hooker = provideEventHooker(event)
-//            XposedBridge.log("aaron1 EventCenter register hooker33:${hooker} ,hasHooked:${hooker?.hasHooked}")
+//            LogUtil.log("aaron1 EventCenter register hooker33:${hooker} ,hasHooked:${hooker?.hasHooked}")
 
             if (hooker != null && !hooker.hasHooked) {
-//                XposedBridge.log("aaron1 EventCenter hooker:$hooker")
+//                LogUtil.log("EventCenter hooker:$hooker")
 
                 XposedUtil.postHooker(hooker)
             }
@@ -61,7 +61,7 @@ abstract class EventCenter : HookerProvider {
      * @param plugin 插件对象
      */
     fun register(inface: Class<*>, plugin: Any) {
-        XposedBridge.log("aaron1 EventCenter methods num:${inface.methods.size}")
+        LogUtil.log("EventCenter methods num:${inface.methods.size}")
         inface.methods.forEach { method ->
             register(method.name, plugin)
         }

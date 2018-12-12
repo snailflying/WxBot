@@ -168,7 +168,7 @@ object WechatGlobal {
      * @param lpparam 通过重载 [IXposedHookLoadPackage.handleLoadPackage] 方法拿到的
      * [XC_LoadPackage.LoadPackageParam] 对象
      */
-    @ExperimentalUnsignedTypes
+//    @ExperimentalUnsignedTypes
     @JvmStatic
     fun init(lpparam: XC_LoadPackage.LoadPackageParam, callback: () -> Unit) {
         LogUtil.log("WechatGlobal init")

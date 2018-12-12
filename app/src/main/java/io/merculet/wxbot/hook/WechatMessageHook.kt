@@ -1,25 +1,25 @@
 package io.merculet.wxbot.hook
 
-import io.merculet.wxbot.hook.LogUtil.printMsgObj
 import com.gh0u1l5.wechatmagician.spellbook.interfaces.IMessageStorageHook
-import de.robv.android.xposed.XposedBridge
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil.printObjectFields
 import de.robv.android.xposed.XposedHelpers
 
 object WechatMessageHook : IMessageStorageHook {
 //    override fun onMessageStorageCreated(storage: Any) {
-//        XposedBridge.log("aaron1 SpellBook onMessageStorageCreated storage=$storage")
+//        LogUtil.log("SpellBook onMessageStorageCreated storage=$storage")
 //
 //    }
 
     override fun onMessageStorageInserted(msgId: Long, msgObject: Any) {
-        XposedBridge.log("aaron1 WechatMessageHook onMessageStorageInserted msgId=$msgId,msgObject=$msgObject")
-        printMsgObj(msgObject)
+        LogUtil.log("WechatMessageHook onMessageStorageInserted msgId=$msgId,msgObject=$msgObject")
+        printObjectFields(msgObject)
         // 这些都是消息的属性，内容，发送人，类型等
         val field_content = XposedHelpers.getObjectField(msgObject, "field_content") as String?
         val field_talker = XposedHelpers.getObjectField(msgObject, "field_talker") as String?
         val field_type = (XposedHelpers.getObjectField(msgObject, "field_type") as Int).toInt()
         val field_isSend = (XposedHelpers.getObjectField(msgObject, "field_isSend") as Int).toInt()
-        XposedBridge.log("aaron1 WechatMessageHook field_content=$field_content,field_talker=$field_talker," +
+        LogUtil.log("WechatMessageHook field_content=$field_content,field_talker=$field_talker," +
                 "field_type=$field_type,field_isSend=$field_isSend")
 //        if (field_isSend == 1) {// 代表自己发出的，不处理
 //            return
@@ -31,7 +31,7 @@ object WechatMessageHook : IMessageStorageHook {
 //                // 将 wx_id 和 回复的内容用分隔符分开
 //                val content = "$field_talker$wxMsgSplitStr$replyContent"
 //                val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
-//                XposedBridge.log("reply msg success = $success")
+//                LogUtil.log("reply msg success = $success")
 //            }
 //        }
     }

@@ -8,8 +8,6 @@ import com.gh0u1l5.wechatmagician.spellbook.hookers.*
 import com.gh0u1l5.wechatmagician.spellbook.util.ParallelUtil.parallelForEach
 import com.gh0u1l5.wechatmagician.spellbook.util.XposedUtil
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XposedBridge
-import de.robv.android.xposed.XposedBridge.log
 import de.robv.android.xposed.XposedHelpers.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import java.io.File
@@ -119,10 +117,9 @@ object SpellBook {
      *
      * Refer: https://github.com/Gh0u1L5/WechatSpellbook/wiki/事件机制
      */
-    @ExperimentalUnsignedTypes
+//    @ExperimentalUnsignedTypes
     fun startup(lpparam: XC_LoadPackage.LoadPackageParam, plugins: List<Any>?) {
-        log("aaron1 SpellBook: ${plugins?.size ?: 0} plugins:${plugins?.get(0)}")
-        WechatGlobal.init(lpparam){
+        WechatGlobal.init(lpparam) {
             registerPlugins(plugins)
             registerHookers(plugins)
         }
@@ -138,8 +135,6 @@ object SpellBook {
                 observers.forEach { plugin ->
                     val assignable = `interface`.isAssignableFrom(plugin::class.java)
                     if (assignable) {
-                        XposedBridge.log("aaron1 SpellBook registerPlugins interface=$`interface`, plugin:$plugin")
-
                         center.register(`interface`, plugin)
                     }
                 }
@@ -154,7 +149,7 @@ object SpellBook {
         val providers = plugins?.filter { it is HookerProvider } ?: listOf()
         (providers + listOf(ListViewHider, MenuAppender)).parallelForEach { provider ->
             (provider as HookerProvider).provideStaticHookers()?.forEach { hooker ->
-//                XposedBridge.log("aaron1 SpellBook registerHookers hooker:$hooker,hasHooked:${hooker.hasHooked}")
+                //                XposedBridge.log("aaron1 SpellBook registerHookers hooker:$hooker,hasHooked:${hooker.hasHooked}")
                 if (!hooker.hasHooked) {
                     XposedUtil.postHooker(hooker)
                 }

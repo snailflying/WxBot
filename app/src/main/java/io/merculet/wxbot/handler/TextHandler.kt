@@ -1,6 +1,6 @@
 package io.merculet.wxbot.handler
 
-import de.robv.android.xposed.XposedBridge
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import io.merculet.wxbot.domain.ReplyRes
 import io.merculet.wxbot.hook.Methods
 import io.merculet.wxbot.hook.Objects
@@ -20,7 +20,7 @@ class TextHandler : AbsHandler() {
                 // 将 wx_id 和 回复的内容用分隔符分开
                 val content = "${reply.talker}${SendMsgHooker.wxMsgSplitStr}${reply.detail?.content}"
                 val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
-                XposedBridge.log("aaron1 MsgHook reply msg success2 = $success")
+                LogUtil.log("MsgHook reply msg success2 = $success")
                 return success
             }
         }

@@ -9,9 +9,9 @@ import com.gh0u1l5.wechatmagician.spellbook.base.Hooker
 import com.gh0u1l5.wechatmagician.spellbook.interfaces.IAdapterHook
 import com.gh0u1l5.wechatmagician.spellbook.mirror.com.tencent.mm.ui.contact.Classes.AddressAdapter
 import com.gh0u1l5.wechatmagician.spellbook.mirror.com.tencent.mm.ui.conversation.Classes.ConversationWithCacheAdapter
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil.log
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge.hookAllConstructors
-import de.robv.android.xposed.XposedBridge.log
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 
 object Adapters : EventCenter() {
@@ -65,20 +65,21 @@ object Adapters : EventCenter() {
                 C.HeaderViewListAdapter, "getView",
                 C.Int, C.View, C.ViewGroup, object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
-                val adapter     = param.thisObject
-                val position    = param.args[0] as Int
+                val adapter = param.thisObject
+                val position = param.args[0] as Int
                 val convertView = param.args[1] as View?
-                val parent      = param.args[2] as ViewGroup
+                val parent = param.args[2] as ViewGroup
                 notifyForOperations("onHeaderViewListAdapterGettingView", param) { plugin ->
                     (plugin as IAdapterHook).onHeaderViewListAdapterGettingView(adapter, position, convertView, parent)
                 }
             }
+
             override fun afterHookedMethod(param: MethodHookParam) {
-                val adapter     = param.thisObject
-                val position    = param.args[0] as Int
+                val adapter = param.thisObject
+                val position = param.args[0] as Int
                 val convertView = param.args[1] as View?
-                val parent      = param.args[2] as ViewGroup
-                val result      = param.result as View?
+                val parent = param.args[2] as ViewGroup
+                val result = param.result as View?
                 notifyForOperations("onHeaderViewListAdapterGotView", param) { plugin ->
                     (plugin as IAdapterHook).onHeaderViewListAdapterGotView(adapter, position, convertView, parent, result)
                 }
