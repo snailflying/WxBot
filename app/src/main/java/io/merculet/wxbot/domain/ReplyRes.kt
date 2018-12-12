@@ -14,9 +14,10 @@ class ReplyRes : HttpResponse<ReplyRes.Reply>() {
     data class Reply(
             @SerializedName("command_key")
             var commandKey: String?,
+            var talker: String,
             @SerializedName("command_type")
             var commandType: String?,
-            var detail: ReplyDetail
+            var detail: ReplyDetail?
 
     ) : Serializable
 

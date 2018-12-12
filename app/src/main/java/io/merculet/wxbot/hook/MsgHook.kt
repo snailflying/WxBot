@@ -6,7 +6,9 @@ import com.gh0u1l5.wechatmagician.spellbook.interfaces.IDatabaseHook
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryVerbosely
 import de.robv.android.xposed.XposedBridge
 import io.merculet.wxbot.domain.ReplyReq
-import io.merculet.wxbot.hook.SendMsgHooker.wxMsgSplitStr
+import io.merculet.wxbot.handler.AbsHandler
+import io.merculet.wxbot.handler.TextHandler
+import io.merculet.wxbot.handler.WebHandler
 import io.merculet.wxbot.util.OkHttpUtils
 
 /**
@@ -16,6 +18,9 @@ import io.merculet.wxbot.util.OkHttpUtils
  * @Description
  */
 object MsgHook : IDatabaseHook {
+
+
+    private var firstHandler: AbsHandler
 
     override fun onDatabaseInserting(thisObject: Any, table: String, nullColumnHack: String?, initialValues: ContentValues?, conflictAlgorithm: Int): Operation<Long> {
         if (table == "message") {
@@ -44,6 +49,13 @@ object MsgHook : IDatabaseHook {
 //        return super.onDatabaseInserted(thisObject, table, nullColumnHack, initialValues, conflictAlgorithm, result)
 //    }
 
+    init {
+        val handlers = arrayListOf<AbsHandler>()
+        handlers.add(TextHandler())
+        handlers.add(WebHandler())
+        firstHandler = handlers[0]
+    }
+
     private fun reply(contentValues: ContentValues) {
 
 //        val isSend = " isSend=(\\d+) type=".toRegex().find(initialValuesStr)?.groups?.get(1)?.value
@@ -60,29 +72,16 @@ object MsgHook : IDatabaseHook {
                 val talker = contentValues.getAsString("talker")
                 XposedBridge.log("aaron1 MsgHook reply replyContent: $contentStr")
 
-                val request = ReplyReq()
-                request.commandKey = contentStr
-                request.chatRoomId = talker
+                val request = ReplyReq().apply {
+                    commandKey = contentStr
+                    chatRoomId = talker
+                }
+
 
                 OkHttpUtils.instance.getByCommandKey(request) { response ->
-
-                    if (response.data?.detail?.content != null) {
-                        Objects.ChattingFooterEventImpl?.apply {
-                            // 将 wx_id 和 回复的内容用分隔符分开
-                            val content = "$talker$wxMsgSplitStr${response.data?.detail?.content}"
-                            val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
-                            XposedBridge.log("aaron1 MsgHook reply msg success2 = $success")
-                        }
-                    } else {
-                        Objects.ChattingFooterEventImpl?.apply {
-                            // 将 wx_id 和 回复的内容用分隔符分开
-//                        val talker = getStringValueByKey(initialValuesStr, "talker")
-                            val content = "$talker$wxMsgSplitStr$contentStr"
-                            val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
-                            XposedBridge.log("aaron1 MsgHook reply msg success2 = $success")
-                        }
-                    }
-
+                    firstHandler.handleReply(response.data?.also {
+                        it.talker = talker
+                    })
                 }
             }
         }
