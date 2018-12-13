@@ -24,7 +24,7 @@ class TuringHandler : AbsHandler() {
 
         LogUtil.log("isPluginEnabled = ${isPluginEnabled()}")
 
-        if (isPluginEnabled()) {
+        if (isPluginEnabled() && saidToBot(reply.talker, reply.inputText)) {
             val request = TuringReq(reply.inputText, reply.talkerId)
             OkHttpUtils.instance.postTuring(request) {
                 LogUtil.log("response = $it")
@@ -44,6 +44,14 @@ class TuringHandler : AbsHandler() {
 
 
         return false
+    }
+
+    //私聊或者群聊@机器人时才回话
+    private fun saidToBot(talker: String, input: String): Boolean {
+        return input == "@Xposed"
+                || input.startsWith("@Xposed ")
+                || input.contains("@Xposed")
+                || !talker.contains("@chatroom")
     }
 
 }

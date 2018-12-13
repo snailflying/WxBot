@@ -84,7 +84,6 @@ object ReflectionUtil {
     fun findClassesFromPackage(loader: ClassLoader, trie: ClassTrie, packageName: String, depth: Int = 0): Classes {
         val key = "$depth-$packageName"
         val cached = classCache[key]
-        LogUtil.log("ReflectionUtil key=$key, cached:$cached")
 
         if (cached != null) {
             return cached
