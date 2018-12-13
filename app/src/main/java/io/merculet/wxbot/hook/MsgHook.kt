@@ -6,8 +6,10 @@ import com.gh0u1l5.wechatmagician.spellbook.interfaces.IDatabaseHook
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryVerbosely
 import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import io.merculet.wxbot.domain.ReplyReq
+import io.merculet.wxbot.domain.ReplyRes
 import io.merculet.wxbot.handler.AbsHandler
 import io.merculet.wxbot.handler.TextHandler
+import io.merculet.wxbot.handler.TuringHandler
 import io.merculet.wxbot.handler.WebHandler
 import io.merculet.wxbot.util.OkHttpUtils
 
@@ -53,6 +55,13 @@ object MsgHook : IDatabaseHook {
         val handlers = arrayListOf<AbsHandler>()
         handlers.add(TextHandler())
         handlers.add(WebHandler())
+        handlers.add(TuringHandler())
+
+        for (i in 0 until handlers.size) {
+            if (i > 0) {
+                handlers[i - 1].nextHandler = handlers[i]
+            }
+        }
         firstHandler = handlers[0]
     }
 
@@ -70,6 +79,7 @@ object MsgHook : IDatabaseHook {
                 // field_content 就是消息内容，可以接入图灵机器人回复
                 val contentStr = contentValues.getAsString("content")
                 val talker = contentValues.getAsString("talker")
+                val talkerId = contentValues.getAsInteger("talkerId")
                 LogUtil.log("MsgHook reply replyContent: $contentStr")
 
                 val request = ReplyReq().apply {
@@ -78,10 +88,18 @@ object MsgHook : IDatabaseHook {
                 }
 
 
-                OkHttpUtils.instance.getByCommandKey(request) { response ->
-                    firstHandler.handleReply(response.data?.also {
-                        it.talker = talker
-                    })
+                OkHttpUtils.instance.postByCommandKey(request) { response ->
+
+                    var data = response?.data
+                    if (data == null) {
+                        data = ReplyRes.Reply(null, talker, 0, contentStr, null, null)
+                    } else {
+                        data.talker = talker
+                        data.inputText = contentStr
+                        data.talkerId = talkerId
+                    }
+                    LogUtil.log("firstHandler data: $data")
+                    firstHandler.handleReply(data)
                 }
             }
         }

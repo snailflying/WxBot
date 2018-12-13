@@ -14,6 +14,8 @@ import android.util.Log
 import com.google.gson.Gson
 import io.merculet.wxbot.domain.ReplyReq
 import io.merculet.wxbot.domain.ReplyRes
+import io.merculet.wxbot.domain.TuringReq
+import io.merculet.wxbot.domain.TuringRes
 import okhttp3.*
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -30,10 +32,10 @@ class OkHttpUtils private constructor() {
                 .build()
     }
 
-    fun getByCommandKey(replyReq: ReplyReq, onSuccess: (response: ReplyRes) -> Unit) {
+    fun postByCommandKey(replyReq: ReplyReq, onRes: (response: ReplyRes?) -> Unit) {
         val path = "v1/score/community/robot/command/getByCommandKey"
 
-        Log.e("aaron1", "chatRoomId:${replyReq.chatRoomId}, commandKey:${replyReq.commandKey}")
+        Log.e("LogUtil", "chatRoomId:${replyReq.chatRoomId}, commandKey:${replyReq.commandKey}")
 
         val requestBody = RequestBody.create(JSON_TYPE, Gson().toJson(replyReq))
 
@@ -45,14 +47,52 @@ class OkHttpUtils private constructor() {
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
+                onRes(null)
             }
 
             override fun onResponse(call: Call, response: Response) {
 
                 val responseStr = response.body()?.string()
-                Log.e("aaron1", "response.code(): ${response.code()}, response body: $responseStr")
+                Log.e("LogUtil", "response.code(): ${response.code()}, response body1: $responseStr")
                 if (response.code() == 200) {
                     Gson().fromJson(responseStr, ReplyRes::class.java)?.apply {
+                        if (data != null) {
+                            Log.e("LogUtil", "response body2: $responseStr")
+                            return onRes(this)
+                        }
+                    }
+                }
+                Log.e("LogUtil", "response body3: $responseStr")
+                onRes(null)
+
+            }
+
+        })
+
+    }
+
+    fun postTuring(turingReq: TuringReq, onSuccess: (response: TuringRes) -> Unit) {
+        val url = "http://openapi.tuling123.com/openapi/api/v2"
+
+        val requestBody = RequestBody.create(JSON_TYPE, Gson().toJson(turingReq))
+
+        val request = Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build()
+        Log.e("LogUtil", "request: $request")
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+
+                val responseStr = response.body()?.string()
+                Log.e("LogUtil", "response.code(): ${response.code()}, response body: $responseStr")
+                if (response.code() == 200) {
+                    Gson().fromJson(responseStr, TuringRes::class.java)?.apply {
                         onSuccess(this)
                     }
                 }

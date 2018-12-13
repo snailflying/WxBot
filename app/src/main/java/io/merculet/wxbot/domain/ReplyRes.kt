@@ -15,6 +15,8 @@ class ReplyRes : HttpResponse<ReplyRes.Reply>() {
             @SerializedName("command_key")
             var commandKey: String?,
             var talker: String,
+            var talkerId: Int,
+            var inputText: String,
             @SerializedName("command_type")
             var commandType: String?,
             var detail: ReplyDetail?

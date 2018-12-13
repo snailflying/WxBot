@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidElementNotAllowed -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<PreferenceCategory android:title="@string/pref_category_interface">-->
+        <!--<SwitchPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="settings_interface_hide_icon"-->
+            <!--android:summary="@string/prompt_need_reboot"-->
+            <!--android:title="@string/pref_toggle_hide_icon" />-->
+
+    <!--</PreferenceCategory>-->
+    <PreferenceCategory android:title="@string/pref_category_chatting">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="settings_turing_master"
+            android:title="@string/pref_turing_master" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

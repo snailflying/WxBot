@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">WechatBotXposed</string>
+    <string name="app_name">WechatBot</string>
+
+    <string name="pref_category_interface">用户界面</string>
+
+    <string name="prompt_need_reboot">重启后生效</string>
+    <string name="pref_toggle_hide_icon">隐藏启动图标</string>
+    <string name="pref_category_chatting">聊天消息</string>
+    <string name="pref_turing_master">启用图灵机器人</string>
+
 </resources>

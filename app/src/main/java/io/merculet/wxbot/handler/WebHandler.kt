@@ -20,10 +20,11 @@ class WebHandler : AbsHandler() {
                 // 将 wx_id 和 回复的内容用分隔符分开
                 val content = "${reply.talker}${SendMsgHooker.wxMsgSplitStr}${reply.detail?.contentUrl}"
                 val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
-                LogUtil.log("MsgHook reply msg success2 = $success")
+                LogUtil.log("success = $success")
                 return success
             }
         }
+        LogUtil.log("WebHandler false")
 
         return false
     }

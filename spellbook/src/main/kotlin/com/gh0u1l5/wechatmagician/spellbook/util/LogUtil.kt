@@ -4,9 +4,11 @@ import android.util.Log
 import de.robv.android.xposed.XposedBridge
 
 /**
- * Created by blanke on 2017/10/3.
+ * @Author Aaron
+ * @Email aaron@merculet.io
+ * @Date 2018/12/12
+ * @Description printObjectFields只能用在插件代码类，不能用在APP相关类内，因为XposedBridge用到compileOnly引入的
  */
-
 object LogUtil {
 
     private val MIN_STACK_OFFSET = 3
@@ -15,7 +17,7 @@ object LogUtil {
     private const val TAG = "LogUtil"
     // 打印信息 by aaron 2018/12/12
     fun log(msg: String) {
-        XposedBridge.log(getMethodName() + TAG + "\t" + msg + SINGLE_DIVIDER)
+        Log.w(TAG, getMethodName() + msg + SINGLE_DIVIDER)
     }
 
     // 打印Exception by aaron 2018/12/12
