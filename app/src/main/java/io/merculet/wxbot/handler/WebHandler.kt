@@ -1,10 +1,10 @@
 package io.merculet.wxbot.handler
 
 import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
+import io.merculet.wxbot.config.Config
 import io.merculet.wxbot.domain.ReplyRes
 import io.merculet.wxbot.hook.Methods
 import io.merculet.wxbot.hook.Objects
-import io.merculet.wxbot.hook.SendMsgHooker
 
 /**
  * @Author Aaron
@@ -18,7 +18,7 @@ class WebHandler : AbsHandler() {
         if (reply.detail?.contentUrl != null) {
             Objects.ChattingFooterEventImpl?.apply {
                 // 将 wx_id 和 回复的内容用分隔符分开
-                val content = "${reply.talker}${SendMsgHooker.wxMsgSplitStr}${reply.detail?.contentUrl}"
+                val content = "${reply.talker}${Config.WX_MSG_SPLIT}${reply.detail?.contentUrl}"
                 val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
                 LogUtil.log("success = $success")
                 return success

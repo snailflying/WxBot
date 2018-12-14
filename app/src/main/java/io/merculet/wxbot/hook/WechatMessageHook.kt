@@ -29,7 +29,7 @@ object WechatMessageHook : IMessageStorageHook {
 //            val replyContent = "reply: \n$field_content"
 //            Objects.ChattingFooterEventImpl?.apply {
 //                // 将 wx_id 和 回复的内容用分隔符分开
-//                val content = "$field_talker$wxMsgSplitStr$replyContent"
+//                val content = "$field_talker$WX_MSG_SPLIT$replyContent"
 //                val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
 //                LogUtil.log("reply msg success = $success")
 //            }

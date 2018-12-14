@@ -5,10 +5,9 @@ import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
 import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
+import io.merculet.wxbot.config.Config
 
 object SendMsgHooker : HookerProvider {
-    // wx_id 和消息 的分隔符号，可以使用 wx_id 中不会出现的字符
-    const val wxMsgSplitStr = "\t"
 
     override fun provideStaticHookers(): List<Hooker>? {
         return listOf(chattingFooterEventImplHook(), netSceneSendMsgHook())
@@ -25,11 +24,11 @@ object SendMsgHooker : HookerProvider {
                         val content = this[1] as String
                         LogUtil.log("SendMsgHooker netSceneSendMsgHook content = $content")
 
-                        val splitIndex = content.indexOf(wxMsgSplitStr)
+                        val splitIndex = content.indexOf(Config.WX_MSG_SPLIT)
                         if (splitIndex > 0) {//如果存在这个分隔符，代表是我们 hook 的
                             // 拆分出我们拼凑的 wxId 和 实际要发送的内容
                             val wxId = content.substring(0, splitIndex)
-                            val contentReal = content.substring(splitIndex + wxMsgSplitStr.length, content.length)
+                            val contentReal = content.substring(splitIndex + Config.WX_MSG_SPLIT.length, content.length)
                             // 设置到 args 里
                             LogUtil.log("SendMsgHooker netSceneSendMsgHook wxId = $wxId,content:$contentReal")
 
@@ -71,11 +70,11 @@ object SendMsgHooker : HookerProvider {
 //                    val content = this[1] as String
 //                    LogUtil.log("SendMsgHooker content = $content")
 //
-//                    val splitIndex = content.indexOf(wxMsgSplitStr)
+//                    val splitIndex = content.indexOf(WX_MSG_SPLIT)
 //                    if (splitIndex > 0) {//如果存在这个分隔符，代表是我们 hook 的
 //                        // 拆分出我们拼凑的 wxId 和 实际要发送的内容
 //                        val wxId = content.substring(0, splitIndex)
-//                        val contentReal = content.substring(splitIndex + wxMsgSplitStr.length, content.length)
+//                        val contentReal = content.substring(splitIndex + WX_MSG_SPLIT.length, content.length)
 //                        // 设置到 args 里
 //                        LogUtil.log("SendMsgHooker wxId = $wxId,content:$contentReal")
 //

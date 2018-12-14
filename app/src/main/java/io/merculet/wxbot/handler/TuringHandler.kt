@@ -7,7 +7,6 @@ import io.merculet.wxbot.domain.ReplyRes
 import io.merculet.wxbot.domain.TuringReq
 import io.merculet.wxbot.hook.Methods
 import io.merculet.wxbot.hook.Objects
-import io.merculet.wxbot.hook.SendMsgHooker
 import io.merculet.wxbot.util.OkHttpUtils
 
 /**
@@ -37,7 +36,7 @@ class TuringHandler : AbsHandler() {
                 val text = it?.results?.get(0)?.values?.text
                 if (text != null) {
                     Objects.ChattingFooterEventImpl?.apply {
-                        val content = "${reply.talker}${SendMsgHooker.wxMsgSplitStr}$text"
+                        val content = "${reply.talker}${Config.WX_MSG_SPLIT}$text"
                         val success = Methods.ChattingFooterEventImpl_SendMsg.invoke(this, content) as Boolean
                     }
                 } else {

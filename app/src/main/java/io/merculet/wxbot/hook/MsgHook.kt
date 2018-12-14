@@ -62,35 +62,46 @@ object MsgHook : IDatabaseHook {
                 var contentStr = contentValues.getAsString("content")
                 val talker = contentValues.getAsString("talker")
                 val talkerId = contentValues.getAsInteger("talkerId")
-                LogUtil.log("MsgHook reply replyContent: $contentStr")
+                LogUtil.log("MsgHook reply contentStr: $contentStr")
 
-                //过滤掉群内
-                if (talker.endsWith(groupSymbol) && contentStr.matches(".*:\n.*".toRegex())){
-                    contentStr = ".*:\n(.*)".toRegex().find(contentStr)?.groups?.get(1)?.value
-                }
+                contentStr = preproccessContent(talker, contentStr)
 
-                val request = ReplyReq().apply {
-                    commandKey = contentStr
-                    chatRoomId = talker
-                }
+                LogUtil.log("MsgHook real contentStr: $contentStr")
 
-
-                OkHttpUtils.instance.postByCommandKey(request) { response ->
-
-                    var data = response?.data
-                    if (data == null) {
-                        data = ReplyRes.Reply(null, talker, 0, contentStr, null, null)
-                    } else {
-                        data.talker = talker
-                        data.inputText = contentStr
-                        data.talkerId = talkerId
-                    }
-                    LogUtil.log("firstHandler data: $data")
-                    firstHandler.handleReply(data)
-                }
+                postByCommandKey(talker, contentStr, talkerId)
             }
         }
 
+    }
+
+    //预处理返回消息
+    private fun preproccessContent(talker: String, contentStr: String): String {
+        var result = contentStr
+        if (talker.endsWith(groupSymbol) && contentStr.matches(".*:\n.*".toRegex())) {
+            result = ".*:\n(.*)".toRegex().find(contentStr)?.groups?.get(1)?.value ?: ""
+        }
+
+        return result
+    }
+
+    private fun postByCommandKey(talker: String, contentStr: String, talkerId: Int) {
+        val request = ReplyReq().apply {
+            commandKey = contentStr
+            chatRoomId = talker
+        }
+        OkHttpUtils.instance.postByCommandKey(request) { response ->
+
+            var data = response?.data
+            if (data == null) {
+                data = ReplyRes.Reply(null, talker, 0, contentStr, null, null)
+            } else {
+                data.talker = talker
+                data.inputText = contentStr
+                data.talkerId = talkerId
+            }
+            LogUtil.log("firstHandler data: $data")
+            firstHandler.handleReply(data)
+        }
     }
 
     // lvbuffer=[B@444bb8e0 bizClientMsgId= createTime=1544173214000 status=3 msgSeq=688940152 type=1 talkerId=25 content=hi msgSvrId=2134928543161258323 flag=0 bizChatId=-1 msgId=26 isSend=0 talker=bravoon

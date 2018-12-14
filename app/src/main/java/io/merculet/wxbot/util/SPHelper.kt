@@ -111,7 +111,6 @@ class SPHelper private constructor(private val context: Context? = App.instance)
 
     }*/
 
-
     fun put(key: String, value: String?) {
         sp?.let {
             val editor = it.edit()

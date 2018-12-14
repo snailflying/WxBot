@@ -30,5 +30,10 @@ object Config {
     const val PROVIDER_PREF_VALUE = "value"
     const val PROVIDER_PREF_TYPE = "type"
 
+    // wx_id 和消息 的分隔符号，可以使用 wx_id 中不会出现的字符
+    const val WX_MSG_SPLIT = "\t"
+    const val MERCULET_MSG_SPLIT = "command-newline-separator"
+
+
 
 }

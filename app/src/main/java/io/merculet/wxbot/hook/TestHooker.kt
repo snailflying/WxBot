@@ -37,7 +37,6 @@ object TestHooker : HookerProvider {
         LogUtil.log("SendMsgHooker chattingFooterEventImplHook ${Classes.ChattingFooterEventImpl}")
         return Hooker {
 
-            Class.forName("")
             val clz = XposedHelpers.findClass("com.tencent.mm.ui.transmit.SendAppMessageWrapperUI", WechatGlobal.wxLoader)
             XposedHelpers.findAndHookMethod(clz, "a",
                     Class.forName("com.tencent.mm.ui.transmit.SendAppMessageWrapperUI"),
@@ -46,9 +45,9 @@ object TestHooker : HookerProvider {
                     C.Int,
                     object : XC_MethodHook() {
                         override fun beforeHookedMethod(param: MethodHookParam?) {
-                            log("set field_talker start")
+                            log("aaron1 set field_talker start")
                             LogUtil.logStackTraces()
-                            log("set field_talker end")
+                            log("aaron1 set field_talker end")
                         }
                     })
         }
