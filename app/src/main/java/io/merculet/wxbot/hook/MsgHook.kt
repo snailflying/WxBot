@@ -21,6 +21,7 @@ import io.merculet.wxbot.util.OkHttpUtils
  */
 object MsgHook : IDatabaseHook {
 
+    private val groupSymbol = "@chatroom"
 
     private var firstHandler: AbsHandler
 
@@ -31,25 +32,9 @@ object MsgHook : IDatabaseHook {
                     reply(this)
                 }
             }
-
-
         }
         return super.onDatabaseInserting(thisObject, table, nullColumnHack, initialValues, conflictAlgorithm)
     }
-
-//    override fun onDatabaseInserted(thisObject: Any, table: String, nullColumnHack: String?, initialValues: ContentValues?, conflictAlgorithm: Int, result: Long?): Operation<Long> {
-//        if (table == "message") {
-//            LogUtil.log("MsgHook onDatabaseInserting initialValues: $initialValues")
-//
-//            tryVerbosely {
-//                val initialValuesStr = initialValues.toString()
-//                reply(initialValuesStr)
-//            }
-//
-//
-//        }
-//        return super.onDatabaseInserted(thisObject, table, nullColumnHack, initialValues, conflictAlgorithm, result)
-//    }
 
     init {
         val handlers = arrayListOf<AbsHandler>()
@@ -67,9 +52,6 @@ object MsgHook : IDatabaseHook {
 
     private fun reply(contentValues: ContentValues) {
 
-//        val isSend = " isSend=(\\d+) type=".toRegex().find(initialValuesStr)?.groups?.get(1)?.value
-//        val type = " type=(\\d+) bizChatId=".toRegex().find(initialValuesStr)?.groups?.get(1)?.value
-
         val isSend = contentValues.getAsInteger("isSend");
         val type = contentValues.getAsInteger("type")
         LogUtil.log("MsgHook reply isSend:$isSend, type:$type，contentValues:$contentValues")
@@ -83,7 +65,7 @@ object MsgHook : IDatabaseHook {
                 LogUtil.log("MsgHook reply replyContent: $contentStr")
 
                 //过滤掉群内
-                if (talker.endsWith("@chatroom") && contentStr.matches(".*:\n.*".toRegex())){
+                if (talker.endsWith(groupSymbol) && contentStr.matches(".*:\n.*".toRegex())){
                     contentStr = ".*:\n(.*)".toRegex().find(contentStr)?.groups?.get(1)?.value
                 }
 

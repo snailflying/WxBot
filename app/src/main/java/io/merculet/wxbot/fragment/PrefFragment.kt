@@ -20,6 +20,13 @@ import io.merculet.wxbot.config.Config
 import io.merculet.wxbot.config.Config.ACTION_UPDATE_PREF
 import io.merculet.wxbot.config.Config.FOLDER_SHARED_PREFS
 import io.merculet.wxbot.config.Config.SETTINGS_INTERFACE_HIDE_ICON
+import io.merculet.wxbot.domain.ReplyReq
+import io.merculet.wxbot.domain.ReplyRes
+import io.merculet.wxbot.handler.AbsHandler
+import io.merculet.wxbot.handler.TextHandler
+import io.merculet.wxbot.handler.TuringHandler
+import io.merculet.wxbot.handler.WebHandler
+import io.merculet.wxbot.util.OkHttpUtils
 import io.merculet.wxbot.util.Utils
 import io.merculet.wxbot.util.ext.putExtra
 import java.io.File
@@ -86,8 +93,6 @@ class PrefFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceC
                 activity?.sendBroadcast(Intent(ACTION_UPDATE_PREF).apply {
                     putExtra(Config.PROVIDER_PREF_KEY, key)
                     putExtra(Config.PROVIDER_PREF_VALUE, value)
-//                    LogUtil.log("key:$key")
-//                    LogUtil.log("content[key]:${value}")
                 })
             }
         }

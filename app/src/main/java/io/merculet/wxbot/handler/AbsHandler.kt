@@ -28,6 +28,16 @@ abstract class AbsHandler {
         }
     }
 
+    // 处理异步handle by aaron 2018/12/14
+    protected fun handlerNextForAsyncCallback(reply: ReplyRes.Reply?) {
+        if (reply == null) {
+            return
+        }
+        if (this.nextHandler != null) {
+            this.nextHandler!!.handleReply(reply)
+        }
+    }
+
 
     // 定义链中每个处理者具体的处理方式
     protected abstract fun handle(reply: ReplyRes.Reply): Boolean

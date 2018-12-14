@@ -18,8 +18,6 @@ import io.merculet.wxbot.util.routerWithAnim
 
 class MainActivity : BaseActivity() {
 
-    private lateinit var firstHandler: AbsHandler
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,51 +25,9 @@ class MainActivity : BaseActivity() {
 
         gotoFragment()
 
-//        initTalker()
-//        reply()
     }
 
-
-    fun initTalker() {
-        val handlers = arrayListOf<AbsHandler>()
-        handlers.add(TextHandler())
-        handlers.add(WebHandler())
-        handlers.add(TuringHandler())
-
-        for (i in 0 until handlers.size) {
-            if (i > 0) {
-                handlers[i - 1].nextHandler = handlers[i]
-            }
-        }
-        firstHandler = handlers[0]
-    }
-
-    private fun reply() {
-
-        val contentStr = "你好"
-        val talker = "bravoon"
-        val request = ReplyReq().apply {
-            commandKey = contentStr
-            chatRoomId = talker
-        }
-
-
-        OkHttpUtils.instance.postByCommandKey(request) { response ->
-
-            var data = response?.data
-            if (data == null) {
-                data = ReplyRes.Reply(null, talker, 0, contentStr, null, null)
-            } else {
-                data.talker = talker
-                data.inputText = contentStr
-            }
-            LogUtil.log("firstHandler data: $data")
-            firstHandler.handleReply(data)
-        }
-
-    }
-
-    private fun turing() {
+    private fun turingTest() {
 
         val request = TuringReq("你好")
 

@@ -12,6 +12,7 @@ package io.merculet.wxbot.util
 
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import io.merculet.wxbot.domain.ReplyReq
 import io.merculet.wxbot.domain.ReplyRes
 import io.merculet.wxbot.domain.TuringReq
@@ -32,6 +33,11 @@ class OkHttpUtils private constructor() {
                 .build()
     }
 
+    /**
+     * getByCommandKey接口
+     * @param replyReq ReplyReq
+     * @param onRes (response: ReplyRes?) -> Unit
+     */
     fun postByCommandKey(replyReq: ReplyReq, onRes: (response: ReplyRes?) -> Unit) {
         val path = "v1/score/community/robot/command/getByCommandKey"
 
@@ -71,7 +77,12 @@ class OkHttpUtils private constructor() {
 
     }
 
-    fun postTuring(turingReq: TuringReq, onSuccess: (response: TuringRes) -> Unit) {
+    /**
+     * 图灵机器人接口，错误时，返回onResponse(null)
+     * @param turingReq TuringReq
+     * @param onResponse (response: TuringRes?) -> Unit
+     */
+    fun postTuring(turingReq: TuringReq, onResponse: (response: TuringRes?) -> Unit) {
         val url = "http://openapi.tuling123.com/openapi/api/v2"
 
         val requestBody = RequestBody.create(JSON_TYPE, Gson().toJson(turingReq))
@@ -85,6 +96,7 @@ class OkHttpUtils private constructor() {
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
+                onResponse(null)
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -92,9 +104,15 @@ class OkHttpUtils private constructor() {
                 val responseStr = response.body()?.string()
                 Log.e("LogUtil", "response.code(): ${response.code()}, response body: $responseStr")
                 if (response.code() == 200) {
-                    Gson().fromJson(responseStr, TuringRes::class.java)?.apply {
-                        onSuccess(this)
+                    try {
+                        val turingRes = Gson().fromJson(responseStr, TuringRes::class.java)
+                        onResponse(turingRes)
+                    } catch (e: JsonSyntaxException) {
+                        onResponse(null)
                     }
+
+                } else {
+                    onResponse(null)
                 }
 
             }
