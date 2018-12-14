@@ -26,6 +26,8 @@ class TuringHandler : AbsHandler() {
 
         if (isPluginEnabled() && saidToBot(reply.talker, reply.inputText)) {
             val request = TuringReq(reply.inputText, reply.talkerId)
+            LogUtil.log("talker = ${reply.talker},talkerId = ${reply.talkerId},inputText = ${reply.inputText}")
+
             OkHttpUtils.instance.postTuring(request) {
                 LogUtil.log("response = $it")
 

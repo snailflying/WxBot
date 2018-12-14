@@ -26,5 +26,9 @@ object Config {
     const val FRAGMENT_SETTINGS_ARG_PREF_RES = "preferencesResId"
     const val  FRAGMENT_SETTINGS_ARG_PREF_NAME = "preferencesFileName"
 
+    const val PROVIDER_PREF_KEY = "key"
+    const val PROVIDER_PREF_VALUE = "value"
+    const val PROVIDER_PREF_TYPE = "type"
+
 
 }

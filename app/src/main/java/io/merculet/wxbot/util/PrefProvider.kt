@@ -1,4 +1,4 @@
-package io.merculet.wxbot
+package io.merculet.wxbot.util
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
+import io.merculet.wxbot.config.Config
 import io.merculet.wxbot.config.Config.PREFERENCE_NAME_SETTINGS
 import io.merculet.wxbot.util.ext.getProtectedSharedPreferences
 
@@ -49,7 +50,7 @@ class PrefProvider : ContentProvider() {
             return null
         }
         val preference = preferences[segments[0]] ?: return null
-        return MatrixCursor(arrayOf("key", "value", "type")).apply {
+        return MatrixCursor(arrayOf(Config.PROVIDER_PREF_KEY, Config.PROVIDER_PREF_VALUE, Config.PROVIDER_PREF_TYPE)).apply {
             preference.all.forEach { entry ->
                 val type = getPreferenceType(entry.value)
                 addRow(arrayOf(entry.key, entry.value, type))

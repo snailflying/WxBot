@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.chenenyu.router.annotation.Route
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import io.merculet.wxbot.R
 import io.merculet.wxbot.config.Config
 import io.merculet.wxbot.config.Config.ACTION_UPDATE_PREF
@@ -81,7 +82,13 @@ class PrefFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceC
                 }
             }
             else -> {
-
+                val value = preferences.all[key] ?: return
+                activity?.sendBroadcast(Intent(ACTION_UPDATE_PREF).apply {
+                    putExtra(Config.PROVIDER_PREF_KEY, key)
+                    putExtra(Config.PROVIDER_PREF_VALUE, value)
+                    LogUtil.log("key:$key")
+                    LogUtil.log("content[key]:${value}")
+                })
             }
         }
     }

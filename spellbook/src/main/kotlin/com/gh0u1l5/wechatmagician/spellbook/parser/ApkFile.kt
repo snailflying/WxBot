@@ -61,8 +61,6 @@ class ApkFile(apkFile: File) : Closeable {
             val parser = DexParser(buffer)
             ret += parser.parseClassTypes()
         }
-        LogUtil.log("ApkFile ClassTrie ret:$ret")
-
         return@lazy ret.apply { mutable = false }
     }
 }

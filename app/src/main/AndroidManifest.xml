@@ -34,7 +34,7 @@
 
 
         <provider
-            android:name=".PrefProvider"
+            android:name=".util.PrefProvider"
             android:authorities="io.merculet.wxbot.preferences"
             android:exported="true"
             tools:ignore="ExportedContentProvider" />

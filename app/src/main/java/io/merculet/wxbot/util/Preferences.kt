@@ -5,7 +5,9 @@ import android.net.Uri
 import com.gh0u1l5.wechatmagician.spellbook.base.WaitChannel
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryAsynchronously
+import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import de.robv.android.xposed.XSharedPreferences
+import io.merculet.wxbot.config.Config
 import io.merculet.wxbot.config.Config.ACTION_UPDATE_PREF
 import io.merculet.wxbot.config.Config.FOLDER_SHARED_PREFS
 import io.merculet.wxbot.config.Config.PREFERENCE_PROVIDER_AUTHORITY
@@ -31,7 +33,7 @@ class Preferences(private val preferencesName: String) : SharedPreferences {
                 // Load the shared preferences using ContentProvider.
                 val uri = Uri.parse("content://$PREFERENCE_PROVIDER_AUTHORITY/$preferencesName")
                 val cursor = context.contentResolver.query(uri, null, null, null, null)
-                cursor.use {
+                cursor?.use {
                     while (cursor.moveToNext()) {
                         val key = cursor.getString(0)
                         val type = cursor.getString(2)
@@ -71,8 +73,10 @@ class Preferences(private val preferencesName: String) : SharedPreferences {
             }
             // Otherwise we completely follow the new ContentProvider pattern.
             if (intent != null) {
-                val key = intent.getStringExtra("key")
-                content[key] = intent.extras.get("value")
+                val key = intent.getStringExtra(Config.PROVIDER_PREF_KEY)
+                content[key] = intent.extras?.get(Config.PROVIDER_PREF_VALUE)
+                LogUtil.log("key:$key")
+                LogUtil.log("content[key]:${content[key]}")
             }
         }
     }
