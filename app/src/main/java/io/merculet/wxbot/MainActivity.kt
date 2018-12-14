@@ -31,6 +31,7 @@ class MainActivity : BaseActivity() {
 //        reply()
     }
 
+
     fun initTalker() {
         val handlers = arrayListOf<AbsHandler>()
         handlers.add(TextHandler())
@@ -59,7 +60,7 @@ class MainActivity : BaseActivity() {
 
             var data = response?.data
             if (data == null) {
-                data = ReplyRes.Reply(null, talker, 0,contentStr, null, null)
+                data = ReplyRes.Reply(null, talker, 0, contentStr, null, null)
             } else {
                 data.talker = talker
                 data.inputText = contentStr

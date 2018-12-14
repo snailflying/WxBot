@@ -86,8 +86,8 @@ class PrefFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceC
                 activity?.sendBroadcast(Intent(ACTION_UPDATE_PREF).apply {
                     putExtra(Config.PROVIDER_PREF_KEY, key)
                     putExtra(Config.PROVIDER_PREF_VALUE, value)
-                    LogUtil.log("key:$key")
-                    LogUtil.log("content[key]:${value}")
+//                    LogUtil.log("key:$key")
+//                    LogUtil.log("content[key]:${value}")
                 })
             }
         }

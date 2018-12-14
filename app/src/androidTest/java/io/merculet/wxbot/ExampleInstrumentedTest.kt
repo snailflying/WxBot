@@ -1,4 +1,4 @@
-package com.merculet.wxbot
+package io.merculet.wxbot
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

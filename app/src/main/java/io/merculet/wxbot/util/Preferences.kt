@@ -75,8 +75,8 @@ class Preferences(private val preferencesName: String) : SharedPreferences {
             if (intent != null) {
                 val key = intent.getStringExtra(Config.PROVIDER_PREF_KEY)
                 content[key] = intent.extras?.get(Config.PROVIDER_PREF_VALUE)
-                LogUtil.log("key:$key")
-                LogUtil.log("content[key]:${content[key]}")
+//                LogUtil.log("key:$key")
+//                LogUtil.log("content[key]:${content[key]}")
             }
         }
     }

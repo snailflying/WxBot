@@ -77,10 +77,15 @@ object MsgHook : IDatabaseHook {
         if (isSend != 1) {//1 代表自己发出的，不处理
             if (type == 1) { //文本消息
                 // field_content 就是消息内容，可以接入图灵机器人回复
-                val contentStr = contentValues.getAsString("content")
+                var contentStr = contentValues.getAsString("content")
                 val talker = contentValues.getAsString("talker")
                 val talkerId = contentValues.getAsInteger("talkerId")
                 LogUtil.log("MsgHook reply replyContent: $contentStr")
+
+                //过滤掉群内
+                if (talker.endsWith("@chatroom") && contentStr.matches(".*:\n.*".toRegex())){
+                    contentStr = ".*:\n(.*)".toRegex().find(contentStr)?.groups?.get(1)?.value
+                }
 
                 val request = ReplyReq().apply {
                     commandKey = contentStr

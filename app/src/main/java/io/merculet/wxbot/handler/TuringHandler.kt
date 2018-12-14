@@ -19,14 +19,22 @@ import io.merculet.wxbot.util.OkHttpUtils
 class TuringHandler : AbsHandler() {
     private val pref = WechatHook.settings
     private fun isPluginEnabled() = pref.getBoolean(Config.SETTINGS_TURING_MASTER, false)
+    private val botName = "@Xposed"
 
     override fun handle(reply: ReplyRes.Reply): Boolean {
 
         LogUtil.log("isPluginEnabled = ${isPluginEnabled()}")
 
         if (isPluginEnabled() && saidToBot(reply.talker, reply.inputText)) {
-            val request = TuringReq(reply.inputText, reply.talkerId)
-            LogUtil.log("talker = ${reply.talker},talkerId = ${reply.talkerId},inputText = ${reply.inputText}")
+
+            //过滤掉@Xposed
+            var input: String = reply.inputText
+            if (reply.talker.endsWith("@chatroom") && reply.inputText.matches(".*$botName.*".toRegex())) {
+                input = ".*$botName(.*)".toRegex().find(reply.inputText)?.groups?.get(1)?.value?.trim() ?: ""
+            }
+
+            val request = TuringReq(input, reply.talkerId)
+            LogUtil.log("talker = ${reply.talker},talkerId = ${reply.talkerId},inputText = ${input}")
 
             OkHttpUtils.instance.postTuring(request) {
                 LogUtil.log("response = $it")
@@ -50,9 +58,9 @@ class TuringHandler : AbsHandler() {
 
     //私聊或者群聊@机器人时才回话
     private fun saidToBot(talker: String, input: String): Boolean {
-        return input == "@Xposed"
-                || input.startsWith("@Xposed ")
-                || input.contains("@Xposed")
+        return input == botName
+                || input.startsWith("$botName ")
+                || input.contains(botName)
                 || !talker.contains("@chatroom")
     }
 
