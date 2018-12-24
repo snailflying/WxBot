@@ -15,6 +15,11 @@
             android:key="settings_turing_master"
             android:title="@string/pref_turing_master" />
 
+        <Preference
+            android:defaultValue="true"
+            android:key="settings_wx_info"
+            android:title="微信消息" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

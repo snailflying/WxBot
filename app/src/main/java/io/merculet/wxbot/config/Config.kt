@@ -22,6 +22,7 @@ object Config {
 
 
     const val ROUTER_FRAGMENT_SETTINGS = "fragment/settings"
+    const val ROUTER_ACTIVITY_WX_INFO = "activity/wx_info"
 
     const val FRAGMENT_SETTINGS_ARG_PREF_RES = "preferencesResId"
     const val  FRAGMENT_SETTINGS_ARG_PREF_NAME = "preferencesFileName"
@@ -34,6 +35,12 @@ object Config {
     const val WX_MSG_SPLIT = "\t"
     const val MERCULET_MSG_SPLIT = "command-newline-separator"
 
-
+    const val WX_ROOT_PATH = "/data/data/com.tencent.mm/"                               // 微信根目录
+    const val WX_SP_UIN_PATH = "${WX_ROOT_PATH}shared_prefs/auth_info_key_prefs.xml"    // 微信保存uin的目录
+    const val WX_DB_DIR_PATH = "${WX_ROOT_PATH}MicroMsg/"                               // 微信保存聊天记录数据库的目录
+    const val WX_DB_FILE_NAME = "EnMicroMsg.db"                                         // 微信聊天记录数据库
+    const val WX_FILE_PATH = "/storage/emulated/0/Tencent/micromsg/"                    // 微信保存聊天时语音、图片、视频文件的地址
+    const val currApkPath = "/data/data/com.dfsc.wechatrecord/"
+    const val COPY_WX_DATA_DB = "wx_data.db"
 
 }

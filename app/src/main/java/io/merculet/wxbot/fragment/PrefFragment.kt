@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager.*
 import android.os.Build
 import android.os.Bundle
+import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.support.v4.content.ContextCompat
 import android.util.Log
@@ -21,6 +22,7 @@ import io.merculet.wxbot.config.Config.FOLDER_SHARED_PREFS
 import io.merculet.wxbot.config.Config.SETTINGS_INTERFACE_HIDE_ICON
 import io.merculet.wxbot.util.Utils
 import io.merculet.wxbot.util.ext.putExtra
+import io.merculet.wxbot.util.routerWithAnim
 import java.io.File
 
 @Route(value = [Config.ROUTER_FRAGMENT_SETTINGS])
@@ -46,6 +48,12 @@ class PrefFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceC
             val preferencesName = arguments!!.getString(Config.FRAGMENT_SETTINGS_ARG_PREF_NAME)
             preferenceManager.sharedPreferencesName = preferencesName
             addPreferencesFromResource(preferencesResId)
+        }
+
+        val preference = findPreference("settings_wx_info") as Preference
+        preference.setOnPreferenceClickListener {
+            routerWithAnim("activity/wx_info").go(this)
+            true
         }
     }
 
