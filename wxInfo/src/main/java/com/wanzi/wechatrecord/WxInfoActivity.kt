@@ -62,7 +62,7 @@ class WxInfoActivity : AppCompatActivity() {
                 startService(Intent(this, CoreService::class.java))
             }
         } catch (e: Exception) {
-            toast("检查Root权限失败：${e?.message}")
+            toast("检查Root权限失败：${e.message}")
         }
     }
 
@@ -77,7 +77,7 @@ class WxInfoActivity : AppCompatActivity() {
         try {
             startActivity(i)
         } catch (e: Exception) {
-            toast("跳转权限管理页面失败：${e.message!!}")
+            toast("跳转权限管理页面失败：${e.message}")
         }
     }
 
