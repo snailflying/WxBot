@@ -29,8 +29,8 @@ object WxSqlPwdHook : HookerProvider {
                 WechatGlobal.wxLoader?.loadClass("com.tencent.wcdb.DatabaseErrorHandler"), Int::class.javaPrimitiveType,
                 object : XC_MethodHook() {
                     @Throws(Throwable::class)
-                    override fun beforeHookedMethod(param: XC_MethodHook.MethodHookParam?) {
-                        Log.i(TAG, "Path: " + param!!.args[0])
+                    override fun beforeHookedMethod(param: XC_MethodHook.MethodHookParam) {
+                        Log.i(TAG, "Path: " + param.args[0])    ///data/data/com.tencent.mm/MicroMsg/4b1264d9e181eb33ffc8f0af354757fc/EnMicroMsg.db
                         Log.i(TAG, "Password: " + String(param.args[1] as ByteArray, Charset.forName("UTF-8")))
                         val formatter = Formatter()
                         for (b in param.args[1] as ByteArray) {

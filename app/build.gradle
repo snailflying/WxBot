@@ -44,6 +44,8 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.5"
     // sqlcipher
     implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
+    // litepal
+    implementation 'org.litepal.android:core:1.6.0'
 
 }
 
