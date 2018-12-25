@@ -7,8 +7,8 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
-import io.merculet.wxbot.config.Config
-import io.merculet.wxbot.config.Config.PREFERENCE_NAME_SETTINGS
+import io.merculet.core.config.Config
+import io.merculet.core.config.Config.PREFERENCE_NAME_SETTINGS
 import io.merculet.wxbot.util.ext.getProtectedSharedPreferences
 
 // PrefProvider shares the preferences using content provider model.

@@ -1,4 +1,4 @@
-package io.merculet.wxbot.db
+package com.wanzi.wechatrecord.db
 
 import android.os.Handler
 import android.os.Looper
@@ -9,10 +9,8 @@ import com.wanzi.wechatrecord.entry.*
 import com.wanzi.wechatrecord.util.*
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatMd5
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatSubString
-import io.merculet.wxbot.base.App
-import io.merculet.wxbot.config.Config.WX_FILE_PATH
-import io.merculet.wxbot.domain.WechatBean
-import io.merculet.wxbot.util.SPHelper
+import io.merculet.core.base.App
+import io.merculet.core.config.Config.WX_FILE_PATH
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteDatabaseHook
 import org.litepal.crud.DataSupport
@@ -29,21 +27,14 @@ import java.util.*
  */
 object DBHelper {
 
-    val WX_ROOT_PATH = "/data/data/com.tencent.mm/"
-    val WX_SP_UIN_PATH = WX_ROOT_PATH + "shared_prefs/auth_info_key_prefs.xml"
-    val WX_DB_DIR_PATH = WX_ROOT_PATH + "MicroMsg"
-    val WX_DB_FILE_NAME = "EnMicroMsg.db"
-    val mCurrApkPath = "/data/data/" + "com.wechatutils.chatrecord" + "/"
-    private val COPY_WX_DATA_DB = "wx_data.db"
-    val copyFilePath = mCurrApkPath + COPY_WX_DATA_DB
-    private val TAG = "DBHelper"
-    private val DB_FILE = ""
     private var uinEnc = ""                       // 加密后的uin
 
     /**
      * 微信数据库操作
      */
-    fun openWXDB(file: File, password: String) {
+    fun openWXDB(file: File, password: String, uinEnc: String) {
+        this.uinEnc = uinEnc
+        // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
         toast("正在打开微信数据库，请稍候...")
         SQLiteDatabase.loadLibs(App.instance)
         val hook = object : SQLiteDatabaseHook {
@@ -76,7 +67,7 @@ object DBHelper {
         val weChatDataList = ArrayList<WechatBean>()
         //查询所有联系人（verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
         val c1 = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null)
-        val defile = SPHelper.create(App.instance).getString(DB_FILE, "").replace("/storage/emulated/0/tencent/MicroMsg/", "")
+        val defile = WX_FILE_PATH.replace("/storage/emulated/0/tencent/micromsg/", "")
         while (c1.moveToNext()) {
             val wechatBean = WechatBean()
             val userName = c1.getString(c1.getColumnIndex("username"))
@@ -93,8 +84,8 @@ object DBHelper {
             wechatBean.username = userName
             wechatBean.nickname = nickName
             weChatDataList.add(wechatBean)
+            log(("查询所有联系人 :" + Gson().toJson(weChatDataList)))
         }
-        log(("查询所有联系人 :" + Gson().toJson(weChatDataList)))
     }
 
     fun decryptionWechatUserAvatarImage(userName: String, defile: String): String {

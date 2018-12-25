@@ -1,4 +1,4 @@
-package io.merculet.wxbot.base
+package io.merculet.core.base
 
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import io.merculet.wxbot.util.finishWithAnim
+import io.merculet.core.ext.finishWithAnim
 
 
 /**

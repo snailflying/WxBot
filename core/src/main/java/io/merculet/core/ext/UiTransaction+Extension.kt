@@ -1,4 +1,4 @@
-package io.merculet.wxbot.util
+package io.merculet.core.ext
 
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import com.chenenyu.router.IRouter
 import com.chenenyu.router.Router
-import io.merculet.wxbot.R
-import io.merculet.wxbot.base.BaseActivity
+import io.merculet.core.R
+import io.merculet.core.base.BaseActivity
 
 
 /**

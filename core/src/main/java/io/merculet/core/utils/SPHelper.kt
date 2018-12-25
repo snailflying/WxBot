@@ -1,9 +1,9 @@
-package io.merculet.wxbot.util
+package io.merculet.core.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import io.merculet.wxbot.base.App
+import io.merculet.core.base.App
 import java.util.*
 
 
@@ -239,7 +239,8 @@ class SPHelper private constructor(private val context: Context? = App.instance)
             if (defaultInstance == null) {
                 synchronized(SPHelper::class.java) {
                     if (defaultInstance == null) {
-                        defaultInstance = SPHelper(context.applicationContext ?: context)
+                        defaultInstance = SPHelper(context.applicationContext
+                                ?: context)
                     }
                 }
             }

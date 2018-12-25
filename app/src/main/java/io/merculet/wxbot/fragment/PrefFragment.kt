@@ -15,14 +15,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.chenenyu.router.annotation.Route
+import io.merculet.core.config.Config
+import io.merculet.core.config.Config.ACTION_UPDATE_PREF
+import io.merculet.core.config.Config.FOLDER_SHARED_PREFS
+import io.merculet.core.config.Config.SETTINGS_INTERFACE_HIDE_ICON
+import io.merculet.core.ext.routerWithAnim
 import io.merculet.wxbot.R
-import io.merculet.wxbot.config.Config
-import io.merculet.wxbot.config.Config.ACTION_UPDATE_PREF
-import io.merculet.wxbot.config.Config.FOLDER_SHARED_PREFS
-import io.merculet.wxbot.config.Config.SETTINGS_INTERFACE_HIDE_ICON
 import io.merculet.wxbot.util.Utils
 import io.merculet.wxbot.util.ext.putExtra
-import io.merculet.wxbot.util.routerWithAnim
 import java.io.File
 
 @Route(value = [Config.ROUTER_FRAGMENT_SETTINGS])
@@ -52,7 +52,7 @@ class PrefFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceC
 
         val preference = findPreference("settings_wx_info") as Preference
         preference.setOnPreferenceClickListener {
-            routerWithAnim("activity/wx_info").go(this)
+            routerWithAnim(Config.ROUTER_ACTIVITY_WX_INFO).go(this)
             true
         }
     }

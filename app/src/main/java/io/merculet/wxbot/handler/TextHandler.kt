@@ -1,7 +1,7 @@
 package io.merculet.wxbot.handler
 
 import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
-import io.merculet.wxbot.config.Config
+import io.merculet.core.config.Config
 import io.merculet.wxbot.domain.ReplyRes
 import io.merculet.wxbot.hook.Methods
 import io.merculet.wxbot.hook.Objects

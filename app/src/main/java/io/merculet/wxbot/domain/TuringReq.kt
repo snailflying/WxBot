@@ -1,6 +1,6 @@
 package io.merculet.wxbot.domain
 
-import io.merculet.wxbot.config.Config
+import io.merculet.core.config.Config
 
 /**
  * @Author Aaron

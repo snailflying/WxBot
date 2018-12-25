@@ -5,7 +5,7 @@ import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
 import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
-import io.merculet.wxbot.config.Config
+import io.merculet.core.config.Config
 
 object SendMsgHooker : HookerProvider {
 

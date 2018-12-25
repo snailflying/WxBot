@@ -2,12 +2,12 @@ package io.merculet.wxbot
 
 import android.os.Bundle
 import android.util.Log
-import io.merculet.wxbot.base.BaseActivity
-import io.merculet.wxbot.config.Config
+import io.merculet.core.base.BaseActivity
+import io.merculet.core.config.Config
+import io.merculet.core.ext.routerWithAnim
 import io.merculet.wxbot.domain.TuringReq
 import io.merculet.wxbot.fragment.PrefFragment
 import io.merculet.wxbot.util.OkHttpUtils
-import io.merculet.wxbot.util.routerWithAnim
 
 class MainActivity : BaseActivity() {
 

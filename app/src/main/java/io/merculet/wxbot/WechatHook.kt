@@ -9,7 +9,7 @@ import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
-import io.merculet.wxbot.config.Config.PREFERENCE_NAME_SETTINGS
+import io.merculet.core.config.Config.PREFERENCE_NAME_SETTINGS
 import io.merculet.wxbot.hook.MsgHook
 import io.merculet.wxbot.hook.SendMsgHooker
 import io.merculet.wxbot.hook.TestHooker

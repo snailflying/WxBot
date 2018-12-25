@@ -5,12 +5,11 @@ import android.net.Uri
 import com.gh0u1l5.wechatmagician.spellbook.base.WaitChannel
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryAsynchronously
-import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
 import de.robv.android.xposed.XSharedPreferences
-import io.merculet.wxbot.config.Config
-import io.merculet.wxbot.config.Config.ACTION_UPDATE_PREF
-import io.merculet.wxbot.config.Config.FOLDER_SHARED_PREFS
-import io.merculet.wxbot.config.Config.PREFERENCE_PROVIDER_AUTHORITY
+import io.merculet.core.config.Config
+import io.merculet.core.config.Config.ACTION_UPDATE_PREF
+import io.merculet.core.config.Config.FOLDER_SHARED_PREFS
+import io.merculet.core.config.Config.PREFERENCE_PROVIDER_AUTHORITY
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 

@@ -1,4 +1,4 @@
-package io.merculet.wxbot.domain
+package com.wanzi.wechatrecord.entry
 
 import java.io.Serializable
 

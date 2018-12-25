@@ -1,1 +1,1 @@
-include ':app', ':wxinfo','spellbook'
+include ':app', ':wxinfo', ':core','spellbook'

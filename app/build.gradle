@@ -26,27 +26,15 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:preference-v7:28.0.0'
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation "com.android.support.test:runner:1.0.2"
+    implementation project(':spellbook')
+    implementation project(':wxinfo')
+    implementation project(':core')
 
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
-
-    implementation project(':spellbook')
-    implementation project(':wxinfo')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    implementation 'com.github.gh0u1l5:wechat-spellbook:0.0.6'
 //    implementation 'com.github.gh0u1l5:wechat-spellbook:0.0.6:sources'
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation "com.google.code.gson:gson:2.8.5"
-    // sqlcipher
-    implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
-    // litepal
-    implementation 'org.litepal.android:core:1.6.0'
-
 }
 
 // 每次修改运行后自动让 VXP 中的模块`即时生效` ,需要将 (Debug Configurations) - Before Launch - Gradle aware Make - 修改为 :app:installDebug
