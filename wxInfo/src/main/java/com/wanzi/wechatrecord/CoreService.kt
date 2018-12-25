@@ -14,12 +14,11 @@ import com.wanzi.wechatrecord.entry.UserInfo
 import com.wanzi.wechatrecord.util.FileUtils
 import com.wanzi.wechatrecord.util.MD5
 import com.wanzi.wechatrecord.util.ShellCommand
-import io.merculet.core.config.Config.COPY_WX_DATA_DB
+import io.merculet.core.config.Config.COPY_FILE_PATH
 import io.merculet.core.config.Config.WX_DB_DIR_PATH
 import io.merculet.core.config.Config.WX_DB_FILE_NAME
 import io.merculet.core.config.Config.WX_ROOT_PATH
 import io.merculet.core.config.Config.WX_SP_UIN_PATH
-import io.merculet.core.config.Config.currApkPath
 import org.jsoup.Jsoup
 import java.io.File
 
@@ -68,13 +67,12 @@ class CoreService : IntentService("CoreService") {
         log("微信数据库文件目录：$dbDir")
         val list = FileUtils.searchFile(dbDir, WX_DB_FILE_NAME)
         for (file in list) {
-            val copyFilePath = currApkPath + COPY_WX_DATA_DB
             log("微信数据库文件路径：${file.absolutePath}")
             try {
                 // 将微信数据库拷贝出来，因为直接连接微信的db，会导致微信崩溃
-                FileUtils.copyFile(file.absolutePath, copyFilePath)
+                FileUtils.copyFile(file.absolutePath, COPY_FILE_PATH)
                 // 打开微信数据库
-                openWXDB(File(copyFilePath), dbPwd, uinEnc, this)
+                openWXDB(File(COPY_FILE_PATH), dbPwd, uinEnc, this)
             } catch (e: Exception) {
                 log("复制数据库失败：${e.message}")
                 FileUtils.writeLog(this, "复制数据库失败：${e.message}\n")

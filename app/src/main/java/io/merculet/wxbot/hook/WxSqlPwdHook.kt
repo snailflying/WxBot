@@ -77,7 +77,8 @@ class WxSqlPwdHook(val context: Context) : HookerProvider {
      */
     private fun openDB(path: String, pwd: String, uinEnc: String) {
         if (path.contains("EnMicroMsg")) {
-//            DBHelper.openWXDB(File(path), pwd, uinEnc, context)
+//            FileUtils.copyFile(path, COPY_FILE_PATH)    //我们千万不可以直接通过net.sqlcipher.database.SQLiteDatabase这个类来连接我们上一步里面查找到的微信目录下的EnMicroMsg.db文件，可能是因为一个数据库文件不能被多次连接的情况，只要我们一成功连接上那个db文件，微信的客户端就会自动退出登录，并且会出现异常。所有我现在的做法是把这个db文件拷贝到我们自己的app目录下，再进行连接。
+//            DBHelper.openWXDB(File(COPY_FILE_PATH), pwd, uinEnc, context)
         }
     }
 }

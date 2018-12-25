@@ -42,4 +42,5 @@ object Config {
     const val WX_FILE_PATH = "/storage/emulated/0/Tencent/micromsg/"                    // 微信保存聊天时语音、图片、视频文件的地址
     const val currApkPath = "/storage/emulated/0/"
     const val COPY_WX_DATA_DB = "wx_data.db"
+    const val COPY_FILE_PATH = currApkPath + COPY_WX_DATA_DB
 }
