@@ -1,14 +1,19 @@
 package com.wanzi.wechatrecord.db
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import com.wanzi.wechatrecord.entry.*
-import com.wanzi.wechatrecord.util.*
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatMd5
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatSubString
+import com.wanzi.wechatrecord.util.DBUtils
+import com.wanzi.wechatrecord.util.FileUtils
+import com.wanzi.wechatrecord.util.MD5
+import com.wanzi.wechatrecord.util.TimeUtils
 import io.merculet.core.base.App
 import io.merculet.core.config.Config.WX_FILE_PATH
 import net.sqlcipher.database.SQLiteDatabase
@@ -16,6 +21,7 @@ import net.sqlcipher.database.SQLiteDatabaseHook
 import org.litepal.crud.DataSupport
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -32,11 +38,11 @@ object DBHelper {
     /**
      * 微信数据库操作
      */
-    fun openWXDB(file: File, password: String, uinEnc: String) {
+    fun openWXDB(file: File, password: String, uinEnc: String, context: Context) {
         this.uinEnc = uinEnc
         // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
         toast("正在打开微信数据库，请稍候...")
-        SQLiteDatabase.loadLibs(App.instance)
+        SQLiteDatabase.loadLibs(context)
         val hook = object : SQLiteDatabaseHook {
             override fun preKey(database: SQLiteDatabase) {}
 
@@ -47,7 +53,7 @@ object DBHelper {
         try {
             // 打开数据库连接
             val db = SQLiteDatabase.openOrCreateDatabase(file, password, null, hook)
-            openUserInfoTable(db)
+            openUserInfoTable(db, context)
             openContactTable(db)
             openMessageTable(db)
             openChatRoomTable(db)
@@ -55,7 +61,7 @@ object DBHelper {
             db.close()
         } catch (e: Exception) {
             log("打开数据库失败：${e.message}")
-            FileUtils.writeLog(App.instance, "打开数据库失败：${e.message}\n")
+            FileUtils.writeLog(context, "打开数据库失败：${e.message}\n")
             toast("打开数据库失败：${e.message}")
         }
     }
@@ -84,8 +90,8 @@ object DBHelper {
             wechatBean.username = userName
             wechatBean.nickname = nickName
             weChatDataList.add(wechatBean)
-            log(("查询所有联系人 :" + Gson().toJson(weChatDataList)))
         }
+        log(("查询所有联系人 :" + Gson().toJson(weChatDataList)))
     }
 
     fun decryptionWechatUserAvatarImage(userName: String, defile: String): String {
@@ -100,7 +106,7 @@ object DBHelper {
     }
 
     // 打开用户信息表
-    private fun openUserInfoTable(db: SQLiteDatabase) {
+    private fun openUserInfoTable(db: SQLiteDatabase, context: Context) {
         // 这个数组是保存用户信息，第一次拿到的是账号，第二次是昵称
         val values = ArrayList<String>()
         // 用户信息表
@@ -115,13 +121,14 @@ object DBHelper {
         // 用户信息
         val userInfo = UserInfo(values[0], values[1])
         log("用户信息：$userInfo")
-        FileUtils.writeLog(App.instance, "用户信息：$userInfo\n")
+        FileUtils.writeLog(context, "用户信息：$userInfo\n")
         // 切换数据库
         DBUtils.switchDBUser(userInfo.username)
     }
 
     // 打开联系人表
     private fun openContactTable(db: SQLiteDatabase) {
+        var contactList = arrayListOf<Contact>()
         // verifyFlag!=0：公众号等类型 type=33：微信功能 type=2：未知 type=4：非好友
         // 一般公众号原始ID开头都是gh_
         // 群ID的结尾是@chatroom
@@ -140,6 +147,7 @@ object DBHelper {
                 val conRemark = cursor.getString(cursor.getColumnIndex("conRemark"))
                 // 避免保存重复数据
                 val list = DataSupport.where("username = ?", username).find(Contact::class.java)
+                contactList.addAll(list)
                 if (list.isEmpty()) {
                     val contact = Contact()
                     contact.username = username
@@ -147,11 +155,32 @@ object DBHelper {
                     contact.type = type
                     contact.conRemark = conRemark
                     contact.save()
+                    contactList.add(contact)
                 }
-                log("微信联系人列表:  $nickname")
             }
+            log("微信联系人列表:  "+Gson().toJson(contactList))
         }
         cursor.close()
+    }
+
+    // 获取最后一条消息ID
+    private fun getLastMsgId(db: SQLiteDatabase): String {
+        // 查询本地数据库中的最后一条
+        var lastMsgId = "0"
+        val last = DataSupport.findLast(Message::class.java)
+        if (last != null) {
+            log("本地数据库中存在最后一条记录，msgSvrid：${last.msgSvrId}")
+            val msgCu = db.rawQuery(" select * from message where msgsvrid = ? ", arrayOf(last.msgSvrId))
+            if (msgCu.count > 0) {
+                while (msgCu.moveToNext()) {
+                    lastMsgId = msgCu.getString(msgCu.getColumnIndex("msgId"))
+                    log("微信数据库中存在 msgSvrid 为：${last.msgSvrId} 的记录，msgid 为：$lastMsgId")
+                }
+            }
+            msgCu.close()
+        }
+        log("聊天记录从 msgid 为：$lastMsgId 处开始查询")
+        return lastMsgId
     }
 
     // 打开聊天记录表
@@ -244,7 +273,7 @@ object DBHelper {
                             }
                         }
                     }
-                    log("聊天信息：$message")
+                    log("聊天信息："+Gson().toJson(message))
                     message.save()
                 }
             }
@@ -252,28 +281,9 @@ object DBHelper {
         cursor.close()
     }
 
-    // 获取最后一条消息ID
-    private fun getLastMsgId(db: SQLiteDatabase): String {
-        // 查询本地数据库中的最后一条
-        var lastMsgId = "0"
-        val last = DataSupport.findLast(Message::class.java)
-        if (last != null) {
-            log("本地数据库中存在最后一条记录，msgSvrid：${last.msgSvrId}")
-            val msgCu = db.rawQuery(" select * from message where msgsvrid = ? ", arrayOf(last.msgSvrId))
-            if (msgCu.count > 0) {
-                while (msgCu.moveToNext()) {
-                    lastMsgId = msgCu.getString(msgCu.getColumnIndex("msgId"))
-                    log("微信数据库中存在 msgSvrid 为：${last.msgSvrId} 的记录，msgid 为：$lastMsgId")
-                }
-            }
-            msgCu.close()
-        }
-        log("聊天记录从 msgid 为：$lastMsgId 处开始查询")
-        return lastMsgId
-    }
-
     // 打开微信群表
     private fun openChatRoomTable(db: SQLiteDatabase) {
+        var chatRoomList = arrayListOf<ChatRoom>()
         val cursor = db.rawQuery("select * from chatroom ", arrayOf())
         if (cursor.count > 0) {
             while (cursor.moveToNext()) {
@@ -286,6 +296,7 @@ object DBHelper {
                     selfDisplayName = ""
                 }
                 val list = DataSupport.where("name = ?", name).find(ChatRoom::class.java)
+                chatRoomList.addAll(list)
                 if (list.isEmpty()) {
                     // 新建群信息
                     val chatRoom = ChatRoom()
@@ -295,6 +306,8 @@ object DBHelper {
                     chatRoom.selfDisplayName = selfDisplayName
                     chatRoom.modifyTime = modifyTime
                     chatRoom.save()
+                    chatRoomList.add(chatRoom)
+                    log("微信群信息 :"+Gson().toJson(chatRoom))
                 } else {
                     // 修改群信息
                     val first = list[0]
@@ -305,21 +318,22 @@ object DBHelper {
                         first.modifyTime = modifyTime
                         first.isModify = 0
                         first.save()
+                        chatRoomList.add(first)
+                        log("微信群信息 :"+Gson().toJson(first))
                     }
                 }
             }
+            log("微信群信息 :"+Gson().toJson(chatRoomList))
         }
         cursor.close()
     }
 
     private fun toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-        val handler = Handler(Looper.getMainLooper())
-        handler.post {
-            Toast.makeText(App.instance, text, duration).show()
-        }
+        Handler(Looper.getMainLooper()).post { Toast.makeText(App.instance, text, duration).show() }
     }
 
     private fun log(msg: String) {
-        LogUtils.i(App.instance, msg)
+        Log.i("wxinfo: ", msg)
     }
+
 }

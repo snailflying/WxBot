@@ -31,7 +31,7 @@ class WechatHook : IXposedHookLoadPackage {
                     SpellBook.startup(lpparam, listOf(
                             SendMsgHooker,
                             MsgHook,
-                            WxSqlPwdHook,
+                            WxSqlPwdHook(context),
                             TestHooker
                     ))
                 }

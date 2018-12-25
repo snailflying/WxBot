@@ -8,11 +8,11 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.widget.Toast
 import com.wanzi.wechatrecord.db.DBHelper.openWXDB
 import com.wanzi.wechatrecord.entry.UserInfo
 import com.wanzi.wechatrecord.util.FileUtils
-import com.wanzi.wechatrecord.util.LogUtils
 import com.wanzi.wechatrecord.util.MD5
 import com.wanzi.wechatrecord.util.ShellCommand
 import io.reactivex.Observable
@@ -100,7 +100,7 @@ class CoreSer : Service() {
                         // 将微信数据库拷贝出来，因为直接连接微信的db，会导致微信崩溃
                         FileUtils.copyFile(file.absolutePath, copyFilePath)
                         // 打开微信数据库
-                        openWXDB(File(copyFilePath), it, uinEnc)
+                        openWXDB(File(copyFilePath), it, uinEnc, this)
                     }
                 }
                 .subscribe(object : Observer<String> {
@@ -131,6 +131,6 @@ class CoreSer : Service() {
     }
 
     fun log(msg: String) {
-        LogUtils.i(this, "$msg，当前线程:${Thread.currentThread().name}")
+        Log.i("CoreSer: ", "$msg，当前线程:${Thread.currentThread().name}")
     }
 }

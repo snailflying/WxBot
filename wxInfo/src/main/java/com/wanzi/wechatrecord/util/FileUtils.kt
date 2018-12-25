@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import java.io.File
 import java.io.FileInputStream
@@ -41,7 +42,7 @@ object FileUtils {
             fos.write(log.toByteArray())
             fos.close()
         } catch (e: Exception) {
-            LogUtils.i(context, "写入日志失败：${e.message}")
+            Log.i("wxinfo", "写入日志失败：${e.message}")
         }
     }
 
@@ -108,7 +109,7 @@ object FileUtils {
             return
         }
         val end = file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length).toLowerCase(Locale.getDefault())
-        LogUtils.i(context, "end:$end")
+        Log.i("wxinfo", "end:$end")
         val intent: Intent =
                 when (end) {
                     ".mp4" -> {

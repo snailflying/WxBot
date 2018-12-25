@@ -7,11 +7,11 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.widget.Toast
 import com.wanzi.wechatrecord.db.DBHelper.openWXDB
 import com.wanzi.wechatrecord.entry.UserInfo
 import com.wanzi.wechatrecord.util.FileUtils
-import com.wanzi.wechatrecord.util.LogUtils
 import com.wanzi.wechatrecord.util.MD5
 import com.wanzi.wechatrecord.util.ShellCommand
 import io.merculet.core.config.Config.COPY_WX_DATA_DB
@@ -74,7 +74,7 @@ class CoreService : IntentService("CoreService") {
                 // 将微信数据库拷贝出来，因为直接连接微信的db，会导致微信崩溃
                 FileUtils.copyFile(file.absolutePath, copyFilePath)
                 // 打开微信数据库
-                openWXDB(File(copyFilePath), dbPwd, uinEnc)
+                openWXDB(File(copyFilePath), dbPwd, uinEnc, this)
             } catch (e: Exception) {
                 log("复制数据库失败：${e.message}")
                 FileUtils.writeLog(this, "复制数据库失败：${e.message}\n")
@@ -91,7 +91,7 @@ class CoreService : IntentService("CoreService") {
     }
 
     private fun log(msg: String) {
-        LogUtils.i(this@CoreService, msg)
+        Log.i("CoreService: ", msg)
     }
 
 }

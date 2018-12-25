@@ -5,11 +5,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
 import com.chenenyu.router.annotation.Route
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wanzi.wechatrecord.util.LogUtils
 import com.wanzi.wechatrecord.util.ShellCommand
 import io.merculet.core.config.Config
 import io.merculet.wxinfo.R
@@ -38,10 +38,10 @@ class WxInfoActivity : AppCompatActivity() {
 
     private fun checkRoot() {
         try {
-            LogUtils.i(this, "准备检测Root权限")
+            Log.i("wxinfo", "准备检测Root权限")
             // 检测是否拥有Root权限
             if (!ShellCommand.checkRoot(packageCodePath)) {
-                LogUtils.i(this, "检测到未拥有Root权限")
+                Log.i("wxinfo", "检测到未拥有Root权限")
                 // 申请Root权限（弹出申请root权限框）
                 ShellCommand.shellCommand("chmod 777 $packageCodePath")
             } else {
