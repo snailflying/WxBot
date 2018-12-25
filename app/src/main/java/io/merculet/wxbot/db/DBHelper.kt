@@ -1,11 +1,10 @@
 package io.merculet.wxbot.db
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
+import com.google.gson.Gson
 import com.wanzi.wechatrecord.entry.*
 import com.wanzi.wechatrecord.util.*
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatMd5
@@ -42,75 +41,9 @@ object DBHelper {
     private var uinEnc = ""                       // 加密后的uin
 
     /**
-     * 连接数据库
-     *
-     * @param
-     */
-    fun openWxDb(context: Context, mDbPassword: String): List<WechatBean> {
-        val weChatDataList = ArrayList<WechatBean>()
-        val copyWxDataDb = File(copyFilePath)
-        SQLiteDatabase.loadLibs(context)
-        val hook = object : SQLiteDatabaseHook {
-            override fun preKey(sqLiteDatabase: net.sqlcipher.database.SQLiteDatabase) {
-
-            }
-
-            override fun postKey(sqLiteDatabase: net.sqlcipher.database.SQLiteDatabase) {
-                sqLiteDatabase.rawExecSQL("PRAGMA cipher_migrate;") //兼容2.0的数据库
-            }
-
-        }
-
-        try {
-            //打开数据库连接
-            // SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(copyWxDataDb, mDbPassword, null, hook);
-            val db = SQLiteDatabase.openDatabase(copyWxDataDb.absolutePath, mDbPassword, null, 1, hook)
-            //查询所有联系人（verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
-            val c1 = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null)
-            val defile = SPHelper.create(context).getString(DB_FILE, "").replace("/storage/emulated/0/tencent/MicroMsg/", "")
-            while (c1.moveToNext()) {
-                val wechatBean = WechatBean()
-                val userName = c1.getString(c1.getColumnIndex("username"))
-                var alias = c1.getString(c1.getColumnIndex("alias"))
-                val nickName = c1.getString(c1.getColumnIndex("nickname"))
-                wechatBean.username = userName
-                //微信用户头像解密
-                val wechatUserAvatarImage = decryptionWechatUserAvatarImage(userName, defile)
-                if (TextUtils.isEmpty(alias)) {
-                    alias = userName
-                }
-                wechatBean.avatarImage = wechatUserAvatarImage
-                wechatBean.alias = alias
-                wechatBean.username = userName
-                wechatBean.nickname = nickName
-                weChatDataList.add(wechatBean)
-            }
-            c1.close()
-            db.close()
-        } catch (e: Exception) {
-            Log.d(TAG, "读取数据库信息失败" + e.toString())
-            e.printStackTrace()
-        }
-
-        Log.d(TAG, "openWxDb: ========" + weChatDataList.size)
-        return weChatDataList
-    }
-
-    fun decryptionWechatUserAvatarImage(userName: String, defile: String): String {
-        //根据微信的 WechatBean的userName然后使用md5加密，成字符串，再截取前面两个字段的文件目录
-        val decryptionWechatMd5 = decryptionWechatMd5(userName.toByteArray())
-        //decryptionWechatMd5  5f39b18498a4107de947dc9b1e5d29b2
-        val decryptionWechatSubString = decryptionWechatSubString(decryptionWechatMd5)
-        //decryptionWechatSubString  5f/39/
-        // /data/user/0/com.tencent.mm/MicroMsg/1306e8eb3f168108d6f138fd6dbc511e/avatar/5f/39/user_5f39b18498a4107de947dc9b1e5d29b2.png
-        //这个就是当前用户的头像地址
-        return "/data/user/0/com.tencent.mm/MicroMsg/" + defile + "/avatar/" + decryptionWechatSubString + "user_" + decryptionWechatMd5 + ".png"
-    }
-
-    /**
      * 微信数据库操作
      */
-    private fun openWXDB(file: File, password: String) {
+    fun openWXDB(file: File, password: String) {
         toast("正在打开微信数据库，请稍候...")
         SQLiteDatabase.loadLibs(App.instance)
         val hook = object : SQLiteDatabaseHook {
@@ -127,12 +60,52 @@ object DBHelper {
             openContactTable(db)
             openMessageTable(db)
             openChatRoomTable(db)
+            openAllContactTable(db)
             db.close()
         } catch (e: Exception) {
             log("打开数据库失败：${e.message}")
             FileUtils.writeLog(App.instance, "打开数据库失败：${e.message}\n")
             toast("打开数据库失败：${e.message}")
         }
+    }
+
+    /**
+     * 查询所有联系人
+     */
+    private fun openAllContactTable(db: SQLiteDatabase) {
+        val weChatDataList = ArrayList<WechatBean>()
+        //查询所有联系人（verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
+        val c1 = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null)
+        val defile = SPHelper.create(App.instance).getString(DB_FILE, "").replace("/storage/emulated/0/tencent/MicroMsg/", "")
+        while (c1.moveToNext()) {
+            val wechatBean = WechatBean()
+            val userName = c1.getString(c1.getColumnIndex("username"))
+            var alias = c1.getString(c1.getColumnIndex("alias"))
+            val nickName = c1.getString(c1.getColumnIndex("nickname"))
+            wechatBean.username = userName
+            //微信用户头像解密
+            val wechatUserAvatarImage = decryptionWechatUserAvatarImage(userName, defile)
+            if (TextUtils.isEmpty(alias)) {
+                alias = userName
+            }
+            wechatBean.avatarImage = wechatUserAvatarImage
+            wechatBean.alias = alias
+            wechatBean.username = userName
+            wechatBean.nickname = nickName
+            weChatDataList.add(wechatBean)
+        }
+        log(("查询所有联系人 :" + Gson().toJson(weChatDataList)))
+    }
+
+    fun decryptionWechatUserAvatarImage(userName: String, defile: String): String {
+        //根据微信的 WechatBean的userName然后使用md5加密，成字符串，再截取前面两个字段的文件目录
+        val decryptionWechatMd5 = decryptionWechatMd5(userName.toByteArray())
+        //decryptionWechatMd5  5f39b18498a4107de947dc9b1e5d29b2
+        val decryptionWechatSubString = decryptionWechatSubString(decryptionWechatMd5)
+        //decryptionWechatSubString  5f/39/
+        // /data/user/0/com.tencent.mm/MicroMsg/1306e8eb3f168108d6f138fd6dbc511e/avatar/5f/39/user_5f39b18498a4107de947dc9b1e5d29b2.png
+        //这个就是当前用户的头像地址
+        return "/data/user/0/com.tencent.mm/MicroMsg/" + defile + "/avatar/" + decryptionWechatSubString + "user_" + decryptionWechatMd5 + ".png"
     }
 
     // 打开用户信息表

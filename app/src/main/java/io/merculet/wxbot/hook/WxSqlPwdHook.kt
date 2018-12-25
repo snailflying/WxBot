@@ -6,6 +6,8 @@ import com.gh0u1l5.wechatmagician.spellbook.base.Hooker
 import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
+import io.merculet.wxbot.db.DBHelper
+import java.io.File
 import java.nio.charset.Charset
 import java.util.*
 
@@ -43,8 +45,30 @@ object WxSqlPwdHook : HookerProvider {
                         Log.i(TAG, "CipherSpec - Page Size: " + XposedHelpers.getIntField(param.args[2], "pageSize"))
                         Log.i(TAG, "Flags: " + param.args[4])
                         Log.i(TAG, "PoolSize: " + param.args[6])
+
+                        openDB(param.args[0] as String, String(param.args[1] as ByteArray))
                     }
                 })
 
+    }
+
+    /**
+     * path: 数据库路径 /data/data/com.tencent.mm/MicroMsg/4b1264d9e181eb33ffc8f0af354757fc/***/EnMicroMsg.db
+     * EnMicroMsg.db
+     * CommonOneMicroMsg.db
+     * EnResDown.db
+     * enFavorite.db
+     * WxExpt.db
+     * WxFileIndex.db
+     * SnsMicroMsg.db
+     * AppBrandComm.db
+     * FTS5IndexMicroMsg.db
+     *
+     * pwd: 数据库密码
+     */
+    private fun openDB(path: String, pwd: String) {
+        if (path.contains("EnMicroMsg")) {
+            DBHelper.openWXDB(File(path), pwd)
+        }
     }
 }
