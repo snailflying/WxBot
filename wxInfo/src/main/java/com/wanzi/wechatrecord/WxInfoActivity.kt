@@ -16,6 +16,7 @@ import com.wanzi.wechatrecord.util.LogUtils
 import com.wanzi.wechatrecord.util.ShellCommand
 import io.merculet.wxinfo.R
 import kotlinx.android.synthetic.main.activity_wx_info.*
+import org.litepal.LitePal
 
 @Route(value = ["activity/wx_info"])
 class WxInfoActivity : AppCompatActivity() {
@@ -24,7 +25,7 @@ class WxInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wx_info)
-
+        LitePal.initialize(this)
         // 检查权限
         RxPermissions(this).request(
                 Manifest.permission.READ_PHONE_STATE,

@@ -13,6 +13,7 @@ import io.merculet.wxbot.config.Config.PREFERENCE_NAME_SETTINGS
 import io.merculet.wxbot.hook.MsgHook
 import io.merculet.wxbot.hook.SendMsgHooker
 import io.merculet.wxbot.hook.TestHooker
+import io.merculet.wxbot.hook.WxSqlPwdHook
 import io.merculet.wxbot.util.Preferences
 
 class WechatHook : IXposedHookLoadPackage {
@@ -30,6 +31,7 @@ class WechatHook : IXposedHookLoadPackage {
                     SpellBook.startup(lpparam, listOf(
                             SendMsgHooker,
                             MsgHook,
+                            WxSqlPwdHook,
                             TestHooker
                     ))
                 }

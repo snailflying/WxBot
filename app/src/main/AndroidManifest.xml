@@ -36,6 +36,15 @@
         <!--</intent-filter>-->
         <!--</activity-alias>-->
 
+        <service
+            android:name="com.wanzi.wechatrecord.CoreService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name="com.wanzi.wechatrecord.CoreSer"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity android:name="com.wanzi.wechatrecord.WxInfoActivity"/>
 
         <provider
