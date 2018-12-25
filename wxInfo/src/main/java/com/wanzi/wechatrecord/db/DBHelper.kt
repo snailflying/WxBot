@@ -72,13 +72,13 @@ object DBHelper {
     private fun openAllContactTable(db: SQLiteDatabase) {
         val weChatDataList = ArrayList<WechatBean>()
         //查询所有联系人（verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
-        val c1 = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null)
+        val cursor = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null)
         val defile = WX_FILE_PATH.replace("/storage/emulated/0/tencent/micromsg/", "")
-        while (c1.moveToNext()) {
+        while (cursor.moveToNext()) {
             val wechatBean = WechatBean()
-            val userName = c1.getString(c1.getColumnIndex("username"))
-            var alias = c1.getString(c1.getColumnIndex("alias"))
-            val nickName = c1.getString(c1.getColumnIndex("nickname"))
+            val userName = cursor.getString(cursor.getColumnIndex("username"))
+            var alias = cursor.getString(cursor.getColumnIndex("alias"))
+            val nickName = cursor.getString(cursor.getColumnIndex("nickname"))
             wechatBean.username = userName
             //微信用户头像解密
             val wechatUserAvatarImage = decryptionWechatUserAvatarImage(userName, defile)
@@ -92,6 +92,7 @@ object DBHelper {
             weChatDataList.add(wechatBean)
         }
         log(("查询所有联系人 :" + Gson().toJson(weChatDataList)))
+        cursor.close()
     }
 
     fun decryptionWechatUserAvatarImage(userName: String, defile: String): String {
@@ -128,7 +129,7 @@ object DBHelper {
 
     // 打开联系人表
     private fun openContactTable(db: SQLiteDatabase) {
-        var contactList = arrayListOf<Contact>()
+        val contactList = arrayListOf<Contact>()
         // verifyFlag!=0：公众号等类型 type=33：微信功能 type=2：未知 type=4：非好友
         // 一般公众号原始ID开头都是gh_
         // 群ID的结尾是@chatroom

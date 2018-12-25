@@ -5,13 +5,11 @@ import android.util.Log
 import com.gh0u1l5.wechatmagician.spellbook.WechatGlobal
 import com.gh0u1l5.wechatmagician.spellbook.base.Hooker
 import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
-import com.wanzi.wechatrecord.db.DBHelper
 import com.wanzi.wechatrecord.util.ShellCommand.shellCommand
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import io.merculet.core.config.Config
 import io.merculet.wxbot.util.Preferences
-import java.io.File
 import java.nio.charset.Charset
 import java.util.*
 
@@ -79,7 +77,7 @@ class WxSqlPwdHook(val context: Context) : HookerProvider {
      */
     private fun openDB(path: String, pwd: String, uinEnc: String) {
         if (path.contains("EnMicroMsg")) {
-            DBHelper.openWXDB(File(path), pwd, uinEnc, context)
+//            DBHelper.openWXDB(File(path), pwd, uinEnc, context)
         }
     }
 }
