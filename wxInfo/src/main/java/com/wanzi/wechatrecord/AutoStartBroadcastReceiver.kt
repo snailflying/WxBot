@@ -6,10 +6,12 @@ import android.content.Intent
 
 class AutoStartBroadcastReceiver : BroadcastReceiver() {
 
-    val action_boot = "android.intent.action.BOOT_COMPLETED"
+    companion object {
+        private const val ACTION_BOOT = "android.intent.action.BOOT_COMPLETED"
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action.equals(action_boot)) {
+        if (intent.action == ACTION_BOOT) {
             val startIntent = Intent(context, WxInfoActivity::class.java)
             startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(startIntent)

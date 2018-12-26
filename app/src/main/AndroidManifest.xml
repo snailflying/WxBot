@@ -36,14 +36,16 @@
         <!--</intent-filter>-->
         <!--</activity-alias>-->
 
-        <service
-            android:name="com.wanzi.wechatrecord.CoreService"
+        <!-- 开机自启动广播接受 -->
+        <receiver
+            android:name="com.wanzi.wechatrecord.AutoStartBroadcastReceiver"
             android:enabled="true"
-            android:exported="true"/>
-        <service
-            android:name="com.wanzi.wechatrecord.CoreSer"
-            android:enabled="true"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name="com.wanzi.wechatrecord.WxInfoActivity"

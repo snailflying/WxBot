@@ -16,14 +16,9 @@ import com.wanzi.wechatrecord.util.ShellCommand
 import io.merculet.core.base.BaseAdapter
 import io.merculet.core.config.Config
 import io.merculet.core.ext.loadCircle
-import io.merculet.core.ext.toast
 import io.merculet.wxinfo.R
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wx_info.*
 import kotlinx.android.synthetic.main.cell_chatroom.view.*
-import java.io.File
 
 @Route(value = [Config.ROUTER_ACTIVITY_WX_INFO])
 class WxInfoActivity : AppCompatActivity() {
@@ -60,10 +55,6 @@ class WxInfoActivity : AppCompatActivity() {
             ShellCommand.shellCommand("chmod 777 $packageCodePath") // 申请Root权限
         } else {
             DBHelper.readDb()
-            Observable.create<File> { emitter ->
-            }.subscribeOn(Schedulers.io()) //发送事件在io线程
-                    .observeOn(AndroidSchedulers.mainThread())//最后切换主线程提示结果
-                    .subscribe({ toast("图片保存成功").show() }, { toast("保存失败").show() })
         }
     }
 

@@ -8,7 +8,6 @@ import com.google.gson.Gson
 import com.wanzi.wechatrecord.entry.*
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatMd5
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatSubString
-import com.wanzi.wechatrecord.util.DBUtils
 import com.wanzi.wechatrecord.util.FileUtils
 import com.wanzi.wechatrecord.util.MD5
 import com.wanzi.wechatrecord.util.TimeUtils
@@ -20,6 +19,8 @@ import io.merculet.core.utils.DeviceInfoUtils
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteDatabaseHook
 import org.jsoup.Jsoup
+import org.litepal.LitePal
+import org.litepal.LitePalDB
 import org.litepal.crud.DataSupport
 import java.io.File
 import java.util.*
@@ -139,7 +140,7 @@ object DBHelper {
         cursor.close()
     }
 
-    fun decryptionWechatUserAvatarImage(userName: String, defile: String): String {
+    private fun decryptionWechatUserAvatarImage(userName: String, defile: String): String {
         //根据微信的 WechatBean的userName然后使用md5加密，成字符串，再截取前面两个字段的文件目录
         val decryptionWechatMd5 = decryptionWechatMd5(userName.toByteArray())
         //decryptionWechatMd5  5f39b18498a4107de947dc9b1e5d29b2
@@ -166,9 +167,16 @@ object DBHelper {
         // 用户信息
         val userInfo = UserInfo(values[0], values[1])
         log("用户信息：$userInfo")
-        FileUtils.writeLog(context, "用户信息：$userInfo\n")
         // 切换数据库
-        DBUtils.switchDBUser(userInfo.username)
+        switchDBUser(userInfo.username)
+    }
+
+    /**
+     * 切换数据库
+     */
+    private fun switchDBUser(dbName: String) {
+        val db = LitePalDB.fromDefault(dbName)
+        LitePal.use(db)
     }
 
     // 打开联系人表
