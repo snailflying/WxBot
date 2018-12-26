@@ -1,11 +1,9 @@
 package com.wanzi.wechatrecord.db
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Toast
 import com.google.gson.Gson
 import com.wanzi.wechatrecord.entry.*
 import com.wanzi.wechatrecord.util.CipherUtil.decryptionWechatMd5
@@ -15,9 +13,13 @@ import com.wanzi.wechatrecord.util.FileUtils
 import com.wanzi.wechatrecord.util.MD5
 import com.wanzi.wechatrecord.util.TimeUtils
 import io.merculet.core.base.App
+import io.merculet.core.config.Config
 import io.merculet.core.config.Config.WX_FILE_PATH
+import io.merculet.core.ext.toast
+import io.merculet.core.utils.DeviceInfoUtils
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteDatabaseHook
+import org.jsoup.Jsoup
 import org.litepal.crud.DataSupport
 import java.io.File
 import java.util.*
@@ -33,7 +35,50 @@ import kotlin.collections.ArrayList
  */
 object DBHelper {
 
-    private var uinEnc = ""                       // 加密后的uin
+    var uinEnc = ""                       // 加密后的uin
+    var dbPwd = ""                        // 数据库密码
+    var uin = ""
+
+    @SuppressLint("MissingPermission")
+    fun readDb() {
+        // 获取数据库密码 数据库密码是IMEI和uin合并后计算MD5值取前7位
+        val imei = DeviceInfoUtils.getDeviceId()    // 获取imei
+        // 修改微信根目录读写权限
+        try {
+            // 获取uin
+            val doc = Jsoup.parse(File(Config.WX_SP_UIN_PATH), "UTF-8")
+            val elements = doc.select("int")
+            elements.filter { it.attr("name") == "_auth_uin" }
+                    .forEach { uin = it.attr("value") }
+            if (uin.isEmpty()) {
+                toast("当前没有登录微信，请登录后重试").show()
+                return
+            }
+            // 获取数据库密码
+            dbPwd = MD5.getMD5Str(imei + uin).substring(0, 7)
+        } catch (e: Exception) {
+            log("破解数据库失败：${e.message}")
+        }
+
+        // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
+        uinEnc = MD5.getMD5Str("mm$uin")
+        log("当前微信用户数据库文件父级文件名：$uinEnc")
+        // 递归查询微信本地数据库文件
+        val dbDir = File(Config.WX_DB_DIR_PATH + uinEnc)
+        log("微信数据库文件目录：$dbDir")
+        val list = FileUtils.searchFile(dbDir, Config.WX_DB_FILE_NAME)
+        for (file in list) {
+            log("微信数据库文件路径：${file.absolutePath}")
+            try {
+                // 将微信数据库拷贝出来，因为直接连接微信的db，会导致微信崩溃
+                FileUtils.copyFile(file.absolutePath, Config.COPY_FILE_PATH)
+                // 打开微信数据库
+                DBHelper.openWXDB(File(Config.COPY_FILE_PATH), dbPwd, uinEnc, App.instance)
+            } catch (e: Exception) {
+                log("复制数据库失败：${e.message}")
+            }
+        }
+    }
 
     /**
      * 微信数据库操作
@@ -42,7 +87,7 @@ object DBHelper {
         log("数据库路径和密码：$file --- $password")
         this.uinEnc = uinEnc
         // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
-        toast("正在打开微信数据库，请稍候...")
+        toast("正在打开微信数据库，请稍候...").show()
         SQLiteDatabase.loadLibs(context)
         val hook = object : SQLiteDatabaseHook {
             override fun preKey(database: SQLiteDatabase) {}
@@ -62,8 +107,6 @@ object DBHelper {
             db.close()
         } catch (e: Exception) {
             log("打开数据库失败：${e.message}")
-            FileUtils.writeLog(context, "打开数据库失败：${e.message}\n")
-            toast("打开数据库失败：${e.message}")
         }
     }
 
@@ -285,13 +328,13 @@ object DBHelper {
 
     // 打开微信群表
     private fun openChatRoomTable(db: SQLiteDatabase) {
-        var chatRoomList = arrayListOf<ChatRoom>()
+        val chatRoomList = arrayListOf<ChatRoom>()
         val cursor = db.rawQuery("select * from chatroom ", arrayOf())
         if (cursor.count > 0) {
             while (cursor.moveToNext()) {
                 val name = cursor.getString(cursor.getColumnIndex("chatroomname"))
                 val memberList = cursor.getString(cursor.getColumnIndex("memberlist"))
-                val displayName = cursor.getString(cursor.getColumnIndex("displayname"))
+//                val displayName = cursor.getString(cursor.getColumnIndex("displayname"))
                 val roomOwner = cursor.getString(cursor.getColumnIndex("roomowner"))
                 var selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName"))
                 val modifyTime = cursor.getLong(cursor.getColumnIndex("modifytime"))
@@ -305,7 +348,7 @@ object DBHelper {
                     val chatRoom = ChatRoom()
                     chatRoom.name = name
                     chatRoom.memberList = memberList
-                    chatRoom.displayName = displayName
+//                    chatRoom.displayname = displayName
                     chatRoom.roomOwner = roomOwner
                     chatRoom.selfDisplayName = selfDisplayName
                     chatRoom.modifyTime = modifyTime
@@ -317,7 +360,6 @@ object DBHelper {
                     val first = list[0]
                     if (first.modifyTime != modifyTime) {
                         first.memberList = memberList
-                        first.displayName = displayName
                         first.roomOwner = roomOwner
                         first.selfDisplayName = selfDisplayName
                         first.modifyTime = modifyTime
@@ -333,11 +375,7 @@ object DBHelper {
         cursor.close()
     }
 
-    private fun toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-        Handler(Looper.getMainLooper()).post { Toast.makeText(App.instance, text, duration).show() }
-    }
-
-    private fun log(msg: String) {
+    fun log(msg: String) {
         Log.i("wxinfo: ", msg)
     }
 

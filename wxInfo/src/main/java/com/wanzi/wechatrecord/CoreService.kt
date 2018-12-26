@@ -1,12 +1,9 @@
 package com.wanzi.wechatrecord
 
-import android.annotation.SuppressLint
 import android.app.IntentService
-import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.Toast
 import com.wanzi.wechatrecord.db.DBHelper.openWXDB
@@ -19,6 +16,7 @@ import io.merculet.core.config.Config.WX_DB_DIR_PATH
 import io.merculet.core.config.Config.WX_DB_FILE_NAME
 import io.merculet.core.config.Config.WX_ROOT_PATH
 import io.merculet.core.config.Config.WX_SP_UIN_PATH
+import io.merculet.core.utils.DeviceInfoUtils
 import org.jsoup.Jsoup
 import java.io.File
 
@@ -29,21 +27,21 @@ class CoreService : IntentService("CoreService") {
     private lateinit var userInfo: UserInfo       // 用户
     private var uinEnc = ""                       // 加密后的uin
 
-    @SuppressLint("MissingPermission")
     override fun onHandleIntent(intent: Intent?) {
+        aa()
+    }
 
+    private fun aa() {
         // 获取数据库密码 数据库密码是IMEI和uin合并后计算MD5值取前7位
         // 获取imei
-        val manager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val imei = manager.deviceId
+        val imei = DeviceInfoUtils.getDeviceId()
         // 修改微信根目录读写权限
         try {
             ShellCommand.shellCommand("chmod -R 777 $WX_ROOT_PATH")
             // 获取uin
             val doc = Jsoup.parse(File(WX_SP_UIN_PATH), "UTF-8")
             val elements = doc.select("int")
-            elements
-                    .filter { it.attr("name") == "_auth_uin" }
+            elements.filter { it.attr("name") == "_auth_uin" }
                     .forEach { uin = it.attr("value") }
             if (uin.isEmpty()) {
                 toast("当前没有登录微信，请登录后重试")

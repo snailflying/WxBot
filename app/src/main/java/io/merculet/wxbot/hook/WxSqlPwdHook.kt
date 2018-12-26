@@ -5,7 +5,6 @@ import android.util.Log
 import com.gh0u1l5.wechatmagician.spellbook.WechatGlobal
 import com.gh0u1l5.wechatmagician.spellbook.base.Hooker
 import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
-import com.wanzi.wechatrecord.util.ShellCommand.shellCommand
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import io.merculet.core.config.Config
@@ -29,7 +28,6 @@ class WxSqlPwdHook(val context: Context) : HookerProvider {
     override fun provideStaticHookers(): List<Hooker>? = listOf(decryptImplHook())
 
     private fun decryptImplHook(): Hooker = Hooker {
-        shellCommand("chmod -R 777 ${Config.WX_ROOT_PATH}")
         XposedHelpers.findAndHookMethod("com.tencent.wcdb.database.SQLiteDatabase", WechatGlobal.wxLoader, "openDatabase", String::class.java,
                 ByteArray::class.java, WechatGlobal.wxLoader?.loadClass("com.tencent.wcdb.database.SQLiteCipherSpec"),
                 WechatGlobal.wxLoader?.loadClass("com.tencent.wcdb.database.SQLiteDatabase\$CursorFactory"), Int::class.javaPrimitiveType,

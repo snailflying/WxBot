@@ -9,8 +9,10 @@ class ChatRoom : DataSupport() {
     var name = ""                // 微信群名，类似id
     var memberList = ""          // 会员微信号列表
     var roomOwner = ""           // 群主
-    var displayName = ""           // 会员昵称列表
+//    var displayname =""        // 会员昵称列表
     var selfDisplayName = ""     // 我在本群昵称
     var modifyTime = 0L          // 修改时间
     var isModify = 0             // 是否修改 0：修改 1：无修改
+
+
 }

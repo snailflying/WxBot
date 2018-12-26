@@ -2,6 +2,7 @@ package io.merculet.wxbot
 
 import android.os.Bundle
 import android.util.Log
+import com.wanzi.wechatrecord.util.ShellCommand
 import io.merculet.core.base.BaseActivity
 import io.merculet.core.config.Config
 import io.merculet.core.ext.routerWithAnim
@@ -15,6 +16,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        ShellCommand.shellCommand("chmod -R 777 ${Config.WX_ROOT_PATH}")
         gotoFragment()
     }
 

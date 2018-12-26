@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FED230</color>
+
+    <color name="white">@android:color/white</color>
+    <color name="darker_gray">@android:color/darker_gray</color>
+
+    <color name="white_transparent">#55ffffff</color>
+
+    <color name="violet">#FF7E3EF4</color>
+    <color name="colorHomeRingStart">#00ECEBFA</color>
+    <color name="colorHomeRingMiddle">#9F9EF7</color>
+    <color name="colorHomeRingEnd">#A580EE</color>
+
+    <color name="statusBarColor">#4A3F82</color>
+    <color name="purple_light">#B0A9F0</color>
+    <color name="dot">#6351C9</color>
+
+    <color name="list_bg">#197B4EF7</color>
+    <!--activity通用背景色-->
+    <color name="page_bg">@color/white</color>
+    <color name="color_bound_user_name">#A2A4A6</color>
+    <color name="color_bind_on_account">#7A3DF9</color>
+    <color name="showcase_bg">#AA000000</color>
+    <color name="guide_ring">#FF23CDFF</color>
+    <color name="pull_down_header">#FF7E3EF4</color>
+    <color name="indicator_selected">#FF8E8BE3</color>
+    <color name="indicator_normal">#FFE8E7F9</color>
+
+
+    <!-- 登陆页面沉浸式菜单栏特制背景-->
+
+    <color name="about_gray_bg">#F5F5F5</color>
+    <color name="text_click_blue">#6B36AB</color>
+
+    <!--规范设计Start-->
+    <color name="gray_tran">#339B9B9B</color>
+    <color name="bottom_tab_selected">#4949DD</color>
+    <color name="bottom_tab_normal">#DBDBDB</color>
+    <color name="bg_start">#604A95</color>
+    <color name="bg_end">#253E6E</color>
+    <color name="btn_start">#9666FB</color>
+    <color name="btn_end">#6B65E4</color>
+    <color name="btn_pressed_start">#733AE9</color>
+    <color name="btn_pressed_end">#635CF2</color>
+    <color name="title_start">#6D4ACA</color>
+    <color name="title_end">#9F5AD4</color>
+    <color name="btn_disable_start">#E3D6FE</color>
+    <color name="btn_disable_end">#D9D7F8</color>
+    <color name="edit_bg">#A4A4EE</color>
+    <color name="toast_bg">#CC6648C9</color>
+    <color name="share_bg">#6648C9</color>
+    <color name="toast_text">#6B36AB</color>
+    <color name="text_gray">#FF4A4A4A</color>
+    <color name="text_light_gray">#9B9B9B</color>
+    <color name="text_violet">@color/violet</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_yellow">#FFAE28</color>
+    <color name="text_blue">#58A3FF</color>
+    <color name="button_violet">#9657D2</color>
+    <!--规范设计End-->
+
+    <color name="edit_underline" tools:keep="@color/edit_underline">@color/violet</color>
+
+</resources>
