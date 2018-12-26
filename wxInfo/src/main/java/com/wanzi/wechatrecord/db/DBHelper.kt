@@ -39,6 +39,7 @@ object DBHelper {
      * 微信数据库操作
      */
     fun openWXDB(file: File, password: String, uinEnc: String, context: Context) {
+        log("数据库路径和密码：$file --- $password")
         this.uinEnc = uinEnc
         // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
         toast("正在打开微信数据库，请稍候...")
@@ -159,7 +160,7 @@ object DBHelper {
                     contactList.add(contact)
                 }
             }
-            log("微信联系人列表:  "+Gson().toJson(contactList))
+            log("微信联系人列表:  " + Gson().toJson(contactList))
         }
         cursor.close()
     }
@@ -274,7 +275,7 @@ object DBHelper {
                             }
                         }
                     }
-                    log("聊天信息："+Gson().toJson(message))
+                    log("聊天信息：" + Gson().toJson(message))
                     message.save()
                 }
             }
@@ -290,6 +291,7 @@ object DBHelper {
             while (cursor.moveToNext()) {
                 val name = cursor.getString(cursor.getColumnIndex("chatroomname"))
                 val memberList = cursor.getString(cursor.getColumnIndex("memberlist"))
+                val displayName = cursor.getString(cursor.getColumnIndex("displayname"))
                 val roomOwner = cursor.getString(cursor.getColumnIndex("roomowner"))
                 var selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName"))
                 val modifyTime = cursor.getLong(cursor.getColumnIndex("modifytime"))
@@ -303,28 +305,30 @@ object DBHelper {
                     val chatRoom = ChatRoom()
                     chatRoom.name = name
                     chatRoom.memberList = memberList
+                    chatRoom.displayName = displayName
                     chatRoom.roomOwner = roomOwner
                     chatRoom.selfDisplayName = selfDisplayName
                     chatRoom.modifyTime = modifyTime
                     chatRoom.save()
                     chatRoomList.add(chatRoom)
-                    log("微信群信息 :"+Gson().toJson(chatRoom))
+                    log("微信群信息 :" + Gson().toJson(chatRoom))
                 } else {
                     // 修改群信息
                     val first = list[0]
                     if (first.modifyTime != modifyTime) {
                         first.memberList = memberList
+                        first.displayName = displayName
                         first.roomOwner = roomOwner
                         first.selfDisplayName = selfDisplayName
                         first.modifyTime = modifyTime
                         first.isModify = 0
                         first.save()
                         chatRoomList.add(first)
-                        log("微信群信息 :"+Gson().toJson(first))
+                        log("微信群信息 :" + Gson().toJson(first))
                     }
                 }
             }
-            log("微信群信息 :"+Gson().toJson(chatRoomList))
+            log("微信群信息 :" + Gson().toJson(chatRoomList))
         }
         cursor.close()
     }

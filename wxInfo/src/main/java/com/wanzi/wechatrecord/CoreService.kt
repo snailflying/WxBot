@@ -51,7 +51,6 @@ class CoreService : IntentService("CoreService") {
             }
             // 获取数据库密码
             dbPwd = MD5.getMD5Str(imei + uin).substring(0, 7)
-            log("数据库密码：$dbPwd")
             FileUtils.writeLog(this, "数据库密码：$dbPwd\n")
         } catch (e: Exception) {
             log("破解数据库失败：${e.message}")
