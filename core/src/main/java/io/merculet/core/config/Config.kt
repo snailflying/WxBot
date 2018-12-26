@@ -33,6 +33,8 @@ object Config {
     const val PROVIDER_PREF_KEY = "key"
     const val PROVIDER_PREF_VALUE = "value"
     const val PROVIDER_PREF_TYPE = "type"
+    const val DB_PWD = "db_pwd"
+    const val UIN_ENC = "uin_enc"
 
     // wx_id 和消息 的分隔符号，可以使用 wx_id 中不会出现的字符
     const val WX_MSG_SPLIT = "\t"

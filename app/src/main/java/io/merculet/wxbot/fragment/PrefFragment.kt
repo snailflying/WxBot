@@ -21,7 +21,7 @@ import io.merculet.core.config.Config.FOLDER_SHARED_PREFS
 import io.merculet.core.config.Config.SETTINGS_INTERFACE_HIDE_ICON
 import io.merculet.core.ext.routerWithAnim
 import io.merculet.wxbot.R
-import io.merculet.wxbot.util.Utils
+import io.merculet.core.utils.Utils
 import io.merculet.wxbot.util.ext.putExtra
 import java.io.File
 

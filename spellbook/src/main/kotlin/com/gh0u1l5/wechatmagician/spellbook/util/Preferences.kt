@@ -1,23 +1,39 @@
-package io.merculet.wxbot.util
+package com.gh0u1l5.wechatmagician.spellbook.util
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.net.Uri
-import com.gh0u1l5.wechatmagician.spellbook.base.WaitChannel
-import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryAsynchronously
 import de.robv.android.xposed.XSharedPreferences
 import io.merculet.core.config.Config
 import io.merculet.core.config.Config.ACTION_UPDATE_PREF
 import io.merculet.core.config.Config.FOLDER_SHARED_PREFS
 import io.merculet.core.config.Config.PREFERENCE_PROVIDER_AUTHORITY
+import io.merculet.core.utils.Utils
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-class Preferences(private val preferencesName: String) : SharedPreferences {
+class Preferences private constructor(private val preferencesName: String) : SharedPreferences {
+
+    companion object {
+        @SuppressLint("StaticFieldLeak")
+        @Volatile
+        private var defaultInstance: Preferences? = null
+
+        fun create(preferencesName: String): Preferences? {
+            if (defaultInstance == null) {
+                synchronized(Preferences::class.java) {
+                    if (defaultInstance == null) {
+                        defaultInstance = Preferences(preferencesName)
+                    }
+                }
+            }
+            return defaultInstance
+        }
+    }
 
     // loadChannel resumes all the threads waiting for the preference loading.
     private val loadChannel = WaitChannel()
-
 
     // legacy is prepared for the fallback logic if ContentProvider is not working.
     private var legacy: XSharedPreferences? = null
@@ -89,7 +105,7 @@ class Preferences(private val preferencesName: String) : SharedPreferences {
 
     override fun contains(key: String): Boolean = content.contains(key) || legacy?.contains(key) == true
 
-    override fun getAll(): MutableMap<String, *>? = if (legacy != null) legacy!!.all else content
+    override fun getAll(): MutableMap<String, *>? = if (legacy != null) legacy?.all else content
 
     private fun getValue(key: String): Any? {
         loadChannel.wait(100)

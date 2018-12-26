@@ -1,14 +1,15 @@
 package io.merculet.wxbot.hook
 
-import android.content.Context
 import android.util.Log
 import com.gh0u1l5.wechatmagician.spellbook.WechatGlobal
 import com.gh0u1l5.wechatmagician.spellbook.base.Hooker
 import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
+import com.wanzi.wechatrecord.util.FileUtils
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import io.merculet.core.config.Config
-import io.merculet.wxbot.util.Preferences
+import io.merculet.core.config.Config.COPY_FILE_PATH
+import io.merculet.wxbot.WechatHook.Companion.settings
 import java.nio.charset.Charset
 import java.util.*
 
@@ -19,11 +20,9 @@ import java.util.*
  * @Date 2018/12/25 10:43 AM
  * @Version 1.0.0
  */
-class WxSqlPwdHook(val context: Context) : HookerProvider {
+object WxSqlPwdHook : HookerProvider {
 
     private val TAG = "wxinfo"
-
-    val settings = Preferences(Config.PREFERENCE_NAME_SETTINGS)
 
     override fun provideStaticHookers(): List<Hooker>? = listOf(decryptImplHook())
 
@@ -72,11 +71,17 @@ class WxSqlPwdHook(val context: Context) : HookerProvider {
      *
      * pwd: 数据库密码 - 0609f84
      * uinEnc: 加密后的uin - 4b1264d9e181eb33ffc8f0af354757fc
+     *
+     * 我们千万不可以直接通过net.sqlcipher.database.SQLiteDatabase这个类来连接我们上一步里面查找到的微信目录下的EnMicroMsg.db文件，可能是因为一个数据库文件不能被多次连接的情况，
+     * 只要我们一成功连接上那个db文件，微信的客户端就会自动退出登录，并且会出现异常。所有我现在的做法是把这个db文件拷贝到我们自己的app目录下，再进行连接。
      */
     private fun openDB(path: String, pwd: String, uinEnc: String) {
         if (path.contains("EnMicroMsg")) {
-//            FileUtils.copyFile(path, COPY_FILE_PATH)    //我们千万不可以直接通过net.sqlcipher.database.SQLiteDatabase这个类来连接我们上一步里面查找到的微信目录下的EnMicroMsg.db文件，可能是因为一个数据库文件不能被多次连接的情况，只要我们一成功连接上那个db文件，微信的客户端就会自动退出登录，并且会出现异常。所有我现在的做法是把这个db文件拷贝到我们自己的app目录下，再进行连接。
-//            DBHelper.openWXDB(File(COPY_FILE_PATH), pwd, uinEnc, context)
+            FileUtils.copyFile(path, COPY_FILE_PATH)
+            settings?.edit()
+                    ?.putString(Config.DB_PWD, pwd)
+                    ?.putString(Config.UIN_ENC, uinEnc)
+                    ?.apply()
         }
     }
 }

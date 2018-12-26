@@ -90,9 +90,11 @@ object DBHelper {
     /**
      * 微信数据库操作
      */
-    fun openWXDB(file: File, password: String, uinEnc: String, context: Context) {
+    fun openWXDB(file: File, password: String?, uinEnc: String?, context: Context, success: (() -> Unit?)? = null, fail: ((e: Exception) -> Unit?)? = null) {
+        this.success = success
+        this.fail = fail
         log("数据库路径和密码：$file --- $password")
-        this.uinEnc = uinEnc
+        this.uinEnc = uinEnc.toString()
         // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
         toast("正在打开微信数据库，请稍候...")
         SQLiteDatabase.loadLibs(context)
@@ -349,7 +351,8 @@ object DBHelper {
                 val memberList = cursor.getString(cursor.getColumnIndex("memberlist"))
                 val displayname = cursor.getString(cursor.getColumnIndex("displayname"))
                 val roomOwner = cursor.getString(cursor.getColumnIndex("roomowner"))
-                val selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName")) ?: ""
+                val selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName"))
+                        ?: ""
                 val modifyTime = cursor.getLong(cursor.getColumnIndex("modifytime"))
 //                val list = DataSupport.where("name = ?", name).find(ChatRoom::class.java)
                 val chatRoom = ChatRoom()

@@ -1,4 +1,4 @@
-package io.merculet.wxbot.util
+package io.merculet.core.utils
 
 import android.annotation.SuppressLint
 import android.content.Context

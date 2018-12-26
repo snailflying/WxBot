@@ -4,11 +4,11 @@ import android.widget.Adapter
 import android.widget.BaseAdapter
 import com.gh0u1l5.wechatmagician.spellbook.SpellBook.getApplicationVersion
 import com.gh0u1l5.wechatmagician.spellbook.base.Version
-import com.gh0u1l5.wechatmagician.spellbook.base.WaitChannel
 import com.gh0u1l5.wechatmagician.spellbook.parser.ApkFile
 import com.gh0u1l5.wechatmagician.spellbook.parser.ClassTrie
 import com.gh0u1l5.wechatmagician.spellbook.util.BasicUtil.tryAsynchronously
 import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
+import com.gh0u1l5.wechatmagician.spellbook.util.WaitChannel
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import java.lang.ref.WeakReference

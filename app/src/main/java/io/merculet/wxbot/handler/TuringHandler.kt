@@ -1,8 +1,8 @@
 package io.merculet.wxbot.handler
 
 import com.gh0u1l5.wechatmagician.spellbook.util.LogUtil
-import io.merculet.wxbot.WechatHook
 import io.merculet.core.config.Config
+import io.merculet.wxbot.WechatHook.Companion.settings
 import io.merculet.wxbot.domain.ReplyRes
 import io.merculet.wxbot.domain.TuringReq
 import io.merculet.wxbot.hook.Methods
@@ -16,8 +16,8 @@ import io.merculet.wxbot.util.OkHttpUtils
  * @Description
  */
 class TuringHandler : AbsHandler() {
-    private val pref = WechatHook.settings
-    private fun isPluginEnabled() = pref.getBoolean(Config.SETTINGS_TURING_MASTER, false)
+    private val pref = settings
+    private fun isPluginEnabled() = pref!!.getBoolean(Config.SETTINGS_TURING_MASTER, false)
     private val botName = "@Xposed"
     private val groupSymbol = "@chatroom"
 

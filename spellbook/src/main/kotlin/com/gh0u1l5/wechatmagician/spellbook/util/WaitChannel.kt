@@ -1,4 +1,4 @@
-package com.gh0u1l5.wechatmagician.spellbook.base
+package com.gh0u1l5.wechatmagician.spellbook.util
 
 /**
  * 用 Java 实现的一个安全的 Wait Channel, 用来让若干线程安全地阻塞到事件结束
