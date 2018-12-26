@@ -39,7 +39,7 @@ object DBHelper {
     var uinEnc = ""                       // 加密后的uin
     var dbPwd = ""                        // 数据库密码
     var uin = ""
-    var callback: (() -> Unit?)? =null
+    var callback: (() -> Unit?)? = null
 
     @SuppressLint("MissingPermission")
     fun readDb(callback: () -> Unit) {
@@ -347,13 +347,11 @@ object DBHelper {
             while (cursor.moveToNext()) {
                 val name = cursor.getString(cursor.getColumnIndex("chatroomname"))
                 val memberList = cursor.getString(cursor.getColumnIndex("memberlist"))
-//                val displayName = cursor.getString(cursor.getColumnIndex("displayname"))
+                val displayname = cursor.getString(cursor.getColumnIndex("displayname"))
                 val roomOwner = cursor.getString(cursor.getColumnIndex("roomowner"))
-                var selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName"))
+                val selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName"))
+                        ?: ""
                 val modifyTime = cursor.getLong(cursor.getColumnIndex("modifytime"))
-                if (selfDisplayName == null) {
-                    selfDisplayName = ""
-                }
                 val list = DataSupport.where("name = ?", name).find(ChatRoom::class.java)
                 chatRoomList.addAll(list)
                 if (list.isEmpty()) {
@@ -361,25 +359,24 @@ object DBHelper {
                     val chatRoom = ChatRoom()
                     chatRoom.name = name
                     chatRoom.memberList = memberList
-//                    chatRoom.displayname = displayName
+                    chatRoom.displayname = displayname
                     chatRoom.roomOwner = roomOwner
                     chatRoom.selfDisplayName = selfDisplayName
                     chatRoom.modifyTime = modifyTime
                     chatRoom.save()
                     chatRoomList.add(chatRoom)
-                    log("微信群信息 :" + Gson().toJson(chatRoom))
                 } else {
                     // 修改群信息
                     val first = list[0]
                     if (first.modifyTime != modifyTime) {
                         first.memberList = memberList
                         first.roomOwner = roomOwner
+                        first.displayname = displayname
                         first.selfDisplayName = selfDisplayName
                         first.modifyTime = modifyTime
                         first.isModify = 0
                         first.save()
                         chatRoomList.add(first)
-                        log("微信群信息 :" + Gson().toJson(first))
                     }
                 }
             }

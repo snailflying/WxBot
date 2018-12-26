@@ -69,10 +69,18 @@ class WxInfoActivity : AppCompatActivity() {
                 val list = arrayListOf<ContactEntity>()
                 val chatRoomList = DBHelper.chatRoomList
                 val contactList = DBHelper.contactList
+                //好友
                 list.add(ContactEntity("联系人列表", "", "0"))
                 contactList.forEach { it -> list.add(ContactEntity(it.nickname)) }
-                list.add(ContactEntity("群成员列表", "", "0"))
-                contactList.forEach { it -> list.add(ContactEntity(it.nickname)) }
+
+                //群组
+                list.add(ContactEntity("群组成员列表", "", "0"))
+                chatRoomList.forEach { it ->
+                    run {
+                        list.add(ContactEntity("群名: " + it.name, "", "0"))
+                        it.displayname.split("、").forEach { it -> list.add(ContactEntity(it)) }
+                    }
+                }
                 helpAdapter.setData(list)
             }
         }
@@ -95,8 +103,8 @@ class HelpAdapter : BaseAdapter<ContactEntity>() {
     override fun getLayoutId(viewType: Int): Int = R.layout.cell_chatroom
 
     override fun onBindViewHolderImpl(holder: BaseViewHolder, position: Int, t: ContactEntity) {
-        if (t.type == "0") holder.itemView.iv_avatar.visibility = View.GONE
-        holder.itemView.iv_avatar.loadCircle("")
+        holder.itemView.iv_avatar.visibility = if (t.type == "0") View.GONE else View.VISIBLE
+        holder.itemView.iv_avatar.loadCircle(R.drawable.shape_default_circle_bg)
         holder.itemView.tv_nickname.text = t.nickname
     }
 }
