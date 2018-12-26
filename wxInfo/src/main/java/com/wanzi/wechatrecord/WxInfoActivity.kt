@@ -56,9 +56,11 @@ class WxInfoActivity : AppCompatActivity() {
     private fun initView() {
         refreshLayout?.setEnableLoadMore(false)
         refreshLayout?.autoRefresh()
-        refreshLayout?.setOnRefreshListener { checkRoot() }
         rv_contact.layoutManager = LinearLayoutManager(this, OrientationHelper.VERTICAL, false)
         rv_contact.adapter = helpAdapter
+        refreshLayout?.setOnRefreshListener { checkRoot() }
+//        initData()
+//        helpAdapter.setData(list)
     }
 
     @SuppressLint("CheckResult")
@@ -70,23 +72,7 @@ class WxInfoActivity : AppCompatActivity() {
         } else {
             Observable.create<List<ContactEntity>> { emitter ->
                 DBHelper.readDb({
-                    refreshLayout?.finishRefresh()
-                    val list = arrayListOf<ContactEntity>()
-                    val chatRoomList = DBHelper.chatRoomList
-                    val contactList = DBHelper.contactList
-                    //好友
-                    list.add(ContactEntity("联系人列表", "", "0"))
-                    contactList.forEach { it ->
-                        if(it.username != "filehelper") list.add(ContactEntity(it.nickname, it.avatar))
-                    }
-                    //群组
-                    list.add(ContactEntity("群组成员列表", "", "0"))
-                    chatRoomList.forEach { chatRoom ->
-                        run {
-                            list.add(ContactEntity("群名: " + chatRoom.name, "", "0"))
-                            chatRoom.displayname.split("、").forEachIndexed { index, s -> list.add(ContactEntity(s, chatRoom.avatarList[index])) }
-                        }
-                    }
+                    initData()
                     emitter.onNext(list)
                 }, { it -> emitter.onError(it) })
             }.subscribeOn(Schedulers.io()) //发送事件在io线程
@@ -95,6 +81,25 @@ class WxInfoActivity : AppCompatActivity() {
                         refreshLayout?.finishRefresh()
                         toast(it.message.toString())
                     })
+        }
+    }
+
+    val list = arrayListOf<ContactEntity>()
+    private fun initData() {
+        list.clear()
+        refreshLayout?.finishRefresh()
+        val chatRoomList = DBHelper.chatRoomList
+        val contactList = DBHelper.contactList
+        //好友
+        list.add(ContactEntity("联系人列表", "", "0"))
+        contactList.forEach { it -> if (it.username != "filehelper") list.add(ContactEntity(it.nickname, it.avatar)) }
+        //群组
+        list.add(ContactEntity("群组成员列表", "", "0"))
+        chatRoomList.forEach { chatRoom ->
+            run {
+                list.add(ContactEntity("群名: " + chatRoom.name, "", "0"))
+                chatRoom.displayname.split("、").forEachIndexed { index, s -> list.add(ContactEntity(s, chatRoom.avatarList[index])) }
+            }
         }
     }
 
