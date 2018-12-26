@@ -2,16 +2,20 @@ package com.wanzi.wechatrecord
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.widget.Toast
 import com.chenenyu.router.annotation.Route
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wanzi.wechatrecord.db.DBHelper
+import com.wanzi.wechatrecord.entry.ContactEntity
 import com.wanzi.wechatrecord.util.ShellCommand
 import io.merculet.core.base.BaseAdapter
 import io.merculet.core.config.Config
@@ -23,6 +27,7 @@ import kotlinx.android.synthetic.main.cell_chatroom.view.*
 @Route(value = [Config.ROUTER_ACTIVITY_WX_INFO])
 class WxInfoActivity : AppCompatActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +45,16 @@ class WxInfoActivity : AppCompatActivity() {
                         Toast.makeText(this, "请打开相关权限", Toast.LENGTH_SHORT).show()
                     }
                 }
-        btn.setOnClickListener { checkRoot() }
     }
 
+    private val helpAdapter = HelpAdapter()
+
     private fun initView() {
-        rv_wx.layoutManager = LinearLayoutManager(this, OrientationHelper.VERTICAL, false)
+        refreshLayout?.setEnableLoadMore(false)
+        refreshLayout?.autoRefresh()
+        refreshLayout?.setOnRefreshListener { checkRoot() }
+        rv_contact.layoutManager = LinearLayoutManager(this, OrientationHelper.VERTICAL, false)
+        rv_contact.adapter = helpAdapter
     }
 
     @SuppressLint("CheckResult")
@@ -54,7 +64,17 @@ class WxInfoActivity : AppCompatActivity() {
             Log.i("wxinfo", "检测到未拥有Root权限")
             ShellCommand.shellCommand("chmod 777 $packageCodePath") // 申请Root权限
         } else {
-            DBHelper.readDb()
+            DBHelper.readDb {
+                refreshLayout?.finishRefresh()
+                val list = arrayListOf<ContactEntity>()
+                val chatRoomList = DBHelper.chatRoomList
+                val contactList = DBHelper.contactList
+                list.add(ContactEntity("联系人列表", "", "0"))
+                contactList.forEach { it -> list.add(ContactEntity(it.nickname)) }
+                list.add(ContactEntity("群成员列表", "", "0"))
+                contactList.forEach { it -> list.add(ContactEntity(it.nickname)) }
+                helpAdapter.setData(list)
+            }
         }
     }
 
@@ -68,15 +88,15 @@ class WxInfoActivity : AppCompatActivity() {
         }
         return super.onKeyDown(keyCode, event)
     }
-
 }
 
-class HelpAdapter : BaseAdapter<String>() {
+class HelpAdapter : BaseAdapter<ContactEntity>() {
 
     override fun getLayoutId(viewType: Int): Int = R.layout.cell_chatroom
 
-    override fun onBindViewHolderImpl(holder: BaseViewHolder, position: Int, t: String) {
+    override fun onBindViewHolderImpl(holder: BaseViewHolder, position: Int, t: ContactEntity) {
+        if (t.type == "0") holder.itemView.iv_avatar.visibility = View.GONE
         holder.itemView.iv_avatar.loadCircle("")
-        holder.itemView.tv_nickname.text = t
+        holder.itemView.tv_nickname.text = t.nickname
     }
 }

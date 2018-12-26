@@ -39,9 +39,11 @@ object DBHelper {
     var uinEnc = ""                       // 加密后的uin
     var dbPwd = ""                        // 数据库密码
     var uin = ""
+    var callback: (() -> Unit?)? =null
 
     @SuppressLint("MissingPermission")
-    fun readDb() {
+    fun readDb(callback: () -> Unit) {
+        this.callback = callback
         // 获取数据库密码 数据库密码是IMEI和uin合并后计算MD5值取前7位
         val imei = DeviceInfoUtils.getDeviceId()    // 获取imei
         // 修改微信根目录读写权限
@@ -105,6 +107,7 @@ object DBHelper {
             openMessageTable(db)
             openChatRoomTable(db)
             openAllContactTable(db)
+            callback?.invoke()
             db.close()
         } catch (e: Exception) {
             log("打开数据库失败：${e.message}")
@@ -179,9 +182,10 @@ object DBHelper {
         LitePal.use(db)
     }
 
+    val contactList = arrayListOf<Contact>()
     // 打开联系人表
     private fun openContactTable(db: SQLiteDatabase) {
-        val contactList = arrayListOf<Contact>()
+        contactList.clear()
         // verifyFlag!=0：公众号等类型 type=33：微信功能 type=2：未知 type=4：非好友
         // 一般公众号原始ID开头都是gh_
         // 群ID的结尾是@chatroom
@@ -334,9 +338,10 @@ object DBHelper {
         cursor.close()
     }
 
+    val chatRoomList = arrayListOf<ChatRoom>()
     // 打开微信群表
     private fun openChatRoomTable(db: SQLiteDatabase) {
-        val chatRoomList = arrayListOf<ChatRoom>()
+        chatRoomList.clear()
         val cursor = db.rawQuery("select * from chatroom ", arrayOf())
         if (cursor.count > 0) {
             while (cursor.moveToNext()) {
