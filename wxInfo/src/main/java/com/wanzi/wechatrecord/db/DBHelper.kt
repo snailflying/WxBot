@@ -126,7 +126,6 @@ object DBHelper {
         val weChatDataList = ArrayList<WechatBean>()
         //查询所有联系人（verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
         val cursor = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null)
-        val defile = WX_FILE_PATH.replace("/storage/emulated/0/tencent/micromsg/", "")
         while (cursor.moveToNext()) {
             val wechatBean = WechatBean()
             val userName = cursor.getString(cursor.getColumnIndex("username"))
@@ -134,7 +133,7 @@ object DBHelper {
             val nickName = cursor.getString(cursor.getColumnIndex("nickname"))
             wechatBean.username = userName
             //微信用户头像解密
-            val wechatUserAvatarImage = decryptionWechatUserAvatarImage(userName, defile)
+            val wechatUserAvatarImage = decryptionWechatUserAvatarImage(userName, uinEnc)
             if (TextUtils.isEmpty(alias)) {
                 alias = userName
             }
@@ -207,18 +206,14 @@ object DBHelper {
                 val nickname = cursor.getString(cursor.getColumnIndex("nickname"))
                 val type = cursor.getString(cursor.getColumnIndex("type"))
                 val conRemark = cursor.getString(cursor.getColumnIndex("conRemark"))
-                // 避免保存重复数据
-                val list = DataSupport.where("username = ?", username).find(Contact::class.java)
-                contactList.addAll(list)
-                if (list.isEmpty()) {
-                    val contact = Contact()
-                    contact.username = username
-                    contact.nickname = nickname
-                    contact.type = type
-                    contact.conRemark = conRemark
-                    contact.save()
-                    contactList.add(contact)
-                }
+//                val list = DataSupport.where("username = ?", username).find(Contact::class.java)  // 避免保存重复数据
+                val contact = Contact()
+                contact.username = username
+                contact.nickname = nickname
+                contact.type = type
+                contact.conRemark = conRemark
+                contact.avatar = decryptionWechatUserAvatarImage(username, uinEnc)
+                contactList.add(contact)
             }
             log("微信联系人列表:  " + Gson().toJson(contactList))
         }
@@ -354,36 +349,20 @@ object DBHelper {
                 val memberList = cursor.getString(cursor.getColumnIndex("memberlist"))
                 val displayname = cursor.getString(cursor.getColumnIndex("displayname"))
                 val roomOwner = cursor.getString(cursor.getColumnIndex("roomowner"))
-                val selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName"))
-                        ?: ""
+                val selfDisplayName = cursor.getString(cursor.getColumnIndex("selfDisplayName")) ?: ""
                 val modifyTime = cursor.getLong(cursor.getColumnIndex("modifytime"))
-                val list = DataSupport.where("name = ?", name).find(ChatRoom::class.java)
-                chatRoomList.addAll(list)
-                if (list.isEmpty()) {
-                    // 新建群信息
-                    val chatRoom = ChatRoom()
-                    chatRoom.name = name
-                    chatRoom.memberList = memberList
-                    chatRoom.displayname = displayname
-                    chatRoom.roomOwner = roomOwner
-                    chatRoom.selfDisplayName = selfDisplayName
-                    chatRoom.modifyTime = modifyTime
-                    chatRoom.save()
-                    chatRoomList.add(chatRoom)
-                } else {
-                    // 修改群信息
-                    val first = list[0]
-                    if (first.modifyTime != modifyTime) {
-                        first.memberList = memberList
-                        first.roomOwner = roomOwner
-                        first.displayname = displayname
-                        first.selfDisplayName = selfDisplayName
-                        first.modifyTime = modifyTime
-                        first.isModify = 0
-                        first.save()
-                        chatRoomList.add(first)
-                    }
+//                val list = DataSupport.where("name = ?", name).find(ChatRoom::class.java)
+                val chatRoom = ChatRoom()
+                memberList.split(";").forEach {
+                    chatRoom.avatarList.add(decryptionWechatUserAvatarImage(it, uinEnc))
                 }
+                chatRoom.name = name
+                chatRoom.memberList = memberList
+                chatRoom.displayname = displayname
+                chatRoom.roomOwner = roomOwner
+                chatRoom.selfDisplayName = selfDisplayName
+                chatRoom.modifyTime = modifyTime
+                chatRoomList.add(chatRoom)
             }
             log("微信群信息 :" + Gson().toJson(chatRoomList))
         }

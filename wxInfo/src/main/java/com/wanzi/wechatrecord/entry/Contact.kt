@@ -12,4 +12,5 @@ class Contact : DataSupport(), Serializable {
     var nickname = ""
     var type = ""
     var conRemark = ""
+    var avatar = ""
 }
