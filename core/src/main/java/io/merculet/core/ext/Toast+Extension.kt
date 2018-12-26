@@ -2,8 +2,9 @@ package io.merculet.core.ext
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.support.annotation.ColorInt
-import android.support.annotation.StringRes
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -76,11 +77,11 @@ fun Toast.setBackground(@ColorInt messageColor: Int = Color.WHITE): Toast {
 }
 
 @SuppressLint("ShowToast")
-fun toast(text: CharSequence): Toast = Toast.makeText(App.instance, text, Toast.LENGTH_SHORT)
-        .setGravityCenter()
-        .setBackground()
-
-@SuppressLint("ShowToast")
-fun toast(@StringRes res: Int, duration: Int = Toast.LENGTH_SHORT): Toast = Toast.makeText(App.instance, App.instance.resources.getString(res), duration)
-        .setGravityCenter()
-        .setBackground()
+fun toast(text: CharSequence) {
+    Handler(Looper.getMainLooper()).post {
+        Toast.makeText(App.instance, text, Toast.LENGTH_SHORT)
+                .setGravityCenter()
+                .setBackground()
+                .show()
+    }
+}

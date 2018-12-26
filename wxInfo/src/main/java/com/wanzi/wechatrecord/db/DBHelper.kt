@@ -39,11 +39,13 @@ object DBHelper {
     var uinEnc = ""                       // 加密后的uin
     var dbPwd = ""                        // 数据库密码
     var uin = ""
-    var callback: (() -> Unit?)? = null
+    var success: (() -> Unit?)? = null
+    var fail: ((e: Exception) -> Unit?)? = null
 
     @SuppressLint("MissingPermission")
-    fun readDb(callback: () -> Unit) {
-        this.callback = callback
+    fun readDb(success: () -> Unit, fail: (e: Exception) -> Unit) {
+        this.success = success
+        this.fail = fail
         // 获取数据库密码 数据库密码是IMEI和uin合并后计算MD5值取前7位
         val imei = DeviceInfoUtils.getDeviceId()    // 获取imei
         // 修改微信根目录读写权限
@@ -54,13 +56,14 @@ object DBHelper {
             elements.filter { it.attr("name") == "_auth_uin" }
                     .forEach { uin = it.attr("value") }
             if (uin.isEmpty()) {
-                toast("当前没有登录微信，请登录后重试").show()
+                toast("当前没有登录微信，请登录后重试")
                 return
             }
             // 获取数据库密码
             dbPwd = MD5.getMD5Str(imei + uin).substring(0, 7)
         } catch (e: Exception) {
             log("破解数据库失败：${e.message}")
+            fail.invoke(e)
         }
 
         // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
@@ -79,6 +82,7 @@ object DBHelper {
                 DBHelper.openWXDB(File(Config.COPY_FILE_PATH), dbPwd, uinEnc, App.instance)
             } catch (e: Exception) {
                 log("复制数据库失败：${e.message}")
+                fail.invoke(e)
             }
         }
     }
@@ -90,7 +94,7 @@ object DBHelper {
         log("数据库路径和密码：$file --- $password")
         this.uinEnc = uinEnc
         // 获取当前微信登录用户的数据库文件父级文件夹名（MD5("mm"+uin) ）
-        toast("正在打开微信数据库，请稍候...").show()
+        toast("正在打开微信数据库，请稍候...")
         SQLiteDatabase.loadLibs(context)
         val hook = object : SQLiteDatabaseHook {
             override fun preKey(database: SQLiteDatabase) {}
@@ -107,10 +111,11 @@ object DBHelper {
             openMessageTable(db)
             openChatRoomTable(db)
             openAllContactTable(db)
-            callback?.invoke()
+            success?.invoke()
             db.close()
         } catch (e: Exception) {
             log("打开数据库失败：${e.message}")
+            fail?.invoke(e)
         }
     }
 

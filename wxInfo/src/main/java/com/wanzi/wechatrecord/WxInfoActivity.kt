@@ -20,7 +20,11 @@ import com.wanzi.wechatrecord.util.ShellCommand
 import io.merculet.core.base.BaseAdapter
 import io.merculet.core.config.Config
 import io.merculet.core.ext.loadCircle
+import io.merculet.core.ext.toast
 import io.merculet.wxinfo.R
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wx_info.*
 import kotlinx.android.synthetic.main.cell_chatroom.view.*
 
@@ -64,25 +68,31 @@ class WxInfoActivity : AppCompatActivity() {
             Log.i("wxinfo", "检测到未拥有Root权限")
             ShellCommand.shellCommand("chmod 777 $packageCodePath") // 申请Root权限
         } else {
-            DBHelper.readDb {
-                refreshLayout?.finishRefresh()
-                val list = arrayListOf<ContactEntity>()
-                val chatRoomList = DBHelper.chatRoomList
-                val contactList = DBHelper.contactList
-                //好友
-                list.add(ContactEntity("联系人列表", "", "0"))
-                contactList.forEach { it -> list.add(ContactEntity(it.nickname)) }
-
-                //群组
-                list.add(ContactEntity("群组成员列表", "", "0"))
-                chatRoomList.forEach { it ->
-                    run {
-                        list.add(ContactEntity("群名: " + it.name, "", "0"))
-                        it.displayname.split("、").forEach { it -> list.add(ContactEntity(it)) }
+            Observable.create<List<ContactEntity>> { emitter ->
+                DBHelper.readDb({
+                    refreshLayout?.finishRefresh()
+                    val list = arrayListOf<ContactEntity>()
+                    val chatRoomList = DBHelper.chatRoomList
+                    val contactList = DBHelper.contactList
+                    //好友
+                    list.add(ContactEntity("联系人列表", "", "0"))
+                    contactList.forEach { it -> list.add(ContactEntity(it.nickname)) }
+                    //群组
+                    list.add(ContactEntity("群组成员列表", "", "0"))
+                    chatRoomList.forEach { it ->
+                        run {
+                            list.add(ContactEntity("群名: " + it.name, "", "0"))
+                            it.displayname.split("、").forEach { it -> list.add(ContactEntity(it)) }
+                        }
                     }
-                }
-                helpAdapter.setData(list)
-            }
+                    emitter.onNext(list)
+                }, { it -> emitter.onError(it) })
+            }.subscribeOn(Schedulers.io()) //发送事件在io线程
+                    .observeOn(AndroidSchedulers.mainThread())//最后切换主线程提示结果
+                    .subscribe({ helpAdapter.setData(it) }, {
+                        refreshLayout?.finishRefresh()
+                        toast(it.message.toString())
+                    })
         }
     }
 
