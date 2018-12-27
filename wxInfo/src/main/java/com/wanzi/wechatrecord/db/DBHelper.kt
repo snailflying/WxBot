@@ -79,7 +79,7 @@ object DBHelper {
                 // 将微信数据库拷贝出来，因为直接连接微信的db，会导致微信崩溃
                 FileUtils.copyFile(file.absolutePath, Config.COPY_FILE_PATH)
                 // 打开微信数据库
-                DBHelper.openWXDB(File(Config.COPY_FILE_PATH), dbPwd, uinEnc, App.instance)
+                DBHelper.openWXDB(File(Config.COPY_FILE_PATH), dbPwd, uinEnc, App.instance, success, fail)
             } catch (e: Exception) {
                 log("复制数据库失败：${e.message}")
                 fail.invoke(e)

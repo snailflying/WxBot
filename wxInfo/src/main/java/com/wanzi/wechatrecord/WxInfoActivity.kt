@@ -17,7 +17,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wanzi.wechatrecord.db.DBHelper
 import com.wanzi.wechatrecord.entry.ContactEntity
 import com.wanzi.wechatrecord.util.ShellCommand
-import io.merculet.core.base.App
 import io.merculet.core.base.BaseAdapter
 import io.merculet.core.config.Config
 import io.merculet.core.ext.loadCircle
@@ -28,7 +27,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wx_info.*
 import kotlinx.android.synthetic.main.cell_chatroom.view.*
-import java.io.File
 
 @Route(value = [Config.ROUTER_ACTIVITY_WX_INFO])
 class WxInfoActivity : AppCompatActivity() {
@@ -74,10 +72,10 @@ class WxInfoActivity : AppCompatActivity() {
             ShellCommand.shellCommand("chmod 777 $packageCodePath") // 申请Root权限
         } else {
             Observable.create<List<ContactEntity>> { emitter ->
-                //                    DBHelper.readDb({
-                val dbPwd = settings?.getString(Config.DB_PWD, "")
-                val uinEnc = settings?.getString(Config.UIN_ENC, "")
-                DBHelper.openWXDB(File(Config.COPY_FILE_PATH), dbPwd, uinEnc, App.instance, {
+                //                val dbPwd = settings?.getString(Config.DB_PWD, "")
+//                val uinEnc = settings?.getString(Config.UIN_ENC, "")
+//                DBHelper.openWXDB(File(Config.COPY_FILE_PATH), dbPwd, uinEnc, App.instance, {
+                DBHelper.readDb({
                     initData()
                     emitter.onNext(list)
                 }, { it -> emitter.onError(it) })
@@ -98,7 +96,7 @@ class WxInfoActivity : AppCompatActivity() {
         val contactList = DBHelper.contactList
         //好友
         list.add(ContactEntity("联系人列表", "", "0"))
-        contactList.forEach { it -> if (it.username != "filehelper") list.add(ContactEntity(it.nickname, it.avatar)) }
+        contactList.forEach { it -> if (it.nickname!!.isNotEmpty() && it.username != "filehelper") list.add(ContactEntity(it.nickname, it.avatar)) }
         //群组
         list.add(ContactEntity("群组成员列表", "", "0"))
         chatRoomList.forEach { chatRoom ->

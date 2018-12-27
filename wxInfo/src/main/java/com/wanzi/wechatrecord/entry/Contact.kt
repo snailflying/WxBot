@@ -8,9 +8,9 @@ import java.io.Serializable
  */
 
 class Contact : DataSupport(), Serializable {
-    var username = ""
-    var nickname = ""
-    var type = ""
-    var conRemark = ""
-    var avatar = ""
+    var username : String? = ""
+    var nickname: String? = ""
+    var type : String? = ""
+    var conRemark : String? = ""
+    var avatar : String? = ""
 }

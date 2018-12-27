@@ -4,12 +4,8 @@ import android.util.Log
 import com.gh0u1l5.wechatmagician.spellbook.WechatGlobal
 import com.gh0u1l5.wechatmagician.spellbook.base.Hooker
 import com.gh0u1l5.wechatmagician.spellbook.base.HookerProvider
-import com.wanzi.wechatrecord.util.FileUtils
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
-import io.merculet.core.config.Config
-import io.merculet.core.config.Config.COPY_FILE_PATH
-import io.merculet.wxbot.WechatHook.Companion.settings
 import java.nio.charset.Charset
 import java.util.*
 
@@ -77,11 +73,12 @@ object WxSqlPwdHook : HookerProvider {
      */
     private fun openDB(path: String, pwd: String, uinEnc: String) {
         if (path.contains("EnMicroMsg")) {
-            FileUtils.copyFile(path, COPY_FILE_PATH)
-            settings?.edit()
-                    ?.putString(Config.DB_PWD, pwd)
-                    ?.putString(Config.UIN_ENC, uinEnc)
-                    ?.apply()
+            Log.e("wxinfo", "path: $path" + "pwd: $pwd" + "uinEnc: $uinEnc")
+//            FileUtils.copyFile(path, COPY_FILE_PATH)
+//            settings?.edit()
+//                    ?.putString(Config.DB_PWD, pwd)
+//                    ?.putString(Config.UIN_ENC, uinEnc)
+//                    ?.apply()
         }
     }
 }
