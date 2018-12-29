@@ -23,6 +23,7 @@ object C {
     val Activity = android.app.Activity::class.java
     val AdapterView = android.widget.AdapterView::class.java
     val AdapterView_OnItemClickListener = android.widget.AdapterView.OnItemClickListener::class.java
+    val MenuItem_OnMenuItemClickListener = android.view.MenuItem.OnMenuItemClickListener::class.java
     val AttributeSet = android.util.AttributeSet::class.java
     val BaseAdapter = android.widget.BaseAdapter::class.java
     val Bundle = android.os.Bundle::class.java

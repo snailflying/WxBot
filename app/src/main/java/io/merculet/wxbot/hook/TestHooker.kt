@@ -10,6 +10,7 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 
+
 /**
  * @Author Aaron
  * @Date 2018/12/12
@@ -21,33 +22,49 @@ import de.robv.android.xposed.XposedHelpers
 object TestHooker : HookerProvider {
 
     override fun provideStaticHookers(): List<Hooker>? {
-        return listOf(chattingFooterEventImplHook())
+        return listOf(chattingFooterEventImplHook(), addFriend(), openRedpacket())
     }
 
-
-    private fun test() {
-
-    }
-
-    private fun test(abc: String) {
-
-    }
-
-    private fun chattingFooterEventImplHook(): Hooker {
-        LogUtil.log("SendMsgHooker chattingFooterEventImplHook ${Classes.ChattingFooterEventImpl}")
+    private fun openRedpacket(): Hooker {
         return Hooker {
+            // hook红包界面初始化“开”按钮的方法，在该方法完成后自动点击开按钮领取红包
 
-            val clz = XposedHelpers.findClass("com.tencent.mm.ui.transmit.SendAppMessageWrapperUI", WechatGlobal.wxLoader)
-            XposedHelpers.findAndHookMethod(clz, "a",
-                    Class.forName("com.tencent.mm.ui.transmit.SendAppMessageWrapperUI"),
-                    Class.forName("com.tencent.mm.opensdk.modelmsg.WXMediaMessage"),
-                    C.String,
-                    C.Int,
+            XposedBridge.hookAllConstructors(Classes.LuckyMoneyReceiveUI, object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam?) {
+                    LogUtil.log("TestHooker LuckyMoneyReceiveUI = ${param?.thisObject}")
+                    Objects.ChattingFooterEventImpl = param?.thisObject
+                }
+            })
+        }
+    }
+
+    private fun addFriend(): Hooker {
+        return Hooker {
+            XposedBridge.hookAllConstructors(Classes.SayHiWithSnsPermissionUI, object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam?) {
+                    LogUtil.log("SendMsgHooker ChattingFooterEventImpl = ${param?.thisObject}")
+                    Objects.ChattingFooterEventImpl = param?.thisObject
+                }
+            })
+        }
+    }
+
+    /**
+     * 微信运行时包名和打包之后可能不一样,所以导致findAndHookMethod找不到对应的class
+     */
+    private fun chattingFooterEventImplHook(): Hooker {
+        log("SendMsgHooker chattingFooterEventImplHook ${Classes.ChattingFooterEventImpl}")
+        return Hooker {
+            XposedHelpers.findAndHookMethod("com.tencent.mm.ui.chatting.ChattingSendDataToDeviceUI", WechatGlobal.wxLoader, "qu", C.Int,
                     object : XC_MethodHook() {
                         override fun beforeHookedMethod(param: MethodHookParam?) {
-                            log("aaron1 set field_talker start")
-                            LogUtil.logStackTraces()
-                            log("aaron1 set field_talker end")
+                            log("开始劫持了~")
+                            log("参数1 = " + (param?.args?.get(0) ?: ""))
+                        }
+
+                        override fun afterHookedMethod(param: MethodHookParam?) {
+                            log("劫持结束了~")
+                            log("参数1 = " + (param?.args?.get(0) ?: ""))
                         }
                     })
         }

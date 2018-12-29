@@ -23,7 +23,6 @@ class WechatHook : IXposedHookLoadPackage {
     }
 
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-
         hookAttachBaseContext(lpparam.classLoader) { context ->
             BasicUtil.tryVerbosely {
                 if (SpellBook.isImportantWechatProcess(lpparam)) {
@@ -43,12 +42,11 @@ class WechatHook : IXposedHookLoadPackage {
 
     // hookAttachBaseContext is a stable way to get current application on all the platforms.
     private inline fun hookAttachBaseContext(loader: ClassLoader, crossinline callback: (Context) -> Unit) {
-        XposedHelpers.findAndHookMethod(
-                "android.content.ContextWrapper", loader, "attachBaseContext",
-                Context::class.java, object : XC_MethodHook() {
-            override fun afterHookedMethod(param: MethodHookParam) {
-                callback(param.thisObject as? Application ?: return)
-            }
-        })
+        XposedHelpers.findAndHookMethod("android.content.ContextWrapper", loader, "attachBaseContext", Context::class.java,
+                object : XC_MethodHook() {
+                    override fun afterHookedMethod(param: MethodHookParam) {
+                        callback(param.thisObject as? Application ?: return)
+                    }
+                })
     }
 }
