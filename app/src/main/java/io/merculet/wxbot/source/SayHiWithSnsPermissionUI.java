@@ -25,7 +25,6 @@
 //import com.tencent.mm.ah.f;
 //import com.tencent.mm.br.d;
 //import com.tencent.mm.h.a.qo;
-//import com.tencent.mm.model.au;
 //import com.tencent.mm.model.c;
 //import com.tencent.mm.model.q;
 //import com.tencent.mm.openim.b.o;
@@ -53,6 +52,13 @@
 //import java.util.List;
 //import org.xwalk.core.XWalkUpdater;
 //
+///**
+// * @Description 添加好友  点完成即添加
+// * @Author sean
+// * @Email xiao.lu@magicwindow.cn
+// * @Date 2019/1/3 11:48 AM
+// * @Version
+// */
 //public class SayHiWithSnsPermissionUI extends MMActivity implements f {
 //    private String aVr;
 //    private String aVs;
@@ -394,8 +400,9 @@
 //                                }
 //                            });
 //                        } else {
+//                            //自动同意添加还有关键代码au.Dk().a(oVar, 0)调用此方法即可
 //                            oVar = new com.tencent.mm.pluginsdk.model.m(SayHiWithSnsPermissionUI.this.userName, stringExtra3, SayHiWithSnsPermissionUI.this.fhj, (byte) 0);
-//                            au.Dk().a(oVar, 0);
+//                            au.Dk().a(oVar, 0);   //调用此方法
 //                            sayHiWithSnsPermissionUI = SayHiWithSnsPermissionUI.this;
 //                            context = SayHiWithSnsPermissionUI.this.mController.uMN;
 //                            SayHiWithSnsPermissionUI.this.getString(R.l.app_tip);

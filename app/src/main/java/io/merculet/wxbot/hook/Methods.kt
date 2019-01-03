@@ -10,4 +10,8 @@ object Methods {
     val ChattingFooterEventImpl_SendMsg: Method by wxLazy("ChattingFooterEventImpl_SendMsg") {
         findMethodsByExactParameters(Classes.ChattingFooterEventImpl, C.Boolean, C.String).firstOrNull()
     }
+
+    val LuckyMoneyReceiveUI_onResume: Method by wxLazy("LuckyMoneyReceiveUI_onResume") {
+        findMethodsByExactParameters(Classes.LuckyMoneyReceiveUI, null).firstOrNull()
+    }
 }

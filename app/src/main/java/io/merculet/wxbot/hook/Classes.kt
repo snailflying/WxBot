@@ -19,7 +19,7 @@ object Classes {
 
     // 发送消息的封装类，可以 hook 消息目的地
     val NetSceneSendMsg: Class<*> by wxLazy("NetSceneSendMsg") {
-        findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.modelmulti")
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.modelmulti",1)
                 .filterByField("java.util.List")
                 .filterByField("long")
                 .filterByField("boolean")
@@ -29,28 +29,23 @@ object Classes {
                 .firstOrNull()
     }
 
-    // 自动添加好友
-    val SayHiWithSnsPermissionUI: Class<*> by wxLazy("SayHiWithSnsPermissionUI") {
-        findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.plugin.profile.ui") //com.tencent.mm.plugin.profile.ui;
-                .filterByField("android.view.MenuItem.OnMenuItemClickListener")
-                .filterByField("android.text.style.ClickableSpan")
-                .filterByField("android.view.MenuItem")
-                .filterByField("android.widget.EditText")
-                .filterByField("com.tencent.mm.ui.MMActivity")
-                .filterByField("android.app.ProgressDialog")
-                .filterByField("android.content.DialogInterface.OnCancelListener")
-                .firstOrNull()
-    }
-
-    // 自动添加好友
+    // 抢红包
     val LuckyMoneyReceiveUI: Class<*> by wxLazy("LuckyMoneyReceiveUI") {
         findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.plugin.luckymoney.ui") //com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyReceiveUI
                 .filterByField("android.widget.RelativeLayout.LayoutParams")
-                .filterByField("android.content.Intent")
-                .filterByField("android.widget.Button")
                 .filterByField("com.tencent.mm.sdk.platformtools.BackwardSupportUtil")
                 .filterByField("com.tencent.mm.wallet_core.ui.WalletTextView")
-                .filterByField("android.content.DialogInterface.OnCancelListener")
+                .firstOrNull()
+    }
+
+    // 需要hook这个类的构造方法 m  自动添加好友
+    val AddFriendHooker: Class<*> by wxLazy("AddFriendHooker") {
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.pluginsdk.model")
+                .filterByField("java.util.Iterator")
+                .filterByField("java.util.LinkedList")
+                .filterByField("java.util.Map")
+                .filterByField("junit.framework.Assert")
+                .filterByField("android.text.TextUtils")
                 .firstOrNull()
     }
 }

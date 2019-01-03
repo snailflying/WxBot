@@ -13,6 +13,7 @@ object C {
     val FileInputStream = java.io.FileInputStream::class.java
     val FileOutputStream = java.io.FileOutputStream::class.java
     val Int = Int::class.java
+    val Byte = Byte::class.java
     val Iterator = java.util.Iterator::class.java
     val Long = Long::class.java
     val Map = Map::class.java
