@@ -51,4 +51,6 @@ object C {
     val IntArray = IntArray::class.java
     val ObjectArray = Array<Any>::class.java
     val StringArray = Array<String>::class.java
+    val HashMap = HashMap::class.java
+    val List = List::class.java
 }

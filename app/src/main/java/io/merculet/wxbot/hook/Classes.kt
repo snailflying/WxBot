@@ -19,7 +19,7 @@ object Classes {
 
     // 发送消息的封装类，可以 hook 消息目的地
     val NetSceneSendMsg: Class<*> by wxLazy("NetSceneSendMsg") {
-        findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.modelmulti",1)
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.modelmulti", 1)
                 .filterByField("java.util.List")
                 .filterByField("long")
                 .filterByField("boolean")
@@ -39,13 +39,32 @@ object Classes {
     }
 
     // 需要hook这个类的构造方法 m  自动添加好友
-    val AddFriendHooker: Class<*> by wxLazy("AddFriendHooker") {
-        findClassesFromPackage(wxLoader!!, wxClasses!!, "$wxPackageName.pluginsdk.model")
-                .filterByField("java.util.Iterator")
-                .filterByField("java.util.LinkedList")
-                .filterByField("java.util.Map")
-                .filterByField("junit.framework.Assert")
-                .filterByField("android.text.TextUtils")
+    val Find_plugin_sdk_model_m: Class<*> by wxLazy("Find_plugin_sdk_model_m") {
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "com.tencent.mm.pluginsdk.model")   //com.tencent.mm.pluginsdk.model.m
+                .filterByField("java.util.List")
+                .filterByMethod(C.Int, "getType")
+                .filterByMethod(C.String)
+                .filterByMethod(null, C.String, C.String)
+                .firstOrNull()
+    }
+
+    val Find_mm_model_au: Class<*> by wxLazy("Find_mm_model_au") {
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "com.tencent.mm.model")   //com.tencent.mm.pluginsdk.model.m
+                .filterByMethod(C.Boolean)
+                .filterByMethod(Any::class.java, "getNotification")
+                .filterByMethod(Any::class.java, "getSysCmdMsgExtension")
+                .filterByMethod(null, "hold")
+                .filterByMethod(null, "unhold")
+                .firstOrNull()
+    }
+
+    // 需要hook这个类的构造方法 m  自动添加好友
+    val Find_mm_ah_p: Class<*> by wxLazy("AddFriendHooker") {
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "com.tencent.mm.ah")   //com.tencent.mm.pluginsdk.model.m
+                .filterByField("java.util.List")
+                .filterByMethod(C.Int, "getType")
+                .filterByMethod(C.String)
+                .filterByMethod(null, C.String, C.String)
                 .firstOrNull()
     }
 }

@@ -38,7 +38,7 @@ class WechatHook : IXposedHookLoadPackage {
             }
             settings?.load(context)
             settings?.listen(context)
-            hookPackage()
+//            hookPackage()
         }
     }
 
