@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.plugin.profile.ui;
 //
 //import android.app.ProgressDialog;
 //import android.content.Context;

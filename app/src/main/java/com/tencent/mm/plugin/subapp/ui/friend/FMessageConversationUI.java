@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.plugin.subapp.ui.friend;
 //
 //import android.app.ActivityOptions;
 //import android.content.Context;

@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.plugin.luckymoney.ui;
 //
 //import android.app.Activity;
 //import android.content.DialogInterface;

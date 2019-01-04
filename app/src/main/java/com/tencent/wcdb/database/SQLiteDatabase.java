@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.wcdb.database;
 //
 //import android.content.ContentValues;
 //import android.database.sqlite.SQLiteClosable;

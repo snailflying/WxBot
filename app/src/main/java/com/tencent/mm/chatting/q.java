@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.chatting;
 //
 //import android.annotation.SuppressLint;
 //import android.content.DialogInterface;
@@ -11,46 +11,46 @@
 //import android.view.MenuItem;
 //import android.view.MotionEvent;
 //import android.widget.Toast;
-//import com.tencent.mm.R;
-//import com.tencent.mm.ah.j;
-//import com.tencent.mm.compatible.util.e;
-//import com.tencent.mm.h.a.ne;
-//import com.tencent.mm.h.a.tc;
-//import com.tencent.mm.h.a.td;
-//import com.tencent.mm.m.g;
-//import com.tencent.mm.model.m;
-//import com.tencent.mm.model.s;
-//import com.tencent.mm.opensdk.modelmsg.WXFileObject;
-//import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-//import com.tencent.mm.plugin.report.service.h;
-//import com.tencent.mm.plugin.subapp.c.i;
-//import com.tencent.mm.pluginsdk.model.app.f;
-//import com.tencent.mm.pluginsdk.ui.chat.AppPanel;
-//import com.tencent.mm.pluginsdk.ui.chat.ChatFooter;
-//import com.tencent.mm.pluginsdk.ui.chat.b;
-//import com.tencent.mm.pluginsdk.ui.tools.NewFileExplorerUI;
-//import com.tencent.mm.sdk.platformtools.ae;
-//import com.tencent.mm.sdk.platformtools.ag;
-//import com.tencent.mm.sdk.platformtools.ah;
-//import com.tencent.mm.sdk.platformtools.am;
-//import com.tencent.mm.sdk.platformtools.am.a;
-//import com.tencent.mm.sdk.platformtools.aq;
-//import com.tencent.mm.sdk.platformtools.au;
-//import com.tencent.mm.sdk.platformtools.bk;
-//import com.tencent.mm.sdk.platformtools.y;
-//import com.tencent.mm.storage.ac;
-//import com.tencent.mm.storage.ad;
-//import com.tencent.mm.ui.base.l;
-//import com.tencent.mm.ui.base.n;
-//import com.tencent.mm.ui.base.n.c;
-//import com.tencent.mm.ui.chatting.b.b.aa;
-//import com.tencent.mm.ui.chatting.b.b.ai;
-//import com.tencent.mm.ui.chatting.b.b.t;
-//import com.tencent.mm.ui.chatting.b.b.z;
-//import com.tencent.mm.ui.widget.a.d;
-//import com.tencent.smtt.sdk.TbsListener.ErrorCode;
-//import com.tencent.tmassistantsdk.openSDK.TMQQDownloaderOpenSDKConst;
-//import com.tencent.ttpic.baseutils.FileUtils;
+//import com.mm.mm.R;
+//import com.mm.mm.ah.j;
+//import com.mm.mm.compatible.util.e;
+//import com.mm.mm.h.a.ne;
+//import com.mm.mm.h.a.tc;
+//import com.mm.mm.h.a.td;
+//import com.mm.mm.m.g;
+//import com.mm.mm.model.m;
+//import com.mm.mm.model.s;
+//import com.mm.mm.opensdk.modelmsg.WXFileObject;
+//import com.mm.mm.opensdk.modelmsg.WXMediaMessage;
+//import com.mm.mm.plugin.report.service.h;
+//import com.mm.mm.plugin.subapp.c.i;
+//import com.mm.mm.pluginsdk.model.app.f;
+//import com.mm.mm.pluginsdk.ui.chat.AppPanel;
+//import com.mm.mm.pluginsdk.ui.chat.ChatFooter;
+//import com.mm.mm.pluginsdk.ui.chat.b;
+//import com.mm.mm.pluginsdk.ui.tools.NewFileExplorerUI;
+//import com.mm.mm.sdk.platformtools.ae;
+//import com.mm.mm.sdk.platformtools.ag;
+//import com.mm.mm.sdk.platformtools.ah;
+//import com.mm.mm.sdk.platformtools.am;
+//import com.mm.mm.sdk.platformtools.am.a;
+//import com.mm.mm.sdk.platformtools.aq;
+//import com.mm.mm.sdk.platformtools.au;
+//import com.mm.mm.sdk.platformtools.bk;
+//import com.mm.mm.sdk.platformtools.y;
+//import com.mm.mm.storage.ac;
+//import com.mm.mm.storage.ad;
+//import com.mm.mm.ui.base.l;
+//import com.mm.mm.ui.base.n;
+//import com.mm.mm.ui.base.n.c;
+//import com.mm.mm.ui.chatting.b.b.aa;
+//import com.mm.mm.ui.chatting.b.b.ai;
+//import com.mm.mm.ui.chatting.b.b.t;
+//import com.mm.mm.ui.chatting.b.b.z;
+//import com.mm.mm.ui.widget.a.d;
+//import com.mm.smtt.sdk.TbsListener.ErrorCode;
+//import com.mm.tmassistantsdk.openSDK.TMQQDownloaderOpenSDKConst;
+//import com.mm.ttpic.baseutils.FileUtils;
 //import com.tenpay.android.wechat.PayuSecureEncrypt;
 //import java.io.File;
 //import java.util.ArrayList;
@@ -110,12 +110,12 @@
 //        d mYD = null;
 //
 //        public final void bhm() {
-//            if (!com.tencent.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
+//            if (!com.mm.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
 //                tc tcVar = new tc();
-//                com.tencent.mm.sdk.b.a.udP.m(tcVar);
+//                com.mm.mm.sdk.b.a.udP.m(tcVar);
 //                if (q.this.getTalkerUserName().equals(tcVar.ccF.talker) || !(tcVar.ccF.ccH || tcVar.ccF.ccI)) {
 //                    if (1 == g.AA().getInt("EnableVoiceVoipFromPlugin", 0)) {
-//                        boolean z = (ad.aaU(q.this.uPh.pSb.field_username) || s.hb(q.this.uPh.pSb.field_username)) ? (((com.tencent.mm.openim.a.b) com.tencent.mm.kernel.g.r(com.tencent.mm.openim.a.b.class)).oS(q.this.uPh.pSb.field_openImAppid) & 8192) == 0 : false;
+//                        boolean z = (ad.aaU(q.this.uPh.pSb.field_username) || s.hb(q.this.uPh.pSb.field_username)) ? (((com.mm.mm.openim.a.b) com.mm.mm.kernel.g.r(com.mm.mm.openim.a.b.class)).oS(q.this.uPh.pSb.field_openImAppid) & 8192) == 0 : false;
 //                        this.mYD = new d(q.this.uPh.vtz.getContext(), 1, false);
 //                        this.mYD.phH = new c() {
 //                            public final void a(l lVar) {
@@ -152,9 +152,9 @@
 //        }
 //
 //        public final void bhn() {
-//            if (!com.tencent.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
+//            if (!com.mm.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
 //                tc tcVar = new tc();
-//                com.tencent.mm.sdk.b.a.udP.m(tcVar);
+//                com.mm.mm.sdk.b.a.udP.m(tcVar);
 //                if (q.this.getTalkerUserName().equals(tcVar.ccF.talker) || !(tcVar.ccF.ccH || tcVar.ccF.ccI)) {
 //                    q.this.cCJ();
 //                    return;
@@ -165,9 +165,9 @@
 //        }
 //
 //        public final void bho() {
-//            if (!com.tencent.mm.r.a.bk(q.this.uPh.vtz.getContext()) && !com.tencent.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
-//                y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 81, "", "")), bk.csb(), q.this.uPh.vtz.getContext());
-//                if (com.tencent.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 81, "", "")) {
+//            if (!com.mm.mm.r.a.bk(q.this.uPh.vtz.getContext()) && !com.mm.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
+//                y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 81, "", "")), bk.csb(), q.this.uPh.vtz.getContext());
+//                if (com.mm.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 81, "", "")) {
 //                    q.this.cCL();
 //                }
 //            }
@@ -178,7 +178,7 @@
 //        }
 //
 //        public final void bhq() {
-//            ((com.tencent.mm.ui.chatting.b.b.d) q.this.uPh.ac(com.tencent.mm.ui.chatting.b.b.d.class)).cDW();
+//            ((com.mm.mm.ui.chatting.b.b.d) q.this.uPh.ac(com.mm.mm.ui.chatting.b.b.d.class)).cDW();
 //        }
 //
 //        public final void tA(int i) {
@@ -186,8 +186,8 @@
 //                case 0:
 //                    File file = new File(e.dzD);
 //                    if (file.exists() || file.mkdir()) {
-//                        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkcamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.CAMERA", 20, "", "")), bk.csb(), q.this.uPh.vtz.getContext());
-//                        if (com.tencent.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.CAMERA", 20, "", "")) {
+//                        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkcamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.CAMERA", 20, "", "")), bk.csb(), q.this.uPh.vtz.getContext());
+//                        if (com.mm.mm.pluginsdk.permission.a.a(q.this.uPh.vtz.getContext(), "android.permission.CAMERA", 20, "", "")) {
 //                            q.this.cCM();
 //                            return;
 //                        }
@@ -197,22 +197,22 @@
 //                    return;
 //                case 1:
 //                    String string = q.this.uPh.vtz.getContext().getSharedPreferences(ae.cqR(), 0).getString("gallery", "1");
-//                    com.tencent.mm.plugin.report.service.g.wI(19);
+//                    com.mm.mm.plugin.report.service.g.wI(19);
 //                    if (string.equalsIgnoreCase("0")) {
-//                        com.tencent.mm.pluginsdk.ui.tools.l.r(q.this.uPh.vtz);
+//                        com.mm.mm.pluginsdk.ui.tools.l.r(q.this.uPh.vtz);
 //                    } else {
 //                        string = q.this.uPh.cFB();
 //                        String talkerUserName = q.this.uPh.getTalkerUserName();
 //                        if (q.this.vjO && q.vjI) {
-//                            com.tencent.mm.pluginsdk.ui.tools.l.b(q.this.uPh.vtz, 3, string, talkerUserName);
+//                            com.mm.mm.pluginsdk.ui.tools.l.b(q.this.uPh.vtz, 3, string, talkerUserName);
 //                        } else if (ad.gr(talkerUserName)) {
-//                            com.tencent.mm.pluginsdk.ui.tools.l.a(q.this.uPh.vtz, 12, string, talkerUserName);
+//                            com.mm.mm.pluginsdk.ui.tools.l.a(q.this.uPh.vtz, 12, string, talkerUserName);
 //                        } else {
-//                            com.tencent.mm.pluginsdk.ui.tools.l.a(q.this.uPh.vtz, 3, string, talkerUserName);
+//                            com.mm.mm.pluginsdk.ui.tools.l.a(q.this.uPh.vtz, 3, string, talkerUserName);
 //                        }
 //                    }
 //                    h.nFQ.f(13822, Integer.valueOf(2), Integer.valueOf(1));
-//                    com.tencent.mm.sdk.platformtools.ai.l(new Runnable() {
+//                    com.mm.mm.sdk.platformtools.ai.l(new Runnable() {
 //                        public final void run() {
 //                            q.this.maV.setBottomPanelVisibility(8);
 //                        }
@@ -224,18 +224,18 @@
 //        }
 //
 //        public final void b(f fVar) {
-//            ((com.tencent.mm.ui.chatting.b.b.a) q.this.uPh.ac(com.tencent.mm.ui.chatting.b.b.a.class)).n(fVar);
+//            ((com.mm.mm.ui.chatting.b.b.a) q.this.uPh.ac(com.mm.mm.ui.chatting.b.b.a.class)).n(fVar);
 //        }
 //
 //        public final void bhr() {
-//            com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "subapp", ".ui.openapi.AddAppUI", new Intent());
+//            com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "subapp", ".ui.openapi.AddAppUI", new Intent());
 //        }
 //
 //        public final void bhs() {
 //            Intent intent = new Intent();
 //            ArrayList arrayList = new ArrayList();
 //            arrayList.add(TMQQDownloaderOpenSDKConst.VERIFYTYPE_ALL);
-//            if (com.tencent.mm.ai.f.eW(q.this.dnp.field_username)) {
+//            if (com.mm.mm.ai.f.eW(q.this.dnp.field_username)) {
 //                arrayList.add("4");
 //                arrayList.add("7");
 //                arrayList.add("9");
@@ -250,26 +250,26 @@
 //            }
 //            intent.putExtra("key_to_user", q.this.dnp.field_username);
 //            intent.putExtra("key_fav_item_id", TextUtils.join(",", arrayList));
-//            com.tencent.mm.plugin.fav.a.b.a(q.this.uPh.vtz.getContext(), ".ui.FavSelectUI", intent);
+//            com.mm.mm.plugin.fav.a.b.a(q.this.uPh.vtz.getContext(), ".ui.FavSelectUI", intent);
 //            h.nFQ.f(14103, Integer.valueOf(1));
 //        }
 //
 //        public final void bht() {
 //            Intent intent = new Intent();
 //            intent.putExtra("service_app_talker_user", q.this.getTalkerUserName());
-//            com.tencent.mm.br.d.a(q.this.uPh.vtz, "subapp", ".ui.openapi.ServiceAppUI", intent, (int) ErrorCode.UNLZMA_FAIURE);
+//            com.mm.mm.br.d.a(q.this.uPh.vtz, "subapp", ".ui.openapi.ServiceAppUI", intent, (int) ErrorCode.UNLZMA_FAIURE);
 //        }
 //
 //        public final void bhu() {
 //            Intent intent = new Intent();
 //            intent.putExtra("download_entrance_scene", 17);
 //            intent.putExtra("preceding_scence", 13);
-//            com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "emoji", ".ui.v2.EmojiStoreV2UI", intent);
+//            com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "emoji", ".ui.v2.EmojiStoreV2UI", intent);
 //            h.nFQ.f(12065, Integer.valueOf(4));
 //        }
 //
 //        public final void tB(int i) {
-//            if (!com.tencent.mm.r.a.bj(q.this.uPh.vtz.getContext()) && !com.tencent.mm.r.a.bk(q.this.uPh.vtz.getContext()) && !com.tencent.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
+//            if (!com.mm.mm.r.a.bj(q.this.uPh.vtz.getContext()) && !com.mm.mm.r.a.bk(q.this.uPh.vtz.getContext()) && !com.mm.mm.r.a.bi(q.this.uPh.vtz.getContext())) {
 //                q.this.GP(i);
 //            }
 //        }
@@ -288,16 +288,16 @@
 //                intent.putExtra("key_from", 1);
 //                intent.putExtra("key_username", q.this.getTalkerUserName());
 //                intent.putExtra("pay_channel", 14);
-//                com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyPrepareUI", intent);
+//                com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyPrepareUI", intent);
 //                return;
 //            }
-//            com.tencent.mm.model.au.Hx();
-//            Integer num = (Integer) com.tencent.mm.model.c.Dz().get(ac.a.USERINFO_LUCKY_MONEY_NEWYEAR_SWITCH_INT_SYNC, Integer.valueOf(0));
-//            com.tencent.mm.model.au.Hx();
-//            Integer num2 = (Integer) com.tencent.mm.model.c.Dz().get(ac.a.USERINFO_LUCKY_MONEY_NEWYEAR_LOCAL_SWITCH_INT, Integer.valueOf(0));
+//            com.mm.mm.model.au.Hx();
+//            Integer num = (Integer) com.mm.mm.model.c.Dz().get(ac.a.USERINFO_LUCKY_MONEY_NEWYEAR_SWITCH_INT_SYNC, Integer.valueOf(0));
+//            com.mm.mm.model.au.Hx();
+//            Integer num2 = (Integer) com.mm.mm.model.c.Dz().get(ac.a.USERINFO_LUCKY_MONEY_NEWYEAR_LOCAL_SWITCH_INT, Integer.valueOf(0));
 //            if (num.intValue() == 1 || num2.intValue() == 1) {
-//                if ((com.tencent.mm.model.q.Gq() == 0 ? 1 : 0) != 0) {
-//                    com.tencent.mm.ui.base.h.a(q.this.uPh.vtz.getContext(), null, new String[]{q.this.uPh.vtz.getMMResources().getString(R.l.chatting_lucky_money_new_year), q.this.uPh.vtz.getMMResources().getString(R.l.chatting_lucky_money_short_title)}, null, new com.tencent.mm.ui.base.h.c() {
+//                if ((com.mm.mm.model.q.Gq() == 0 ? 1 : 0) != 0) {
+//                    com.mm.mm.ui.base.h.a(q.this.uPh.vtz.getContext(), null, new String[]{q.this.uPh.vtz.getMMResources().getString(R.l.chatting_lucky_money_new_year), q.this.uPh.vtz.getMMResources().getString(R.l.chatting_lucky_money_short_title)}, null, new com.mm.mm.ui.base.h.c() {
 //                        public final void gl(int i) {
 //                            Intent intent = new Intent();
 //                            switch (i) {
@@ -306,7 +306,7 @@
 //                                    intent.putExtra("key_username", q.this.getTalkerUserName());
 //                                    intent.putExtra("key_way", 0);
 //                                    intent.putExtra("pay_channel", 11);
-//                                    com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyNewYearSendUI", intent);
+//                                    com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyNewYearSendUI", intent);
 //                                    return;
 //                                case 1:
 //                                    h.nFQ.f(11701, Integer.valueOf(1), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(1));
@@ -315,7 +315,7 @@
 //                                    intent.putExtra("key_from", 1);
 //                                    intent.putExtra("key_username", q.this.getTalkerUserName());
 //                                    intent.putExtra("pay_channel", 11);
-//                                    com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyPrepareUI", intent);
+//                                    com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyPrepareUI", intent);
 //                                    return;
 //                                default:
 //                                    return;
@@ -332,16 +332,16 @@
 //            intent.putExtra("key_from", 1);
 //            intent.putExtra("key_username", q.this.getTalkerUserName());
 //            intent.putExtra("pay_channel", 11);
-//            com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyPrepareUI", intent);
+//            com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "luckymoney", ".ui.LuckyMoneyPrepareUI", intent);
 //        }
 //
 //        public final void bhw() {
-//            com.tencent.mm.model.au.Hx();
-//            com.tencent.mm.model.c.Dz().o(81, Boolean.valueOf(false));
+//            com.mm.mm.model.au.Hx();
+//            com.mm.mm.model.c.Dz().o(81, Boolean.valueOf(false));
 //            if (aq.isNetworkConnected(q.this.uPh.vtz.getContext())) {
 //                q.this.cCI();
 //            } else {
-//                com.tencent.mm.bf.e.a(q.this.uPh.vtz.getContext(), R.l.voip_net_unavailable, null);
+//                com.mm.mm.bf.e.a(q.this.uPh.vtz.getContext(), R.l.voip_net_unavailable, null);
 //            }
 //        }
 //
@@ -349,8 +349,8 @@
 //            Intent intent = new Intent();
 //            intent.putExtra("enterprise_scene", 4);
 //            intent.putExtra("enterprise_biz_name", q.this.getTalkerUserName());
-//            intent.putExtra("biz_chat_chat_id", ((com.tencent.mm.ui.chatting.b.b.c) q.this.uPh.ac(com.tencent.mm.ui.chatting.b.b.c.class)).cDS());
-//            com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "brandservice", ".ui.EnterpriseBizContactPlainListUI", intent);
+//            intent.putExtra("biz_chat_chat_id", ((com.mm.mm.ui.chatting.b.b.c) q.this.uPh.ac(com.mm.mm.ui.chatting.b.b.c.class)).cDS());
+//            com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "brandservice", ".ui.EnterpriseBizContactPlainListUI", intent);
 //        }
 //
 //        public final void bhy() {
@@ -358,7 +358,7 @@
 //                Intent intent = new Intent();
 //                intent.putExtra("enter_scene", 1);
 //                intent.putExtra("chatroom_name", q.this.getTalkerUserName());
-//                com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "aa", ".ui.LaunchAAUI", intent);
+//                com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "aa", ".ui.LaunchAAUI", intent);
 //            }
 //        }
 //
@@ -367,7 +367,7 @@
 //            Intent intent = new Intent();
 //            intent.setClass(q.this.uPh.vtz.getContext(), NewFileExplorerUI.class);
 //            intent.putExtra("TO_USER", q.this.vjK);
-//            q.this.uPh.a(intent, ErrorCode.HOST_CONTEXT_IS_NULL, new com.tencent.mm.br.d.a() {
+//            q.this.uPh.a(intent, ErrorCode.HOST_CONTEXT_IS_NULL, new com.mm.mm.br.d.a() {
 //                public final void onActivityResult(int i, int i2, Intent intent) {
 //                    if (i == ErrorCode.HOST_CONTEXT_IS_NULL) {
 //                        q.a(q.this, q.this.uPh, i2, intent);
@@ -381,7 +381,7 @@
 //            q.this.maV.cni();
 //        }
 //    };
-//    com.tencent.mm.ui.chatting.c.a uPh;
+//    com.mm.mm.ui.chatting.c.a uPh;
 //    private boolean vgB;
 //    private j vjJ;
 //    private String vjK;
@@ -393,7 +393,7 @@
 //    private volatile boolean vjQ = false;
 //    private boolean vjR = false;
 //
-//    static /* synthetic */ void a(q qVar, com.tencent.mm.ui.chatting.c.a aVar, int i, Intent intent) {
+//    static /* synthetic */ void a(q qVar, com.mm.mm.ui.chatting.c.a aVar, int i, Intent intent) {
 //        if (i == -1 && intent != null) {
 //            String str;
 //            ((z) aVar.ac(z.class)).g(217, i, intent);
@@ -409,7 +409,7 @@
 //                File file = new File(str2);
 //                wXMediaMessage.title = file.getName();
 //                wXMediaMessage.description = bk.cm(file.length());
-//                com.tencent.mm.pluginsdk.model.app.l.a(wXMediaMessage, "", "", qVar.vjK, 4, null);
+//                com.mm.mm.pluginsdk.model.app.l.a(wXMediaMessage, "", "", qVar.vjK, 4, null);
 //                int lastIndexOf = file.getName().lastIndexOf(".");
 //                str = "";
 //                if (lastIndexOf >= 0 && lastIndexOf < file.getName().length() - 1) {
@@ -426,7 +426,7 @@
 //            }
 //            str = intent.getStringExtra("with_text_content");
 //            if (!bk.bl(str)) {
-//                com.tencent.mm.plugin.messenger.a.g.bhI().dO(str, qVar.vjK);
+//                com.mm.mm.plugin.messenger.a.g.bhI().dO(str, qVar.vjK);
 //            }
 //        }
 //    }
@@ -449,12 +449,12 @@
 //        y.e("MicroMsg.ChattingFooterEventImpl", "startRecording recorder is null and stop recod");
 //    }
 //
-//    public q(com.tencent.mm.ui.chatting.c.a aVar, ChatFooter chatFooter, String str) {
+//    public q(com.mm.mm.ui.chatting.c.a aVar, ChatFooter chatFooter, String str) {
 //        this.uPh = aVar;
 //        this.maV = chatFooter;
 //        this.vjK = str;
-//        com.tencent.mm.model.au.Hx();
-//        this.dnp = com.tencent.mm.model.c.Fw().abl(str);
+//        com.mm.mm.model.au.Hx();
+//        this.dnp = com.mm.mm.model.c.Fw().abl(str);
 //        this.vjM = s.fn(this.uPh.getTalkerUserName());
 //        this.vjN = s.hf(this.uPh.getTalkerUserName());
 //        boolean z = this.vjM || this.vjN;
@@ -468,11 +468,11 @@
 //            if (s.hS(str2)) {
 //                z = true;
 //            } else {
-//                ad abl = ((com.tencent.mm.plugin.messenger.foundation.a.j) com.tencent.mm.kernel.g.r(com.tencent.mm.plugin.messenger.foundation.a.j.class)).Fw().abl(str2);
+//                ad abl = ((com.mm.mm.plugin.messenger.foundation.a.j) com.mm.mm.kernel.g.r(com.mm.mm.plugin.messenger.foundation.a.j.class)).Fw().abl(str2);
 //                if (abl != null && abl.cua()) {
-//                    com.tencent.mm.ai.d kX = com.tencent.mm.ai.f.kX(abl.field_username);
+//                    com.mm.mm.ai.d kX = com.mm.mm.ai.f.kX(abl.field_username);
 //                    if (kX != null) {
-//                        com.tencent.mm.ai.d.b bS = kX.bS(false);
+//                        com.mm.mm.ai.d.b bS = kX.bS(false);
 //                        if (bS != null) {
 //                            if (bS.efa != null) {
 //                                bS.efe = "1".equals(bS.efa.optString("CanReceiveSpeexVoice"));
@@ -487,10 +487,10 @@
 //                z = false;
 //            }
 //            if (z) {
-//                this.vjJ = new com.tencent.mm.f.b.h(this.uPh.vtz.getContext(), true);
+//                this.vjJ = new com.mm.mm.f.b.h(this.uPh.vtz.getContext(), true);
 //                y.i("MicroMsg.ChattingFooterEventImpl", "initRecorder new SceneVoiceRecorder, use Speex");
 //            } else {
-//                this.vjJ = new com.tencent.mm.f.b.h(this.uPh.vtz.getContext(), false);
+//                this.vjJ = new com.mm.mm.f.b.h(this.uPh.vtz.getContext(), false);
 //                y.i("MicroMsg.ChattingFooterEventImpl", "initRecorder new SceneVoiceRecorder, not use Speex");
 //            }
 //        }
@@ -552,16 +552,16 @@
 //    }
 //
 //    public final boolean bhi() {
-//        if (com.tencent.mm.r.a.bk(this.uPh.vtz.getContext()) || com.tencent.mm.r.a.bi(this.uPh.vtz.getContext())) {
+//        if (com.mm.mm.r.a.bk(this.uPh.vtz.getContext()) || com.mm.mm.r.a.bi(this.uPh.vtz.getContext())) {
 //            y.d("MicroMsg.ChattingFooterEventImpl", "voip is running, cann't record voice");
 //            return false;
 //        }
-//        com.tencent.mm.model.au.Hx();
-//        if (com.tencent.mm.model.c.isSDCardAvailable()) {
-//            if (!com.tencent.mm.compatible.f.b.zA()) {
-//                com.tencent.mm.ui.base.h.a(this.uPh.vtz.getContext(), this.uPh.vtz.getMMResources().getString(R.l.app_special_no_record_audio_permission), this.uPh.vtz.getMMResources().getString(R.l.app_need_audio_title), this.uPh.vtz.getMMResources().getString(R.l.app_need_show_settings_button), true, new OnClickListener() {
+//        com.mm.mm.model.au.Hx();
+//        if (com.mm.mm.model.c.isSDCardAvailable()) {
+//            if (!com.mm.mm.compatible.f.b.zA()) {
+//                com.mm.mm.ui.base.h.a(this.uPh.vtz.getContext(), this.uPh.vtz.getMMResources().getString(R.l.app_special_no_record_audio_permission), this.uPh.vtz.getMMResources().getString(R.l.app_need_audio_title), this.uPh.vtz.getMMResources().getString(R.l.app_need_show_settings_button), true, new OnClickListener() {
 //                    public final void onClick(DialogInterface dialogInterface, int i) {
-//                        com.tencent.mm.compatible.f.b.bf(q.this.uPh.vtz.getContext());
+//                        com.mm.mm.compatible.f.b.bf(q.this.uPh.vtz.getContext());
 //                    }
 //                });
 //            }
@@ -617,7 +617,7 @@
 //            }, 200);
 //            return true;
 //        }
-//        com.tencent.mm.ui.base.s.gM(this.uPh.vtz.getContext());
+//        com.mm.mm.ui.base.s.gM(this.uPh.vtz.getContext());
 //        y.e("MicroMsg.ChattingFooterEventImpl", "onVoiceRcdStartRequest isSDCardAvailable() failed and return.");
 //        return false;
 //    }
@@ -625,7 +625,7 @@
 //    public final boolean GU(String str) {
 //        cCG();
 //        cCF();
-//        return ((com.tencent.mm.ui.chatting.b.b.ac) this.uPh.ac(com.tencent.mm.ui.chatting.b.b.ac.class)).adw(str);
+//        return ((com.mm.mm.ui.chatting.b.b.ac) this.uPh.ac(com.mm.mm.ui.chatting.b.b.ac.class)).adw(str);
 //    }
 //
 //    public final void bhj() {
@@ -646,7 +646,7 @@
 //    }
 //
 //    private void cCF() {
-//        com.tencent.mm.ui.chatting.c.a aVar = this.uPh;
+//        com.mm.mm.ui.chatting.c.a aVar = this.uPh;
 //        y.i("MicroMsg.ChattingContext", "[smoothScrollBy] dis:%s duration:%s", Integer.valueOf(0), Integer.valueOf(0));
 //        aVar.vtA.cCX();
 //    }
@@ -654,7 +654,7 @@
 //    @SuppressLint({"NewApi"})
 //    @Deprecated
 //    private void cCG() {
-//        com.tencent.mm.ui.chatting.c.a aVar = this.uPh;
+//        com.mm.mm.ui.chatting.c.a aVar = this.uPh;
 //        y.i("MicroMsg.ChattingContext", "[scrollToLast] force:%b", Boolean.valueOf(true));
 //        aVar.vtA.nk(true);
 //    }
@@ -811,27 +811,27 @@
 //    private static void GO(int i) {
 //        ne neVar = new ne();
 //        neVar.bWW.state = i;
-//        com.tencent.mm.sdk.b.a.udP.m(neVar);
+//        com.mm.mm.sdk.b.a.udP.m(neVar);
 //    }
 //
 //    public final void cCI() {
-//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 22, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//        if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 22, "", "")) {
-//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 22, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//            if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 22, "", "")) {
+//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 22, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//        if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 22, "", "")) {
+//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 22, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//            if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 22, "", "")) {
 //                y.i("MicroMsg.ChattingFooterEventImpl", "onEnterMultiTalk");
 //                Intent intent = new Intent();
-//                if (com.tencent.mm.bg.d.eEX.nA(getTalkerUserName())) {
+//                if (com.mm.mm.bg.d.eEX.nA(getTalkerUserName())) {
 //                    y.i("MicroMsg.ChattingFooterEventImpl", "onEnterMultiTalk, but now is in share location!");
 //                    Toast.makeText(ae.getContext(), R.l.in_share_location_tip, 0).show();
 //                    return;
 //                }
 //                if (getTalkerUserName() != null) {
 //                    int i;
-//                    List<String> Iw = ((com.tencent.mm.plugin.multitalk.a.a) com.tencent.mm.kernel.g.r(com.tencent.mm.plugin.multitalk.a.a.class)).Iw(getTalkerUserName());
-//                    com.tencent.mm.model.au.Hx();
-//                    String str = (String) com.tencent.mm.model.c.Dz().get(2, null);
-//                    boolean It = ((com.tencent.mm.plugin.multitalk.a.a) com.tencent.mm.kernel.g.r(com.tencent.mm.plugin.multitalk.a.a.class)).It(getTalkerUserName());
+//                    List<String> Iw = ((com.mm.mm.plugin.multitalk.a.a) com.mm.mm.kernel.g.r(com.mm.mm.plugin.multitalk.a.a.class)).Iw(getTalkerUserName());
+//                    com.mm.mm.model.au.Hx();
+//                    String str = (String) com.mm.mm.model.c.Dz().get(2, null);
+//                    boolean It = ((com.mm.mm.plugin.multitalk.a.a) com.mm.mm.kernel.g.r(com.mm.mm.plugin.multitalk.a.a.class)).It(getTalkerUserName());
 //                    for (String str2 : Iw) {
 //                        if (str != null && str.equals(str2)) {
 //                            i = 1;
@@ -841,24 +841,24 @@
 //                    i = 0;
 //                    if (Iw.size() < 9 || i != 0) {
 //                        if (i != 0) {
-//                            if (((com.tencent.mm.plugin.multitalk.a.a) com.tencent.mm.kernel.g.r(com.tencent.mm.plugin.multitalk.a.a.class)).bkD()) {
+//                            if (((com.mm.mm.plugin.multitalk.a.a) com.mm.mm.kernel.g.r(com.mm.mm.plugin.multitalk.a.a.class)).bkD()) {
 //                                y.i("MicroMsg.ChattingFooterEventImpl", "onEnterMultiTalk, but already in it!");
 //                                Toast.makeText(ae.getContext(), ae.getContext().getString(R.l.multitalk_exit_tip), 0).show();
 //                                return;
 //                            }
 //                            y.i("MicroMsg.ChattingFooterEventImpl", "onEnterMultiTalk, already inlist, but in fact not multitalking now!");
 //                        }
-//                        if (((com.tencent.mm.plugin.multitalk.a.a) com.tencent.mm.kernel.g.r(com.tencent.mm.plugin.multitalk.a.a.class)).bkB()) {
+//                        if (((com.mm.mm.plugin.multitalk.a.a) com.mm.mm.kernel.g.r(com.mm.mm.plugin.multitalk.a.a.class)).bkB()) {
 //                            y.i("MicroMsg.ChattingFooterEventImpl", "onEnterMultiTalk, but already in VoIP or multitalk!");
 //                            Toast.makeText(ae.getContext(), ae.getContext().getString(R.l.multitalk_exit_tip), 0).show();
 //                            return;
 //                        } else if (It) {
 //                            y.i("MicroMsg.ChattingFooterEventImpl", "onEnterMultiTalk, but this group already in multitalk, alter take in or not tips!");
-//                            com.tencent.mm.ui.base.h.a(this.uPh.vtz.getContext(), this.uPh.vtz.getMMResources().getString(R.l.multitalk_talking_chose_enter), "", this.uPh.vtz.getMMResources().getString(R.l.multitalk_enter), this.uPh.vtz.getMMResources().getString(R.l.multitalk_cancel), new OnClickListener() {
+//                            com.mm.mm.ui.base.h.a(this.uPh.vtz.getContext(), this.uPh.vtz.getMMResources().getString(R.l.multitalk_talking_chose_enter), "", this.uPh.vtz.getMMResources().getString(R.l.multitalk_enter), this.uPh.vtz.getMMResources().getString(R.l.multitalk_cancel), new OnClickListener() {
 //                                public final void onClick(DialogInterface dialogInterface, int i) {
-//                                    if (!((com.tencent.mm.plugin.multitalk.a.a) com.tencent.mm.kernel.g.r(com.tencent.mm.plugin.multitalk.a.a.class)).It(q.this.getTalkerUserName())) {
+//                                    if (!((com.mm.mm.plugin.multitalk.a.a) com.mm.mm.kernel.g.r(com.mm.mm.plugin.multitalk.a.a.class)).It(q.this.getTalkerUserName())) {
 //                                        Toast.makeText(ae.getContext(), ae.getContext().getString(R.l.multitalk_system_master_multi_finish_msg), 0).show();
-//                                    } else if (!((com.tencent.mm.plugin.multitalk.a.a) com.tencent.mm.kernel.g.r(com.tencent.mm.plugin.multitalk.a.a.class)).Iz(q.this.getTalkerUserName())) {
+//                                    } else if (!((com.mm.mm.plugin.multitalk.a.a) com.mm.mm.kernel.g.r(com.mm.mm.plugin.multitalk.a.a.class)).Iz(q.this.getTalkerUserName())) {
 //                                        Toast.makeText(ae.getContext(), ae.getContext().getString(R.l.multitalk_error_300), 0).show();
 //                                    }
 //                                }
@@ -873,20 +873,20 @@
 //                intent.putExtra("chatroomName", getTalkerUserName());
 //                intent.putExtra("key_need_gallery", true);
 //                intent.putExtra("titile", this.uPh.vtz.getMMResources().getString(R.l.multitalk_select_contact));
-//                com.tencent.mm.br.d.b(this.uPh.vtz.getContext(), "multitalk", ".ui.MultiTalkSelectContactUI", intent);
+//                com.mm.mm.br.d.b(this.uPh.vtz.getContext(), "multitalk", ".ui.MultiTalkSelectContactUI", intent);
 //            }
 //        }
 //    }
 //
 //    public final void GP(final int i) {
-//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 18, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//        if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 18, "", "")) {
-//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 18, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//            if (!com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 18, "", "")) {
+//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 18, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//        if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 18, "", "")) {
+//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 18, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//            if (!com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 18, "", "")) {
 //                return;
 //            }
-//            if (com.tencent.mm.sdk.a.b.cqk() || com.tencent.mm.platformtools.ae.eTI) {
-//                com.tencent.mm.ui.tools.j jVar = new com.tencent.mm.ui.tools.j(this.uPh.vtz.getContext());
+//            if (com.mm.mm.sdk.a.b.cqk() || com.mm.mm.platformtools.ae.eTI) {
+//                com.mm.mm.ui.tools.j jVar = new com.mm.mm.ui.tools.j(this.uPh.vtz.getContext());
 //                jVar.phH = new c() {
 //                    public final void a(l lVar) {
 //                        lVar.e(1, q.this.uPh.vtz.getMMResources().getString(R.l.app_field_mmsight));
@@ -899,10 +899,10 @@
 //                            case 1:
 //                                Intent intent = new Intent();
 //                                h.nFQ.f(13822, Integer.valueOf(1), Integer.valueOf(1));
-//                                com.tencent.mm.pluginsdk.ui.tools.l.a(q.this.uPh.vtz, new Intent(), q.this.getTalkerUserName(), i);
+//                                com.mm.mm.pluginsdk.ui.tools.l.a(q.this.uPh.vtz, new Intent(), q.this.getTalkerUserName(), i);
 //                                return;
 //                            case 5:
-//                                com.tencent.mm.br.d.b(q.this.uPh.vtz.getContext(), "mmsight", ".ui.SightSettingsUI", new Intent());
+//                                com.mm.mm.br.d.b(q.this.uPh.vtz.getContext(), "mmsight", ".ui.SightSettingsUI", new Intent());
 //                                return;
 //                            default:
 //                                return;
@@ -910,16 +910,16 @@
 //                    }
 //                };
 //                jVar.bJQ();
-//            } else if (!com.tencent.mm.platformtools.ae.eTJ) {
+//            } else if (!com.mm.mm.platformtools.ae.eTJ) {
 //                h.nFQ.f(13822, Integer.valueOf(1), Integer.valueOf(1));
-//                com.tencent.mm.pluginsdk.ui.tools.l.a(this.uPh.vtz, new Intent(), getTalkerUserName(), i);
+//                com.mm.mm.pluginsdk.ui.tools.l.a(this.uPh.vtz, new Intent(), getTalkerUserName(), i);
 //            }
 //        }
 //    }
 //
 //    public final void cCJ() {
-//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 83, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//        if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 83, "", "")) {
+//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 83, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//        if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 83, "", "")) {
 //            if (this.maV.cnD()) {
 //                this.maV.setBottomPanelVisibility(8);
 //            }
@@ -928,16 +928,16 @@
 //            tdVar.ccJ.talker = getTalkerUserName();
 //            tdVar.ccJ.context = this.uPh.vtz.getContext();
 //            tdVar.ccJ.ccE = 3;
-//            com.tencent.mm.sdk.b.a.udP.m(tdVar);
+//            com.mm.mm.sdk.b.a.udP.m(tdVar);
 //            h.nFQ.f(11033, Integer.valueOf(4), Integer.valueOf(2), Integer.valueOf(0));
 //        }
 //    }
 //
 //    public final void cCK() {
-//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 21, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//        if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 21, "", "")) {
-//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 21, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//            if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 21, "", "")) {
+//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 21, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//        if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 21, "", "")) {
+//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 21, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//            if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 21, "", "")) {
 //                if (this.maV.cnD()) {
 //                    this.maV.setBottomPanelVisibility(8);
 //                }
@@ -946,14 +946,14 @@
 //                tdVar.ccJ.talker = getTalkerUserName();
 //                tdVar.ccJ.context = this.uPh.vtz.getContext();
 //                tdVar.ccJ.ccE = 2;
-//                com.tencent.mm.sdk.b.a.udP.m(tdVar);
+//                com.mm.mm.sdk.b.a.udP.m(tdVar);
 //            }
 //        }
 //    }
 //
 //    public final void bsG() {
-//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 82, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//        if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 82, "", "")) {
+//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 82, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//        if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 82, "", "")) {
 //            td tdVar = new td();
 //            tdVar.ccJ.bNb = 5;
 //            tdVar.ccJ.talker = getTalkerUserName();
@@ -962,15 +962,15 @@
 //            if (this.maV.cnD()) {
 //                this.maV.setBottomPanelVisibility(8);
 //            }
-//            com.tencent.mm.sdk.b.a.udP.m(tdVar);
+//            com.mm.mm.sdk.b.a.udP.m(tdVar);
 //        }
 //    }
 //
 //    public final void bsH() {
-//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 19, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//        if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 19, "", "")) {
-//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 19, "", "")), bk.csb(), this.uPh.vtz.getContext());
-//            if (com.tencent.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 19, "", "")) {
+//        y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkCamera[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 19, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//        if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.CAMERA", 19, "", "")) {
+//            y.i("MicroMsg.ChattingFooterEventImpl", "summerper checkPermission checkmicrophone[%b], stack[%s], activity[%s]", Boolean.valueOf(com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 19, "", "")), bk.csb(), this.uPh.vtz.getContext());
+//            if (com.mm.mm.pluginsdk.permission.a.a(this.uPh.vtz.getContext(), "android.permission.RECORD_AUDIO", 19, "", "")) {
 //                td tdVar = new td();
 //                tdVar.ccJ.bNb = 5;
 //                tdVar.ccJ.talker = getTalkerUserName();
@@ -979,18 +979,18 @@
 //                if (this.maV.cnD()) {
 //                    this.maV.setBottomPanelVisibility(8);
 //                }
-//                com.tencent.mm.sdk.b.a.udP.m(tdVar);
+//                com.mm.mm.sdk.b.a.udP.m(tdVar);
 //            }
 //        }
 //    }
 //
 //    public final void cCL() {
-//        ((com.tencent.mm.ui.chatting.b.b.ae) this.uPh.ac(com.tencent.mm.ui.chatting.b.b.ae.class)).nn(false);
+//        ((com.mm.mm.ui.chatting.b.b.ae) this.uPh.ac(com.mm.mm.ui.chatting.b.b.ae.class)).nn(false);
 //        this.maV.setBottomPanelVisibility(8);
 //    }
 //
 //    public final void cCM() {
-//        if (!com.tencent.mm.pluginsdk.ui.tools.l.a(this.uPh.vtz, e.dzD, "microMsg." + System.currentTimeMillis() + FileUtils.PIC_POSTFIX_JPEG)) {
+//        if (!com.mm.mm.pluginsdk.ui.tools.l.a(this.uPh.vtz, e.dzD, "microMsg." + System.currentTimeMillis() + FileUtils.PIC_POSTFIX_JPEG)) {
 //            Toast.makeText(this.uPh.vtz.getContext(), this.uPh.vtz.getMMResources().getString(R.l.selectcameraapp_none), 1).show();
 //        }
 //    }

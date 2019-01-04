@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.model;
 //
 //import android.database.Cursor;
 //import com.tencent.mm.ah.t;

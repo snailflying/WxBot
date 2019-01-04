@@ -75,11 +75,11 @@ public class TestHook implements IXposedHookLoadPackage {
         XposedBridge.log("Loaded app: " + lpparam.packageName);
         if(FILTER_PKGNAME.equals(pkgname)){
             Class<?> hookMessageListenerClass =null;
-             hookMessageListenerClass =lpparam.classLoader.loadClass("com.tencent.mm.ac.o");
+             hookMessageListenerClass =lpparam.classLoader.loadClass("com.mm.mm.ac.o");
              Class<?> hookMessageListenerClass2 =null;
-            hookMessageListenerClass2 =lpparam.classLoader.loadClass("com.tencent.mm.ac.e");
+            hookMessageListenerClass2 =lpparam.classLoader.loadClass("com.mm.mm.ac.e");
              Class<?> hookclass1 =null;
-            hookclass1 =lpparam.classLoader.loadClass("com.tencent.mm.modelmulti.i");
+            hookclass1 =lpparam.classLoader.loadClass("com.mm.mm.modelmulti.i");
 
             client = new DatagramSocket();
             initudp();

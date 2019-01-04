@@ -49,7 +49,7 @@ object Classes {
     }
 
     val Find_mm_model_au: Class<*> by wxLazy("Find_mm_model_au") {
-        findClassesFromPackage(wxLoader!!, wxClasses!!, "com.tencent.mm.model")   //com.tencent.mm.pluginsdk.model.m
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "com.tencent.mm.model")   //com.tencent.mm.model.au
                 .filterByMethod(C.Boolean)
                 .filterByMethod(Any::class.java, "getNotification")
                 .filterByMethod(Any::class.java, "getSysCmdMsgExtension")
@@ -60,7 +60,7 @@ object Classes {
 
     // 需要hook这个类的构造方法 m  自动添加好友
     val Find_mm_ah_p: Class<*> by wxLazy("AddFriendHooker") {
-        findClassesFromPackage(wxLoader!!, wxClasses!!, "com.tencent.mm.ah")   //com.tencent.mm.pluginsdk.model.m
+        findClassesFromPackage(wxLoader!!, wxClasses!!, "com.tencent.mm.ah")
                 .filterByField("java.util.List")
                 .filterByMethod(C.Int, "getType")
                 .filterByMethod(C.String)

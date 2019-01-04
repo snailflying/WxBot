@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.pluginsdk.model;
 //
 //import android.text.TextUtils;
 //import com.tencent.mm.ah.b;

@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.ui;
 //
 //import android.annotation.TargetApi;
 //import android.app.Activity;

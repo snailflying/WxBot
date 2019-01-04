@@ -1,4 +1,4 @@
-//package io.merculet.wxbot.config;
+//package com.tencent.mm.ah;
 //
 //import android.os.Looper;
 //import android.os.Message;
