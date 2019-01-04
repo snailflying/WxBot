@@ -3,9 +3,14 @@ package io.merculet.wxbot.netty;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
+
 import io.merculet.wxbot.netty.proto.OneTestProto;
+import io.merculet.wxbot.util.Config;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.EventLoop;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 @ChannelHandler.Sharable
@@ -30,4 +35,20 @@ public class ClientInBoundHandler extends SimpleChannelInboundHandler<OneTestPro
             }
         }
     }
+
+    //增加心跳、重连机制
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        Log.e("ClientInBoundHandler", "掉线了...");
+        //使用过程中断线重连
+        final EventLoop eventLoop = ctx.channel().eventLoop();
+        eventLoop.schedule(new Runnable() {
+            @Override
+            public void run() {
+                NettyClient.getInstance().connect(new InetSocketAddress(Config.ADDRESS, Config.PORT_NUMBER));
+            }
+        }, 1L, TimeUnit.SECONDS);
+        super.channelInactive(ctx);
+    }
+
 }

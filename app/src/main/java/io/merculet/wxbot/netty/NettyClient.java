@@ -4,13 +4,16 @@ package io.merculet.wxbot.netty;
 import android.util.Log;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 import io.merculet.wxbot.netty.proto.OneTestProto;
+import io.merculet.wxbot.util.Config;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -44,6 +47,31 @@ public class NettyClient {
         return INSTANCE;
     }
 
+    //增加心跳、重连机制
+    public void connect(final InetSocketAddress socketAddress) {
+        Log.i(TAG, "aaron NettyClient connect111");
+        if (mChannel != null && mChannel.isActive()) {
+            return;
+        }
+        Log.i(TAG, "aaron NettyClient connect222");
+
+        mServerAddress = socketAddress;
+
+        if (mBootstrap == null) {
+            mWorkerGroup = new NioEventLoopGroup();
+            mBootstrap = new Bootstrap();
+
+            mBootstrap.group(mWorkerGroup)
+                    .channel(NioSocketChannel.class)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .handler(new ClientChannelHandler(mDispatcher))
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
+        }
+
+        ChannelFuture future = mBootstrap.connect(mServerAddress);
+        future.addListener(mConnectFutureListener);
+    }
+
     public void connect(final InetSocketAddress socketAddress, OnServerConnectListener onServerConnectListener) {
         Log.i(TAG, "aaron NettyClient connect111");
         if (mChannel != null && mChannel.isActive()) {
@@ -71,19 +99,29 @@ public class NettyClient {
 
     private ChannelFutureListener mConnectFutureListener = new ChannelFutureListener() {
         @Override
-        public void operationComplete(ChannelFuture pChannelFuture) throws Exception {
-            if (pChannelFuture.isSuccess()) {
-                mChannel = pChannelFuture.channel();
+        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+            if (channelFuture.isSuccess()) {
+                mChannel = channelFuture.channel();
                 if (onServerConnectListener != null) {
                     onServerConnectListener.onConnectSuccess();
                 }
-                Log.i(TAG, "operationComplete: connected!");
+                Log.i(TAG, "ChannelFutureListener: 连接成功!");
             } else {
                 if (onServerConnectListener != null) {
                     onServerConnectListener.onConnectFailed();
                 }
-                Log.i(TAG, "operationComplete: connect failed!");
+
+                //增加心跳、重连机制
+                final EventLoop loop = channelFuture.channel().eventLoop();
+                loop.schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "服务端链接不上，开始重连操作...");
+                        connect(new InetSocketAddress(Config.ADDRESS, Config.PORT_NUMBER));
+                    }
+                }, 1L, TimeUnit.SECONDS);
             }
+
         }
     };
 
