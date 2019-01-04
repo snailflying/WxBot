@@ -62,7 +62,7 @@ object AddFriendHooker : HookerProvider {
                         val luckyMoneyRequest = newInstance(Classes.Find_plugin_sdk_model_m, talker, ticket, 6, 0.toByte()) // 即com.tencent.mm.pluginsdk.model.m中构造public m(String str, String str2, int i, byte b)
                         LogUtil.log("luckyMoneyRequest: $luckyMoneyRequest -- requestCaller: $requestCaller")
                         //通过Dk方法的返回值(对象),再调用该对象的a()方法
-                        callMethod(requestCaller, "a", luckyMoneyRequest, 0)    //即com.tencent.mm.ah.p 中public final boolean a(m mVar, int i)
+                        callMethod(requestCaller, "a", luckyMoneyRequest, 0)    //即com.tencent.mm.ah.p 中public final boolean a(m mVar, int i)   定位a方法需要的class太多,暂时写死
                     }
                 }
 
