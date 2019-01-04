@@ -1,6 +1,6 @@
 package io.merculet.core.base
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
@@ -9,7 +9,7 @@ import org.litepal.LitePal
 import kotlin.properties.Delegates
 
 
-class App : Application() {
+class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -29,7 +29,8 @@ class App : Application() {
                 layout.setEnableOverScrollDrag(true)    //开启越界拖动（仿苹果效果)
                 layout.setEnableAutoLoadMore(true)  //启用列表惯性滑动到底部时自动加载更多
                 layout.setEnableFooterFollowWhenNoMoreData(true)  //在全部加载结束之后Footer跟随内容
-                ClassicsFooter(context).setDrawableSize(20f).setTextSizeTitle(14F) }
+                ClassicsFooter(context).setDrawableSize(20f).setTextSizeTitle(14F)
+            }
         }
     }
 }

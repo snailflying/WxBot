@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="io.merculet.wxbot">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="io.merculet.wxbot">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name="io.merculet.core.base.App"
@@ -23,9 +23,10 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
         </activity>
         <!--<activity-alias android:name=".MainActivityAlias"-->
@@ -36,6 +37,7 @@
         <!--</intent-filter>-->
         <!--</activity-alias>-->
 
+        <service android:name=".service.ServerService" />
         <!-- 开机自启动广播接受 -->
         <receiver
             android:name="com.wanzi.wechatrecord.AutoStartBroadcastReceiver"
@@ -49,23 +51,23 @@
 
         <activity
             android:name="com.wanzi.wechatrecord.WxInfoActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <provider
             android:name=".util.PrefProvider"
             android:authorities="io.merculet.wxbot.preferences"
             android:exported="true"
-            tools:ignore="ExportedContentProvider"/>
+            tools:ignore="ExportedContentProvider" />
 
         <meta-data
             android:name="xposedmodule"
-            android:value="true"/>
+            android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="@string/app_name"/>
+            android:value="@string/app_name" />
         <meta-data
             android:name="xposedminversion"
-            android:value="53"/>
+            android:value="53" />
     </application>
 
 </manifest>

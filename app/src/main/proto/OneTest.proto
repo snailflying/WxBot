@@ -1,0 +1,8 @@
+syntax = "proto3";
+option java_package = "com.example.user.nettydemo";
+option java_outer_classname = "OneTestProto";
+message OneTest {
+    int32 test_id = 1;
+    string title =2;
+    string content=3;
+}
