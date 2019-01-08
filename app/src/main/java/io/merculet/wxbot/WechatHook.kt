@@ -31,6 +31,7 @@ class WechatHook : IXposedHookLoadPackage {
                             SendMsgHooker,
                             MsgHook,
                             AddFriendHooker,
+                            AddGroupFriendHooker,
                             WxSqlPwdHook,
                             TestHooker
                     ))
@@ -38,7 +39,7 @@ class WechatHook : IXposedHookLoadPackage {
             }
             settings?.load(context)
             settings?.listen(context)
-//            hookPackage()
+            hookPackage()
         }
     }
 
@@ -52,7 +53,7 @@ class WechatHook : IXposedHookLoadPackage {
             override fun afterHookedMethod(param: XC_MethodHook.MethodHookParam?) {
                 if (param!!.hasThrowable()) return
                 val name = (param.result as Class<*>).name
-                if (!name.contains("com.tencent.mm.pluginsdk.model")) return
+                if (!name.contains("com.tencent.mm.ui.contact")) return
                 Log.i("wxclassname", name)
             }
         })
