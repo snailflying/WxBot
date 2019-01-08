@@ -1,5 +1,7 @@
 package io.merculet.core.config
 
+import android.annotation.SuppressLint
+
 /**
  * @Author Aaron
  * @Date 2018/12/13
@@ -40,6 +42,7 @@ object Config {
     const val WX_MSG_SPLIT = "\t"
     const val MERCULET_MSG_SPLIT = "command-newline-separator"
 
+    @SuppressLint("SdCardPath")
     const val WX_ROOT_PATH = "/data/data/com.tencent.mm/"                               // 微信根目录
     const val WX_SP_UIN_PATH = "${WX_ROOT_PATH}shared_prefs/auth_info_key_prefs.xml"    // 微信保存uin的目录
     const val WX_DB_DIR_PATH = "${WX_ROOT_PATH}MicroMsg/"                               // 微信保存聊天记录数据库的目录

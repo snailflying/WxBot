@@ -15,12 +15,24 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/INDEX.LIST'
     }
 }
 
@@ -30,11 +42,20 @@ dependencies {
     implementation project(':wxinfo')
     implementation project(':core')
 
+
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    implementation 'com.github.gh0u1l5:wechat-spellbook:0.0.6'
 //    implementation 'com.github.gh0u1l5:wechat-spellbook:0.0.6:sources'
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.32.Final'
+//    implementation group: 'io.netty', name: 'netty-common', version: '4.1.32.Final'
+//    implementation group: 'io.netty', name: 'netty-codec', version: '4.1.32.Final'
+//    implementation group: 'io.netty', name: 'netty-handler', version: '4.1.32.Final'
+//    implementation group: 'io.netty', name: 'netty-resolver', version: '4.1.32.Final'
+//    implementation group: 'io.netty', name: 'netty-transport', version: '4.1.32.Final'
+//    implementation group: 'io.netty', name: 'netty-buffer', version: '4.1.32.Final'
+    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.6.1'
 }
 
 // 每次修改运行后自动让 VXP 中的模块`即时生效` ,需要将 (Debug Configurations) - Before Launch - Gradle aware Make - 修改为 :app:installDebug
